@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-12-28 Wed 23:56 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ray Tracing</title>
+<meta name="author" content="Sean Zhang" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Ray Tracing
+<br />
+<span class="subtitle">Notes on <i>Ray Tracing in One Weekend</i></span>
+</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org89f10fa">1. Output An Image</a>
+<ul>
+<li><a href="#org21735db">1.1. PPM Image Format</a>
+<ul>
+<li><a href="#orgec78b2e">1.1.1. Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org3318529">2. Vec3 Class</a>
+<ul>
+<li><a href="#orgc39d68b">2.1. Vec3.h</a></li>
+<li><a href="#orge0d069e">2.2. color.h</a></li>
+<li><a href="#org030ae19">2.3. Revisiting Example 1.1.1</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org89f10fa" class="outline-2">
+<h2 id="org89f10fa"><span class="section-number-2">1.</span> Output An Image</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org21735db" class="outline-3">
+<h3 id="org21735db"><span class="section-number-3">1.1.</span> PPM Image Format</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Usually it details some sort of encoding - <code>P3</code> being colors in ASCII.
+Then new line followed by <code>Num Cols</code> space, <code>Num Rows</code>.
+The next line is a single number detailing the scale (<code>255</code> usually denotes max color).
+Then <code>R G B</code> space separated values times the number of columns per row.
+Then you have <code>Num Rows</code> rows to get you the final image.
+</p>
+</div>
+
+<div id="outline-container-orgec78b2e" class="outline-4">
+<h4 id="orgec78b2e"><span class="section-number-4">1.1.1.</span> Example</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+<b>Source:</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="orga47b355">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    const int image_width = 256;
+    const int image_height = 256;
+
+    cout &lt;&lt; "P3" &lt;&lt; endl &lt;&lt; image_width &lt;&lt; " " &lt;&lt; image_height &lt;&lt; endl
+              &lt;&lt; "255" &lt;&lt; endl;
+
+    for (int j = image_height - 1; j &gt;= 0; --j) {
+        for (int i = 0; i &lt; image_width; ++i) {
+             auto r = double(i) / (image_width - 1);
+             auto g = double(j) / (image_height - 1);
+             auto b = 0.25;
+
+             int ir = static_cast&lt;int&gt;(255.999 * r);
+             int ig = static_cast&lt;int&gt;(255.999 * g);
+             int ib = static_cast&lt;int&gt;(255.999 * b);
+
+             // for each pixel
+             cout &lt;&lt; ir &lt;&lt; " " &lt;&lt; ig &lt;&lt; " " &lt;&lt; ib &lt;&lt; endl;
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+<b>Output:</b>
+</p>
+
+<div id="org341aae7" class="figure">
+<p><img src="./images/gradient.png" alt="gradient.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3318529" class="outline-2">
+<h2 id="org3318529"><span class="section-number-2">2.</span> Vec3 Class</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+A 3D vector class that's used for:
+</p>
+<ul class="org-ul">
+<li>Colors</li>
+<li>Locations</li>
+<li>Directions</li>
+<li>Offsets</li>
+<li>etc.</li>
+</ul>
+<p>
+There will be two aliases created for vec3: point3 and color.
+This is just used to clarify intent and use.
+</p>
+</div>
+
+<div id="outline-container-orgc39d68b" class="outline-3">
+<h3 id="orgc39d68b"><span class="section-number-3">2.1.</span> Vec3.h</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+<b>Code for Vec3: <code>vec3.h</code></b>
+</p>
+
+<p>
+Note: This is just for showing. The code is stored as a file <a href="./util/vec3.h">here</a>.
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="orgcbf41c0">  #ifndef VEC3_H
+  #define VEC3_H
+
+  #include &lt;iostream&gt;
+
+  class vec3 {
+      public:
+           vec3() : e{0, 0, 0} {}
+           vec3(double e0, double e1, double e2) : e{e0, e1, e2} {}
+           // getter methods
+           double x() const {return e[0]}
+           double y() const {return e[1]}
+           double z() const {return e[2]}
+
+           vec3 operator-() const { return vec3(-e[0], -e[1], -e[2]); }
+           double operator[](int i) const {return e[i]; }
+           double&amp; operator[](int i) {return e[i]; }
+
+           // adding
+           vec3 operator+=(const vec3 &amp;v) {
+               for (int i = 0; i &lt; 3; ++i) {
+                   e[i] += v.e[i];
+               }
+               return *this;
+           }
+           // scalar multiplication
+           vec3&amp; operator*=(const double t) {
+               for (int i = 0; i &lt; 3; ++i) {
+                   e[i] *= t;
+               }
+               return *this;
+           }
+
+           // scalar division
+           vec3&amp; operator/=(const double t) {
+               return *this *= 1/t;
+           }
+
+           double length() const {
+               // return std::sqrt(length_squared());
+               return 1.0;
+           }
+
+           double length_squared() const {
+               return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
+           }
+       public:
+           double e[3];
+  };
+
+  // Type aliases for vec3
+using point3 = vec3; // used for 3D points
+using color = vec3;  // used for RGB color
+
+// vec3 Utility Functions
+
+inline std::ostream&amp; operator&lt;&lt;(std::ostream &amp;out, const vec3 &amp;v) {
+    return out &lt;&lt; v.e[0] &lt;&lt; ' ' &lt;&lt; v.e[1] &lt;&lt; ' ' &lt;&lt; v.e[2];
+}
+
+inline vec3 operator+(const vec3 &amp;u, const vec3 &amp;v) {
+    return vec3(u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]);
+}
+
+inline vec3 operator-(const vec3 &amp;u, const vec3 &amp;v) {
+    return vec3(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]);
+}
+
+inline vec3 operator*(const vec3 &amp;u, const vec3 &amp;v) {
+    return vec3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
+}
+
+inline vec3 operator*(double t, const vec3 &amp;v) {
+    return vec3(t*v.e[0], t*v.e[1], t*v.e[2]);
+}
+
+inline vec3 operator*(const vec3 &amp;v, double t) {
+    return t * v;
+}
+
+inline vec3 operator/(vec3 v, double t) {
+    return (1/t) * v;
+}
+
+inline double dot(const vec3 &amp;u, const vec3 &amp;v) {
+    return u.e[0] * v.e[0]
+         + u.e[1] * v.e[1]
+         + u.e[2] * v.e[2];
+}
+
+inline vec3 cross(const vec3 &amp;u, const vec3 &amp;v) {
+    return vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
+                u.e[2] * v.e[0] - u.e[0] * v.e[2],
+                u.e[0] * v.e[1] - u.e[1] * v.e[0]);
+}
+
+inline vec3 unit_vector(vec3 v) {
+    return v / v.length();
+}
+  #endif
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge0d069e" class="outline-3">
+<h3 id="orge0d069e"><span class="section-number-3">2.2.</span> color.h</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<b>Code for Color Utility: <code>color.h</code></b>
+</p>
+
+<p>
+Saved as a header <a href="./util/color.h">here</a>.
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="org55188ac">#ifndef COLOR_H
+#define COLOR_H
+
+#include "vec3.h"
+#include &lt;iostream&gt;
+
+void write_color(std::ostream &amp;out, color pixel_color) {
+  // Write the translated [0,255] value of each color component.
+  out &lt;&lt; static_cast&lt;int&gt;(255.999 * pixel_color.x()) &lt;&lt; ' '
+      &lt;&lt; static_cast&lt;int&gt;(255.999 * pixel_color.y()) &lt;&lt; ' '
+      &lt;&lt; static_cast&lt;int&gt;(255.999 * pixel_color.z()) &lt;&lt; '\n';
+}
+
+#endif
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org030ae19" class="outline-3">
+<h3 id="org030ae19"><span class="section-number-3">2.3.</span> Revisiting Example 1.1.1</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Update the old example but this time using the color class and using <code>write_color</code>
+</p>
+
+<p>
+<b>Source:</b> 
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="orgfac357c">#include "util/color.h"
+#include "util/vec3.h"
+
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main() {
+    const int image_width = 256;
+    const int image_height = 256;
+
+    cout &lt;&lt; "P3" &lt;&lt; endl &lt;&lt; image_width &lt;&lt; " " &lt;&lt; image_height &lt;&lt; endl
+              &lt;&lt; "255" &lt;&lt; endl;
+
+    for (int j = image_height - 1; j &gt;= 0; --j) {
+        for (int i = 0; i &lt; image_width; ++i) {
+             color pixel(double(i) / (image_width - 1),
+                         double(j) / (image_height - 1), 0.55);
+             write_color(std::cout, pixel);
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+<b>Output:</b>
+</p>
+
+<div id="orgf884aa2" class="figure">
+<p><img src="./images/gradient-mod.png" alt="gradient-mod.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Sean Zhang</p>
+<p class="date">Created: 2022-12-28 Wed 23:56</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
