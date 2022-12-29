@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-12-28 Wed 23:56 -->
+<!-- 2022-12-29 Thu 00:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ray Tracing</title>
@@ -204,32 +204,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org89f10fa">1. Output An Image</a>
+<li><a href="#org3ed8e7c">1. Output An Image</a>
 <ul>
-<li><a href="#org21735db">1.1. PPM Image Format</a>
+<li><a href="#org3d63114">1.1. PPM Image Format</a>
 <ul>
-<li><a href="#orgec78b2e">1.1.1. Example</a></li>
+<li><a href="#orge776c26">1.1.1. Example</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org3318529">2. Vec3 Class</a>
+<li><a href="#org357e613">2. Vec3 Class</a>
 <ul>
-<li><a href="#orgc39d68b">2.1. Vec3.h</a></li>
-<li><a href="#orge0d069e">2.2. color.h</a></li>
-<li><a href="#org030ae19">2.3. Revisiting Example 1.1.1</a></li>
+<li><a href="#org5c0b683">2.1. Vec3.h</a></li>
+<li><a href="#org27eba41">2.2. color.h</a></li>
+<li><a href="#orgf1eae65">2.3. Revisiting Example 1.1.1</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org89f10fa" class="outline-2">
-<h2 id="org89f10fa"><span class="section-number-2">1.</span> Output An Image</h2>
+<div id="outline-container-org3ed8e7c" class="outline-2">
+<h2 id="org3ed8e7c"><span class="section-number-2">1.</span> Output An Image</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org21735db" class="outline-3">
-<h3 id="org21735db"><span class="section-number-3">1.1.</span> PPM Image Format</h3>
+<div id="outline-container-org3d63114" class="outline-3">
+<h3 id="org3d63114"><span class="section-number-3">1.1.</span> PPM Image Format</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Usually it details some sort of encoding - <code>P3</code> being colors in ASCII.
@@ -240,14 +240,14 @@ Then you have <code>Num Rows</code> rows to get you the final image.
 </p>
 </div>
 
-<div id="outline-container-orgec78b2e" class="outline-4">
-<h4 id="orgec78b2e"><span class="section-number-4">1.1.1.</span> Example</h4>
+<div id="outline-container-orge776c26" class="outline-4">
+<h4 id="orge776c26"><span class="section-number-4">1.1.1.</span> Example</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 <b>Source:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="orga47b355">#include &lt;iostream&gt;
+<pre class="src src-C++" id="org6b057ab">#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -279,7 +279,7 @@ int main() {
 <b>Output:</b>
 </p>
 
-<div id="org341aae7" class="figure">
+<div id="orgf08dc63" class="figure">
 <p><img src="./images/gradient.png" alt="gradient.png" />
 </p>
 </div>
@@ -288,8 +288,8 @@ int main() {
 </div>
 </div>
 
-<div id="outline-container-org3318529" class="outline-2">
-<h2 id="org3318529"><span class="section-number-2">2.</span> Vec3 Class</h2>
+<div id="outline-container-org357e613" class="outline-2">
+<h2 id="org357e613"><span class="section-number-2">2.</span> Vec3 Class</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 A 3D vector class that's used for:
@@ -307,8 +307,8 @@ This is just used to clarify intent and use.
 </p>
 </div>
 
-<div id="outline-container-orgc39d68b" class="outline-3">
-<h3 id="orgc39d68b"><span class="section-number-3">2.1.</span> Vec3.h</h3>
+<div id="outline-container-org5c0b683" class="outline-3">
+<h3 id="org5c0b683"><span class="section-number-3">2.1.</span> Vec3.h</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 <b>Code for Vec3: <code>vec3.h</code></b>
@@ -318,7 +318,7 @@ This is just used to clarify intent and use.
 Note: This is just for showing. The code is stored as a file <a href="./util/vec3.h">here</a>.
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="orgcbf41c0">  #ifndef VEC3_H
+<pre class="src src-C++" id="orgd2248b5">  #ifndef VEC3_H
   #define VEC3_H
 
   #include &lt;iostream&gt;
@@ -423,8 +423,8 @@ inline vec3 unit_vector(vec3 v) {
 </div>
 </div>
 
-<div id="outline-container-orge0d069e" class="outline-3">
-<h3 id="orge0d069e"><span class="section-number-3">2.2.</span> color.h</h3>
+<div id="outline-container-org27eba41" class="outline-3">
+<h3 id="org27eba41"><span class="section-number-3">2.2.</span> color.h</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 <b>Code for Color Utility: <code>color.h</code></b>
@@ -434,7 +434,7 @@ inline vec3 unit_vector(vec3 v) {
 Saved as a header <a href="./util/color.h">here</a>.
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org55188ac">#ifndef COLOR_H
+<pre class="src src-C++" id="orgd280905">#ifndef COLOR_H
 #define COLOR_H
 
 #include "vec3.h"
@@ -453,18 +453,19 @@ void write_color(std::ostream &amp;out, color pixel_color) {
 </div>
 </div>
 
-<div id="outline-container-org030ae19" class="outline-3">
-<h3 id="org030ae19"><span class="section-number-3">2.3.</span> Revisiting Example 1.1.1</h3>
+<div id="outline-container-orgf1eae65" class="outline-3">
+<h3 id="orgf1eae65"><span class="section-number-3">2.3.</span> Revisiting Example 1.1.1</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
-Update the old example but this time using the color class and using <code>write_color</code>
+Update the old example but this time using the color class and using <code>write_color</code>. I also added
+more blue hue to all the pixels.
 </p>
 
 <p>
 <b>Source:</b> 
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="orgfac357c">#include "util/color.h"
+<pre class="src src-C++" id="org7c699d3">#include "util/color.h"
 #include "util/vec3.h"
 
 #include &lt;iostream&gt;
@@ -493,18 +494,13 @@ int main() {
 <b>Output:</b>
 </p>
 
-<div id="orgf884aa2" class="figure">
+<div id="org766c2eb" class="figure">
 <p><img src="./images/gradient-mod.png" alt="gradient-mod.png" />
 </p>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div id="postamble" class="status">
-<p class="author">Author: Sean Zhang</p>
-<p class="date">Created: 2022-12-28 Wed 23:56</p>
-<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
 </html>
