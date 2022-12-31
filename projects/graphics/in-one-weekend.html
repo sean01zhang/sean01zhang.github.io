@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-12-29 Thu 00:05 -->
+<!-- 2022-12-30 Fri 23:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ray Tracing</title>
@@ -193,6 +193,27 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content" class="content">
@@ -204,32 +225,57 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3ed8e7c">1. Output An Image</a>
+<li><a href="#orgd1e3820">1. Output An Image</a>
 <ul>
-<li><a href="#org3d63114">1.1. PPM Image Format</a>
+<li><a href="#org4777e7f">1.1. PPM Image Format</a>
 <ul>
-<li><a href="#orge776c26">1.1.1. Example</a></li>
+<li><a href="#orgf6db236">1.1.1. Example</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org357e613">2. Vec3 Class</a>
+<li><a href="#orga543dc9">2. Vec3 Class</a>
 <ul>
-<li><a href="#org5c0b683">2.1. Vec3.h</a></li>
-<li><a href="#org27eba41">2.2. color.h</a></li>
-<li><a href="#orgf1eae65">2.3. Revisiting Example 1.1.1</a></li>
+<li><a href="#org13a7f74">2.1. Vec3.h</a></li>
+<li><a href="#org40b6160">2.2. color.h</a></li>
+<li><a href="#org91672ea">2.3. Revisiting Example 1.1.1</a></li>
+</ul>
+</li>
+<li><a href="#org58b162e">3. Rays</a>
+<ul>
+<li><a href="#org92250df">3.1. Ray Class</a></li>
+<li><a href="#org64484e9">3.2. Sending Rays into Scene</a></li>
+<li><a href="#org6a1ca4c">3.3. Example: Rendering a blue-to-white gradient, using Ray Tracing</a></li>
+</ul>
+</li>
+<li><a href="#org50d6b07">4. Adding a sphere to the scene</a>
+<ul>
+<li><a href="#org82809ee">4.1. Hit detection</a>
+<ul>
+<li><a href="#orgc6eb126">4.1.1. Expressing as vectors</a></li>
+<li><a href="#org0a10ed8">4.1.2. Detecting if rays hit sphere</a></li>
+<li><a href="#org318eaf6">4.1.3. Example: Adding the shape to our gradient</a></li>
+</ul>
+</li>
+<li><a href="#orgc0214f4">4.2. Surface Normals</a>
+<ul>
+<li><a href="#org5707532">4.2.1. Example: Visualizing The Normal</a></li>
+</ul>
+</li>
+<li><a href="#orgb07b4e4">4.3. Simplifying the intersection code.</a></li>
+<li><a href="#org1421373">4.4. Abstraction to hittable objects</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3ed8e7c" class="outline-2">
-<h2 id="org3ed8e7c"><span class="section-number-2">1.</span> Output An Image</h2>
+<div id="outline-container-orgd1e3820" class="outline-2">
+<h2 id="orgd1e3820"><span class="section-number-2">1.</span> Output An Image</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org3d63114" class="outline-3">
-<h3 id="org3d63114"><span class="section-number-3">1.1.</span> PPM Image Format</h3>
+<div id="outline-container-org4777e7f" class="outline-3">
+<h3 id="org4777e7f"><span class="section-number-3">1.1.</span> PPM Image Format</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Usually it details some sort of encoding - <code>P3</code> being colors in ASCII.
@@ -240,14 +286,14 @@ Then you have <code>Num Rows</code> rows to get you the final image.
 </p>
 </div>
 
-<div id="outline-container-orge776c26" class="outline-4">
-<h4 id="orge776c26"><span class="section-number-4">1.1.1.</span> Example</h4>
+<div id="outline-container-orgf6db236" class="outline-4">
+<h4 id="orgf6db236"><span class="section-number-4">1.1.1.</span> Example</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 <b>Source:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org6b057ab">#include &lt;iostream&gt;
+<pre class="src src-C++" id="org5bdf33f">#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -279,7 +325,7 @@ int main() {
 <b>Output:</b>
 </p>
 
-<div id="orgf08dc63" class="figure">
+<div id="org0dd209d" class="figure">
 <p><img src="./images/gradient.png" alt="gradient.png" />
 </p>
 </div>
@@ -288,8 +334,8 @@ int main() {
 </div>
 </div>
 
-<div id="outline-container-org357e613" class="outline-2">
-<h2 id="org357e613"><span class="section-number-2">2.</span> Vec3 Class</h2>
+<div id="outline-container-orga543dc9" class="outline-2">
+<h2 id="orga543dc9"><span class="section-number-2">2.</span> Vec3 Class</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 A 3D vector class that's used for:
@@ -307,8 +353,8 @@ This is just used to clarify intent and use.
 </p>
 </div>
 
-<div id="outline-container-org5c0b683" class="outline-3">
-<h3 id="org5c0b683"><span class="section-number-3">2.1.</span> Vec3.h</h3>
+<div id="outline-container-org13a7f74" class="outline-3">
+<h3 id="org13a7f74"><span class="section-number-3">2.1.</span> Vec3.h</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 <b>Code for Vec3: <code>vec3.h</code></b>
@@ -318,7 +364,7 @@ This is just used to clarify intent and use.
 Note: This is just for showing. The code is stored as a file <a href="./util/vec3.h">here</a>.
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="orgd2248b5">  #ifndef VEC3_H
+<pre class="src src-C++" id="orgd2d00fc">  #ifndef VEC3_H
   #define VEC3_H
 
   #include &lt;iostream&gt;
@@ -423,8 +469,8 @@ inline vec3 unit_vector(vec3 v) {
 </div>
 </div>
 
-<div id="outline-container-org27eba41" class="outline-3">
-<h3 id="org27eba41"><span class="section-number-3">2.2.</span> color.h</h3>
+<div id="outline-container-org40b6160" class="outline-3">
+<h3 id="org40b6160"><span class="section-number-3">2.2.</span> color.h</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 <b>Code for Color Utility: <code>color.h</code></b>
@@ -434,7 +480,7 @@ inline vec3 unit_vector(vec3 v) {
 Saved as a header <a href="./util/color.h">here</a>.
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="orgd280905">#ifndef COLOR_H
+<pre class="src src-C++" id="orgf36ce33">#ifndef COLOR_H
 #define COLOR_H
 
 #include "vec3.h"
@@ -453,8 +499,8 @@ void write_color(std::ostream &amp;out, color pixel_color) {
 </div>
 </div>
 
-<div id="outline-container-orgf1eae65" class="outline-3">
-<h3 id="orgf1eae65"><span class="section-number-3">2.3.</span> Revisiting Example 1.1.1</h3>
+<div id="outline-container-org91672ea" class="outline-3">
+<h3 id="org91672ea"><span class="section-number-3">2.3.</span> Revisiting Example 1.1.1</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Update the old example but this time using the color class and using <code>write_color</code>. I also added
@@ -465,7 +511,7 @@ more blue hue to all the pixels.
 <b>Source:</b> 
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org7c699d3">#include "util/color.h"
+<pre class="src src-C++" id="org06b1d8d">#include "util/color.h"
 #include "util/vec3.h"
 
 #include &lt;iostream&gt;
@@ -482,7 +528,7 @@ int main() {
     for (int j = image_height - 1; j &gt;= 0; --j) {
         for (int i = 0; i &lt; image_width; ++i) {
              color pixel(double(i) / (image_width - 1),
-                         double(j) / (image_height - 1), 0.55);
+                         double(j) / (image_height - 1), 0.85);
              write_color(std::cout, pixel);
         }
     }
@@ -494,11 +540,557 @@ int main() {
 <b>Output:</b>
 </p>
 
-<div id="org766c2eb" class="figure">
+<div id="org717acd4" class="figure">
 <p><img src="./images/gradient-mod.png" alt="gradient-mod.png" />
 </p>
 </div>
 </div>
+</div>
+</div>
+
+<div id="outline-container-org58b162e" class="outline-2">
+<h2 id="org58b162e"><span class="section-number-2">3.</span> Rays</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org92250df" class="outline-3">
+<h3 id="org92250df"><span class="section-number-3">3.1.</span> Ray Class</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+A ray is a function, \(P(t) = A + tb\), \(t \in \mathbb{R}\). A is the ray origin, and b is the ray vector.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++">#ifndef RAY_H
+#define RAY_H
+
+#include "vec3.h"
+
+class ray {
+    public:
+        ray() {}
+        ray(const point3&amp; origin, const vec3&amp; direction)
+            : orig(origin), dir(direction)
+        {}
+
+        point3 origin() const  { return orig; }
+        vec3 direction() const { return dir; }
+
+        point3 at(double t) const {
+            return orig + t*dir;
+        }
+
+    public:
+        point3 orig;
+        vec3 dir;
+};
+
+#endif
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org64484e9" class="outline-3">
+<h3 id="org64484e9"><span class="section-number-3">3.2.</span> Sending Rays into Scene</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Its time to ray trace! The ray tracer sends rays through pixels and
+computes the color seen in the direction of those rays.
+</p>
+
+<p>
+Here are the steps:
+</p>
+<ol class="org-ol">
+<li>Calculate the ray from the eye to the pixel.</li>
+<li>Determine which objects the ray intersects.</li>
+<li>Computer a color for that intersection point.</li>
+</ol>
+
+<p>
+Some parameters we need:
+</p>
+<ul class="org-ul">
+<li>Aspect ratio</li>
+<li>Focal length
+This is the distance from the eye to the projection plane.??
+IDK what this is, but its a plane in the back</li>
+<li>Eye/Camera
+This will be at the origin.</li>
+</ul>
+
+<p>
+The y axis will be up, x axis to the right, and z axis moving backwards,
+because hand rules.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6a1ca4c" class="outline-3">
+<h3 id="org6a1ca4c"><span class="section-number-3">3.3.</span> Example: Rendering a blue-to-white gradient, using Ray Tracing</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+<b>Source</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="org64134e8">  #include "util/color.h"
+  #include "util/ray.h"
+  #include "util/vec3.h"
+
+  #include &lt;iostream&gt;
+
+  // this function returns a color for which ray its on.
+  color ray_color(const ray&amp; r) {
+    vec3 unit_direction = unit_vector(r.direction());
+    // this is to try and put the pixel in the center y
+    auto t = 0.5 * (unit_direction.y() + 1.0); 
+    // the gradient color (blue-white) depends on where the
+    // y-value sits.
+    // higher y values -&gt; more blue
+    return t * color(0.5, 0.7, 1.0) + (1 - t) * color(1.0, 1.0, 1.0);
+  }
+
+  int main() {
+
+    // image
+    double aspect = 16.0 / 9.0;
+    int height = 200;
+    int width = static_cast&lt;int&gt;(height * aspect);
+
+    // camera setup
+
+    double viewport_height = 2.0;
+    double viewport_width = viewport_height * aspect;
+    double focal_length = 1.0;
+
+    point3 origin(0.0, 0.0, 0.0);
+    vec3 horizontal(viewport_width, 0.0, 0.0);
+    vec3 vertical(0.0, viewport_height, 0.0);
+    vec3 lower_left_corner = origin - horizontal / 2 -
+       vertical / 2 - vec3(0.0, 0.0, focal_length);
+
+    // Render
+    std::cout &lt;&lt; "P3\n" &lt;&lt; width &lt;&lt; " " &lt;&lt; height
+              &lt;&lt; "\n255"  &lt;&lt; std::endl;
+
+    // loop
+    for (int j = height-1; j &gt;= 0; --j) { // explanation: scans pixels L-&gt;R U-&gt;D
+      for (int i = 0; i &lt; width; ++i) { // i thus needs to be in the inner loop
+
+          ray r(origin, vec3(double(i) * viewport_width / width,
+            double(j) * viewport_height / height, 0.0)
+            + lower_left_corner - origin);
+
+          // color pixel = ray_color(r);
+
+           // double u = double(i) / (width-1); // fraction of width
+           // double v = double(j) / (height-1); // fraction of height
+           // // why write origin here? well its because the origin may not always be [0, 0, 0]
+           // ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
+
+
+           color pixel = ray_color(r);
+           write_color(std::cout, pixel);
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+<b>Output</b>
+</p>
+
+<p>
+The resultant image is a gradient from blue to white. Notice that not only is there a
+vertical gradient, but also a horizontal one.
+To explain this, we look at the <code>ray_color</code> function:
+</p>
+<div class="org-src-container">
+<pre class="src src-C++">color ray_color(const ray&amp; r) {
+    vec3 unit_direction = unit_vector(r.direction());
+    // transformation to make to from 0 to 1
+    auto t = 0.5 * (unit_direction.y() + 1.0); 
+    // the gradient color (blue-white) depends on where the
+    // y-value sits.
+    // higher y values -&gt; more blue
+    return t * color(0.5, 0.7, 1.0) + (1 - t) * color(1.0, 1.0, 1.0);
+}
+</pre>
+</div>
+<p>
+Unit vector makes the direction component of the ray unit length.
+This means that when we take the y component of all of those rays,
+the rays closer to the fringes when normalized dont extend as far
+into the y direction (because of some of the length contributed to
+the other components of the vector). We can also guarantee that no
+y component of any normalised vector will be greater than \(\pm 1\).
+We perform a transformation on the y scale to get a t that is \(0 \leq t \leq 1\).
+When \(t = 1\), we get blue, and when \(t = 0\) we get white.
+As a result the following is produced.
+</p>
+
+
+<div id="orgb70ce99" class="figure">
+<p><img src="./images/gradient-rt.png" alt="gradient-rt.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org50d6b07" class="outline-2">
+<h2 id="org50d6b07"><span class="section-number-2">4.</span> Adding a sphere to the scene</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Time to add an object to the ray tracer!
+</p>
+</div>
+
+<div id="outline-container-org82809ee" class="outline-3">
+<h3 id="org82809ee"><span class="section-number-3">4.1.</span> Hit detection</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Recall the equation for a sphere with center \((C_x, C_y, C_z)\):
+\[ (x-C_x)^2 + (y-C_y)^2 + (z-C_z)^2 = r^2 \]
+</p>
+
+<p>
+So to determine if a point \((a, b, c)\) is in a sphere, you would
+check if
+\[ (x-C_x)^2 + (y-C_y)^2 + (z-C_z)^2 < r^2 \]
+</p>
+</div>
+
+<div id="outline-container-orgc6eb126" class="outline-4">
+<h4 id="orgc6eb126"><span class="section-number-4">4.1.1.</span> Expressing as vectors</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<p>
+Now, \((x-C_x)^2 + (y-C_y)^2 + (z-C_z)^2\) is great and all but
+we need it to be in the form of vectors for the <code>vec3</code> class.
+Claim: \((\textbf{P - C})\cdot(\textbf{P - C}) = (x-C_x)^2 + (y-C_y)^2 + (z-C_z)^2\),
+where \(P\) is a point \((x, y, z)\), and \(C = (C_x, C_y, C_z)\)
+is the center of the sphere.
+</p>
+
+\begin{align*}
+(\textbf{P - C})\cdot(\textbf{P - C}) &=
+\left[ {\begin{array}{c}
+  x-C_x \\
+  y-C_y \\
+  z-C_z \\
+\end{array}}\right] \cdot
+\left[ {\begin{array}{c}
+  x-C_x \\
+  y-C_y \\
+  z-C_z \\
+\end{array}}\right] &&\text{Recall the dot product: $a\cdot b = \sum_{i=1}^n a_ib_i$} \\\\
+&= (x-C_x)(x-C_x) + (y-C_y)(y-C_y) + (z-C_z)(z-C_z) \\
+&= (x-C_x)^2 + (y-C_y)^2 + (z-C_z)^2 \\
+\end{align*}
+
+<p>
+Thus,
+\[(\textbf{P-C})\cdot(\textbf{P-C}) = r^2 \]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0a10ed8" class="outline-4">
+<h4 id="org0a10ed8"><span class="section-number-4">4.1.2.</span> Detecting if rays hit sphere</h4>
+<div class="outline-text-4" id="text-4-1-2">
+<p>
+The above equation only answers whether a point \(\textbf{P}\)
+is on the sphere. We want to know if a ray ever hits the
+sphere. To do this, we substitute \(\textbf{P}\) for
+\(\textbf{P}(t)=\textbf{A} + t\textbf{B}\), and find value
+\(t\) such that this equation holds:
+</p>
+\begin{align*}
+(\textbf{P}(t) - \textbf{C})\cdot(\textbf{P}(t) - \textbf{C}) &= r^2 \\
+(\textbf{A}+t\textbf{b} - \textbf{C})\cdot
+(\textbf{A}+t\textbf{b} - \textbf{C}) &= r^2 \\
+(t\textbf{b} + (\textbf{A} - \textbf{C})) \cdot
+(t\textbf{b} + (\textbf{A} - \textbf{C})) &= r^2 \\
+t^2\textbf{b}*\textbf{b} + 2t\textbf{b}\cdot(\textbf{A-C}) +
+(\textbf{A-C})\cdot(\textbf{A-C}) - r^2 &= 0 \\
+\end{align*}
+
+<p>
+1 intersection means the ray touches the sphere once,
+2 intersections means the ray passes through the sphere.
+These intersections can be found in this quadratic equation,
+but we are only concerned with whether the ray hits the sphere.
+</p>
+
+<p>
+We have a handy quadratic equation to find roots:
+\[x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]
+</p>
+
+<p>
+If \(b^2 - 4ac\) is negative, then there are no roots.
+So, for the ray \(\textbf{P}(t) = \textbf{A} + t\textbf{b}\)
+to not intersect the shape,
+</p>
+\begin{align*}
+(2b\cdot(\textbf{A-C}))^2 - 4(\textbf{b} \cdot b)((\textbf{A-C})
+    \cdot (\textbf{A-C}) - r^2) < 0 \\
+\end{align*}
+<p>
+must hold true.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org318eaf6" class="outline-4">
+<h4 id="org318eaf6"><span class="section-number-4">4.1.3.</span> Example: Adding the shape to our gradient</h4>
+<div class="outline-text-4" id="text-4-1-3">
+<p>
+We create a function called <code>hit_sphere</code> which given a sphere, returns whether
+the ray hits the sphere.
+For now, we color the rays that hit the sphere red in our final result.
+</p>
+
+<p>
+<b>Source</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="org4141a12">  #include "util/color.h"
+  #include "util/ray.h"
+  #include "util/vec3.h"
+
+  #include &lt;iostream&gt;
+
+  // check if the ray intersects the sphere
+  bool hit_sphere(const point3&amp; center, double radius, const ray&amp; ray) {
+    vec3 org_min_c = ray.origin() - center;
+    double a = dot(ray.direction(), ray.direction());
+    double b = dot(2*ray.direction(), org_min_c);
+    double c = dot(org_min_c, org_min_c) - radius*radius;
+    return b*b - 4*a*c &gt;= 0; // i left it as geq 0 for now.
+  }
+
+  // this function returns a color for which ray its on.
+  color ray_color(const ray&amp; r) {
+    if (hit_sphere(point3(0,0,-1), 0.5, r))
+      return color(1, 0, 0); // if hit sphere, then color it red.
+    vec3 unit_direction = unit_vector(r.direction());
+    // this is to try and put the pixel in the center y
+    auto t = 0.5 * (unit_direction.y() + 1.0); 
+    // the gradient color (blue-white) depends on where the
+    // y-value sits.
+    // higher y values -&gt; more blue
+    return t * color(0.5, 0.7, 1.0) + (1 - t) * color(1.0, 1.0, 1.0);
+  }
+
+  int main() {
+
+    // image
+    double aspect = 16.0 / 9.0;
+    int height = 200;
+    int width = static_cast&lt;int&gt;(height * aspect);
+
+    // camera setup
+
+    double viewport_height = 2.0;
+    double viewport_width = viewport_height * aspect;
+    double focal_length = 1.0;
+
+    point3 origin(0.0, 0.0, 0.0);
+    vec3 horizontal(viewport_width, 0.0, 0.0);
+    vec3 vertical(0.0, viewport_height, 0.0);
+    vec3 lower_left_corner = origin - horizontal / 2 -
+       vertical / 2 - vec3(0.0, 0.0, focal_length);
+
+    // Render
+    std::cout &lt;&lt; "P3\n" &lt;&lt; width &lt;&lt; " " &lt;&lt; height
+              &lt;&lt; "\n255"  &lt;&lt; std::endl;
+
+    // loop
+    for (int j = height-1; j &gt;= 0; --j) { // explanation: scans pixels L-&gt;R U-&gt;D
+      for (int i = 0; i &lt; width; ++i) { // i thus needs to be in the inner loop
+
+          ray r(origin, vec3(double(i) * viewport_width / width,
+            double(j) * viewport_height / height, 0.0)
+            + lower_left_corner - origin);
+
+           color pixel = ray_color(r);
+           write_color(std::cout, pixel);
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+<b>Output:</b>
+</p>
+
+<div id="org9f9960c" class="figure">
+<p><img src="./images/red-circle.png" alt="red-circle.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc0214f4" class="outline-3">
+<h3 id="orgc0214f4"><span class="section-number-3">4.2.</span> Surface Normals</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+A surface normal is the vector that is perpendicular to the surface of the point
+of intersection.
+For a point \(\textbf{P}\) on the sphere with center \(\textbf{C}\),
+the normal vector would be \(\textbf{P} - \textbf{C}\).
+Convince yourself that this is true.
+We also normalize this vector so that each component is between -1 and 1.
+</p>
+</div>
+
+<div id="outline-container-org5707532" class="outline-4">
+<h4 id="org5707532"><span class="section-number-4">4.2.1.</span> Example: Visualizing The Normal</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+For now, we use a color map to visualize the normal. Since each vector is normalized,
+each component is between -1 and 1, which we can map to an interval from
+0 to 1. Then, we map \(x \mapsto r\), \(y \mapsto g\), and \(z \mapsto b\).
+</p>
+
+<p>
+Let us visualize this:
+<b>Source</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="org6271c6b">  #include "util/color.h"
+  #include "util/ray.h"
+  #include "util/vec3.h"
+
+  #include &lt;iostream&gt;
+
+  // check if the ray intersects the sphere, if so, return the t value of the ray
+  // that touches the sphere.
+  double hit_sphere(const point3&amp; center, double radius, const ray&amp; ray) {
+    vec3 org_min_c = ray.origin() - center;
+    double a = dot(ray.direction(), ray.direction());
+    double b = dot(2*ray.direction(), org_min_c);
+    double c = dot(org_min_c, org_min_c) - radius*radius;
+    double discriminant = b*b - 4*a*c;
+    if (discriminant &lt; 0) {
+       // why return -1? When is it -1?
+       // means the object is behind the ray...
+       return -1.0;
+    } else {
+       return (-b - sqrt(discriminant)) / (2.0 * a);
+    }
+  }
+
+  // this function returns a color for which ray its on.
+  color ray_color(const ray&amp; r) {
+    point3 sphere_center(0,0,-1);
+    double t = hit_sphere(sphere_center, 0.5, r);
+    if (t &gt; 0.0) {
+       // calculate the norm (P - C)
+       vec3 norm = unit_vector(r.origin() + t * r.direction() - sphere_center);
+       return 0.5 * (norm + vec3(1, 1, 1)); 
+    }
+    vec3 unit_direction = unit_vector(r.direction());
+    // this is to try and put the pixel in the center y
+    t = 0.5 * (unit_direction.y() + 1.0); 
+    // the gradient color (blue-white) depends on where the
+    // y-value sits.
+    // higher y values -&gt; more blue
+    return t * color(0.5, 0.7, 1.0) + (1 - t) * color(1.0, 1.0, 1.0);
+  }
+
+  int main() {
+    // image
+    double aspect = 16.0 / 9.0;
+    int height = 200;
+    int width = static_cast&lt;int&gt;(height * aspect);
+
+    // camera setup
+    double viewport_height = 2.0;
+    double viewport_width = viewport_height * aspect;
+    double focal_length = 1.0;
+
+    point3 origin(0.0, 0.0, 0.0);
+    vec3 horizontal(viewport_width, 0.0, 0.0);
+    vec3 vertical(0.0, viewport_height, 0.0);
+    vec3 lower_left_corner = origin - horizontal / 2 -
+       vertical / 2 - vec3(0.0, 0.0, focal_length);
+
+    // Render
+    std::cout &lt;&lt; "P3\n" &lt;&lt; width &lt;&lt; " " &lt;&lt; height
+              &lt;&lt; "\n255"  &lt;&lt; std::endl;
+
+    // loop
+    for (int j = height-1; j &gt;= 0; --j) { // explanation: scans pixels L-&gt;R U-&gt;D
+      for (int i = 0; i &lt; width; ++i) { // i thus needs to be in the inner loop
+          ray r(origin, vec3(double(i) * viewport_width / width,
+            double(j) * viewport_height / height, 0.0)
+            + lower_left_corner - origin);
+           color pixel = ray_color(r);
+           write_color(std::cout, pixel);
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+<b>Output:</b>
+</p>
+
+<div id="orgd7104dd" class="figure">
+<p><img src="./images/color-map-sphere.png" alt="color-map-sphere.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb07b4e4" class="outline-3">
+<h3 id="orgb07b4e4"><span class="section-number-3">4.3.</span> Simplifying the intersection code.</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+There is an extra 2 in the front of b in our equation. Suppose we then used
+\(b = 2h\) in our quadratic equation:
+</p>
+\begin{align*}
+ \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \\
+= \frac{-(2h) \pm \sqrt{(2h)^2 - 4ac}}{2a} \\
+= \frac{-2h \pm \sqrt{4h^2 - 4ac}}{2a} \\
+= \frac{-2h \pm 2\sqrt{h^2 - ac}}{2a} \\
+= \frac{-h \pm \sqrt{h^2 - ac}}{a} \\
+\end{align*}
+<p>
+Now we use these changes in our code:
+</p>
+<div class="org-src-container">
+<pre class="src src-C++">// check if the ray intersects the sphere, if so, return the t value of the ray
+// that touches the sphere.
+double hit_sphere(const point3&amp; center, double radius, const ray&amp; ray) {
+  vec3 org_min_c = ray.origin() - center;
+  double a = dot(ray.direction(), ray.direction());
+  double h_b = dot(ray.direction(), org_min_c);
+  double c = dot(org_min_c, org_min_c) - radius*radius;
+  double discriminant = h_b*h_b - a*c;
+  if (discriminant &lt; 0) {
+     // why return -1? When is it -1?
+     // means the object is behind the ray...
+     return -1.0;
+  } else {
+     return (-h_b - sqrt(discriminant)) / a;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1421373" class="outline-3">
+<h3 id="org1421373"><span class="section-number-3">4.4.</span> Abstraction to hittable objects</h3>
 </div>
 </div>
 </div>
