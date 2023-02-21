@@ -1,0 +1,83 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.skills-table th {
+  text-align: left;
+  padding-right: 10px;
+}
+.skills-table td {
+  text-align: left;
+}
+.skills-table tbody {
+  margin-top: 200px;
+  border: 1px solid black;
+}
+.skills-table {
+  margin-top: 0px;
+  padding-left: 10px;
+  /* border: 1px solid black; */
+}
+
+.entry {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  /* border: 1px solid red; */
+  border-radius: 10px;
+  /* padding: 10px; */
+  /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25); */
+}
+
+h3 {
+  margin-bottom: 5px;
+  font-variant: small-caps;
+  /* font-variant-caps: all-petite-caps; */
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 3px;
+  padding-left: 10px;
+  /* box-shadow: 0px 0px 10px 0px rgba(150, 150, 150, 0.25); */
+}
+
+ul {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 25px;
+  margin-top: 3px;
+  margin-bottom: 0px;
+  /* border: 1px solid black; */
+}
+
+.name h1 {
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+.name span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.name {
+  text-align: center;
+}
+
+hr {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+.date {
+  font-style: italic;
+}
+
+a {
+  color: gray;
+}

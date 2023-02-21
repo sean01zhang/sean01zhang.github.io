@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-07 Sat 17:43 -->
+<!-- 2023-02-20 Mon 22:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ray Tracing</title>
@@ -225,69 +225,78 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2d2f785">1. Output An Image</a>
+<li><a href="#org43ebee2">1. Output An Image</a>
 <ul>
-<li><a href="#orgb6f28e7">1.1. PPM Image Format</a>
+<li><a href="#org48e078b">1.1. PPM Image Format</a>
 <ul>
-<li><a href="#org13c865a">1.1.1. Example</a></li>
+<li><a href="#orge24a73e">1.1.1. Example</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orga7c68c6">2. Vec3 Class</a>
+<li><a href="#org6871e15">2. Vec3 Class</a>
 <ul>
-<li><a href="#org2694afb">2.1. Vec3.h</a></li>
-<li><a href="#orgc298ee2">2.2. color.h</a></li>
-<li><a href="#orga3c9a44">2.3. Revisiting Example 1.1.1</a></li>
+<li><a href="#org8ef780f">2.1. Vec3.h</a></li>
+<li><a href="#orge5bc836">2.2. color.h</a></li>
+<li><a href="#orgaaa8bfa">2.3. Revisiting Example 1.1.1</a></li>
 </ul>
 </li>
-<li><a href="#org58306fd">3. Rays</a>
+<li><a href="#org8d91508">3. Rays</a>
 <ul>
-<li><a href="#orgc6497d7">3.1. Ray Class</a></li>
-<li><a href="#org31cca8b">3.2. Sending Rays into Scene</a></li>
-<li><a href="#orga6fb454">3.3. Example: Rendering a blue-to-white gradient, using Ray Tracing</a></li>
+<li><a href="#org9af1573">3.1. Ray Class</a></li>
+<li><a href="#org529bc9f">3.2. Sending Rays into Scene</a></li>
+<li><a href="#org9ec518a">3.3. Example: Rendering a blue-to-white gradient, using Ray Tracing</a></li>
 </ul>
 </li>
-<li><a href="#orgf39edf0">4. Adding a sphere to the scene</a>
+<li><a href="#org93b66e8">4. Adding a sphere to the scene</a>
 <ul>
-<li><a href="#org41f6938">4.1. Hit detection</a>
+<li><a href="#orge2331b8">4.1. Hit detection</a>
 <ul>
-<li><a href="#org32e7764">4.1.1. Expressing as vectors</a></li>
-<li><a href="#org3411390">4.1.2. Detecting if rays hit sphere</a></li>
-<li><a href="#org51409ed">4.1.3. Example: Adding the shape to our gradient</a></li>
+<li><a href="#orgafb49fd">4.1.1. Expressing as vectors</a></li>
+<li><a href="#org3a7e866">4.1.2. Detecting if rays hit sphere</a></li>
+<li><a href="#org56fd506">4.1.3. Example: Adding the shape to our gradient</a></li>
 </ul>
 </li>
-<li><a href="#org75e95d3">4.2. Surface Normals</a>
+<li><a href="#org562222c">4.2. Surface Normals</a>
 <ul>
-<li><a href="#orgfa780b5">4.2.1. Example: Visualizing The Normal</a></li>
+<li><a href="#org4269906">4.2.1. Example: Visualizing The Normal</a></li>
 </ul>
 </li>
-<li><a href="#org1a08eb5">4.3. Simplifying the intersection code.</a></li>
-<li><a href="#orge17aba7">4.4. Abstraction to hittable objects</a>
+<li><a href="#org2410531">4.3. Simplifying the intersection code.</a></li>
+<li><a href="#orgc1d3b74">4.4. Abstraction to hittable objects</a>
 <ul>
-<li><a href="#org4d87e77">4.4.1. Front Faces vs Back Faces</a></li>
-<li><a href="#orgbbc1dac">4.4.2. A List of Hittable Objects</a></li>
-<li><a href="#org8782ee6">4.4.3. Wrapping Up With a Revised Example</a></li>
+<li><a href="#org3957c1e">4.4.1. Front Faces vs Back Faces</a></li>
+<li><a href="#org637d4b9">4.4.2. A List of Hittable Objects</a></li>
+<li><a href="#org85f9ec3">4.4.3. Wrapping Up With a Revised Example</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgc8cb91d">5. Antialiasing</a>
+<li><a href="#org95deaf9">5. Antialiasing</a>
 <ul>
-<li><a href="#org611ee01">5.1. Random Number Generation</a></li>
-<li><a href="#org33a138e">5.2. Abstracting the Camera</a></li>
+<li><a href="#orgba65d17">5.1. Random Number Generation</a></li>
+<li><a href="#org882781d">5.2. Abstracting the Camera</a></li>
 </ul>
 </li>
+<li><a href="#org08165d2">6. Diffuse Materials</a>
+<ul>
+<li><a href="#org11cdfe1">6.1. Simple diffuse material</a></li>
+<li><a href="#orgaa00c76">6.2. Using Gamma Correction for Accurate Color Intensity</a></li>
+<li><a href="#orgf4aa0c9">6.3. Shadow Acne</a></li>
+<li><a href="#orgc58ffad">6.4. True Lambertian Reflection</a></li>
+<li><a href="#orgb44c790">6.5. Another Diffuse Formulation</a></li>
+</ul>
+</li>
+<li><a href="#org23be90d">7. Metal</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org2d2f785" class="outline-2">
-<h2 id="org2d2f785"><span class="section-number-2">1.</span> Output An Image</h2>
+<div id="outline-container-org43ebee2" class="outline-2">
+<h2 id="org43ebee2"><span class="section-number-2">1.</span> Output An Image</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgb6f28e7" class="outline-3">
-<h3 id="orgb6f28e7"><span class="section-number-3">1.1.</span> PPM Image Format</h3>
+<div id="outline-container-org48e078b" class="outline-3">
+<h3 id="org48e078b"><span class="section-number-3">1.1.</span> PPM Image Format</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Usually it details some sort of encoding - <code>P3</code> being colors in ASCII.
@@ -298,14 +307,14 @@ Then you have <code>Num Rows</code> rows to get you the final image.
 </p>
 </div>
 
-<div id="outline-container-org13c865a" class="outline-4">
-<h4 id="org13c865a"><span class="section-number-4">1.1.1.</span> Example</h4>
+<div id="outline-container-orge24a73e" class="outline-4">
+<h4 id="orge24a73e"><span class="section-number-4">1.1.1.</span> Example</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 <b>Source:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org974dba4"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
+<pre class="src src-C++" id="org5dce4e9"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
 <span style="color: #3a81c3; font-weight: bold;">using</span> <span style="color: #3a81c3; font-weight: bold;">namespace</span> std<span style="color: #655370; background-color: #fbf8ef;">;</span>
 
 <span style="color: #3a81c3;">int</span> <span style="color: #6c3163; font-weight: bold;">main</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
@@ -337,7 +346,7 @@ Then you have <code>Num Rows</code> rows to get you the final image.
 <b>Output:</b>
 </p>
 
-<div id="org1cb04e8" class="figure">
+<div id="orgd0dd4f6" class="figure">
 <p><img src="./images/gradient.png" alt="gradient.png" />
 </p>
 </div>
@@ -346,8 +355,8 @@ Then you have <code>Num Rows</code> rows to get you the final image.
 </div>
 </div>
 
-<div id="outline-container-orga7c68c6" class="outline-2">
-<h2 id="orga7c68c6"><span class="section-number-2">2.</span> Vec3 Class</h2>
+<div id="outline-container-org6871e15" class="outline-2">
+<h2 id="org6871e15"><span class="section-number-2">2.</span> Vec3 Class</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 A 3D vector class that's used for:
@@ -365,8 +374,8 @@ This is just used to clarify intent and use.
 </p>
 </div>
 
-<div id="outline-container-org2694afb" class="outline-3">
-<h3 id="org2694afb"><span class="section-number-3">2.1.</span> Vec3.h</h3>
+<div id="outline-container-org8ef780f" class="outline-3">
+<h3 id="org8ef780f"><span class="section-number-3">2.1.</span> Vec3.h</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 <b>Code for Vec3: <code>vec3.h</code></b>
@@ -376,7 +385,7 @@ This is just used to clarify intent and use.
 Note: This is just for showing. The code is stored as a file <a href="./util/vec3.h">here</a>.
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org40db711">  <span style="color: #6c3163;">#ifndef</span> <span style="color: #4e3163;">VEC3_H</span>
+<pre class="src src-C++" id="org85ce854">  <span style="color: #6c3163;">#ifndef</span> <span style="color: #4e3163;">VEC3_H</span>
   <span style="color: #6c3163;">#define</span> <span style="color: #dc752f; background-color: #fbf8ef;">VEC3_H</span>
 
   #include &lt;iostream&gt;
@@ -481,8 +490,8 @@ Note: This is just for showing. The code is stored as a file <a href="./util/vec
 </div>
 </div>
 
-<div id="outline-container-orgc298ee2" class="outline-3">
-<h3 id="orgc298ee2"><span class="section-number-3">2.2.</span> color.h</h3>
+<div id="outline-container-orge5bc836" class="outline-3">
+<h3 id="orge5bc836"><span class="section-number-3">2.2.</span> color.h</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 <b>Code for Color Utility: <code>color.h</code></b>
@@ -492,7 +501,7 @@ Note: This is just for showing. The code is stored as a file <a href="./util/vec
 Saved as a header <a href="./util/color.h">here</a>.
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org5ab069d"><span style="color: #6c3163;">#ifndef</span> <span style="color: #4e3163;">COLOR_H</span>
+<pre class="src src-C++" id="org399117c"><span style="color: #6c3163;">#ifndef</span> <span style="color: #4e3163;">COLOR_H</span>
 <span style="color: #6c3163;">#define</span> <span style="color: #dc752f; background-color: #fbf8ef;">COLOR_H</span>
 
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"vec3.h"</span>
@@ -511,8 +520,8 @@ Saved as a header <a href="./util/color.h">here</a>.
 </div>
 </div>
 
-<div id="outline-container-orga3c9a44" class="outline-3">
-<h3 id="orga3c9a44"><span class="section-number-3">2.3.</span> Revisiting Example 1.1.1</h3>
+<div id="outline-container-orgaaa8bfa" class="outline-3">
+<h3 id="orgaaa8bfa"><span class="section-number-3">2.3.</span> Revisiting Example 1.1.1</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Update the old example but this time using the color class and using <code>write_color</code>. I also added
@@ -523,7 +532,7 @@ more blue hue to all the pixels.
 <b>Source:</b> 
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org16965b0"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<pre class="src src-C++" id="orgd524eb3"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/vec3.h"</span>
 
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
@@ -552,7 +561,7 @@ more blue hue to all the pixels.
 <b>Output:</b>
 </p>
 
-<div id="org1e4b2ff" class="figure">
+<div id="orge7fc066" class="figure">
 <p><img src="./images/gradient-mod.png" alt="gradient-mod.png" />
 </p>
 </div>
@@ -560,12 +569,12 @@ more blue hue to all the pixels.
 </div>
 </div>
 
-<div id="outline-container-org58306fd" class="outline-2">
-<h2 id="org58306fd"><span class="section-number-2">3.</span> Rays</h2>
+<div id="outline-container-org8d91508" class="outline-2">
+<h2 id="org8d91508"><span class="section-number-2">3.</span> Rays</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgc6497d7" class="outline-3">
-<h3 id="orgc6497d7"><span class="section-number-3">3.1.</span> Ray Class</h3>
+<div id="outline-container-org9af1573" class="outline-3">
+<h3 id="org9af1573"><span class="section-number-3">3.1.</span> Ray Class</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 A ray is a function, \(P(t) = A + tb\), \(t \in \mathbb{R}\). A is the ray origin, and b is the ray vector.
@@ -602,8 +611,8 @@ A ray is a function, \(P(t) = A + tb\), \(t \in \mathbb{R}\). A is the ray origi
 </div>
 </div>
 
-<div id="outline-container-org31cca8b" class="outline-3">
-<h3 id="org31cca8b"><span class="section-number-3">3.2.</span> Sending Rays into Scene</h3>
+<div id="outline-container-org529bc9f" class="outline-3">
+<h3 id="org529bc9f"><span class="section-number-3">3.2.</span> Sending Rays into Scene</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Its time to ray trace! The ray tracer sends rays through pixels and
@@ -638,14 +647,14 @@ because hand rules.
 </div>
 </div>
 
-<div id="outline-container-orga6fb454" class="outline-3">
-<h3 id="orga6fb454"><span class="section-number-3">3.3.</span> Example: Rendering a blue-to-white gradient, using Ray Tracing</h3>
+<div id="outline-container-org9ec518a" class="outline-3">
+<h3 id="org9ec518a"><span class="section-number-3">3.3.</span> Example: Rendering a blue-to-white gradient, using Ray Tracing</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 <b>Source</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="orgbbc01d8">  <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<pre class="src src-C++" id="orgd56614e">  <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
   <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/ray.h"</span>
   <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/vec3.h"</span>
 
@@ -743,7 +752,7 @@ As a result the following is produced.
 </p>
 
 
-<div id="orgb913d2b" class="figure">
+<div id="orga5c09f3" class="figure">
 <p><img src="./images/gradient-rt.png" alt="gradient-rt.png" />
 </p>
 </div>
@@ -751,16 +760,16 @@ As a result the following is produced.
 </div>
 </div>
 
-<div id="outline-container-orgf39edf0" class="outline-2">
-<h2 id="orgf39edf0"><span class="section-number-2">4.</span> Adding a sphere to the scene</h2>
+<div id="outline-container-org93b66e8" class="outline-2">
+<h2 id="org93b66e8"><span class="section-number-2">4.</span> Adding a sphere to the scene</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Time to add an object to the ray tracer!
 </p>
 </div>
 
-<div id="outline-container-org41f6938" class="outline-3">
-<h3 id="org41f6938"><span class="section-number-3">4.1.</span> Hit detection</h3>
+<div id="outline-container-orge2331b8" class="outline-3">
+<h3 id="orge2331b8"><span class="section-number-3">4.1.</span> Hit detection</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Recall the equation for a sphere with center \((C_x, C_y, C_z)\):
@@ -774,8 +783,8 @@ check if
 </p>
 </div>
 
-<div id="outline-container-org32e7764" class="outline-4">
-<h4 id="org32e7764"><span class="section-number-4">4.1.1.</span> Expressing as vectors</h4>
+<div id="outline-container-orgafb49fd" class="outline-4">
+<h4 id="orgafb49fd"><span class="section-number-4">4.1.1.</span> Expressing as vectors</h4>
 <div class="outline-text-4" id="text-4-1-1">
 <p>
 Now, \((x-C_x)^2 + (y-C_y)^2 + (z-C_z)^2\) is great and all but
@@ -808,8 +817,8 @@ Thus,
 </div>
 </div>
 
-<div id="outline-container-org3411390" class="outline-4">
-<h4 id="org3411390"><span class="section-number-4">4.1.2.</span> Detecting if rays hit sphere</h4>
+<div id="outline-container-org3a7e866" class="outline-4">
+<h4 id="org3a7e866"><span class="section-number-4">4.1.2.</span> Detecting if rays hit sphere</h4>
 <div class="outline-text-4" id="text-4-1-2">
 <p>
 The above equation only answers whether a point \(\textbf{P}\)
@@ -855,8 +864,8 @@ must hold true.
 </div>
 </div>
 
-<div id="outline-container-org51409ed" class="outline-4">
-<h4 id="org51409ed"><span class="section-number-4">4.1.3.</span> Example: Adding the shape to our gradient</h4>
+<div id="outline-container-org56fd506" class="outline-4">
+<h4 id="org56fd506"><span class="section-number-4">4.1.3.</span> Example: Adding the shape to our gradient</h4>
 <div class="outline-text-4" id="text-4-1-3">
 <p>
 We create a function called <code>hit_sphere</code> which given a sphere, returns whether
@@ -868,7 +877,7 @@ For now, we color the rays that hit the sphere red in our final result.
 <b>Source</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org913efd7">  <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<pre class="src src-C++" id="orgfcd1ed9">  <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
   <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/ray.h"</span>
   <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/vec3.h"</span>
 
@@ -939,7 +948,7 @@ For now, we color the rays that hit the sphere red in our final result.
 <b>Output:</b>
 </p>
 
-<div id="org57706f6" class="figure">
+<div id="orgbb6383b" class="figure">
 <p><img src="./images/red-circle.png" alt="red-circle.png" />
 </p>
 </div>
@@ -947,8 +956,8 @@ For now, we color the rays that hit the sphere red in our final result.
 </div>
 </div>
 
-<div id="outline-container-org75e95d3" class="outline-3">
-<h3 id="org75e95d3"><span class="section-number-3">4.2.</span> Surface Normals</h3>
+<div id="outline-container-org562222c" class="outline-3">
+<h3 id="org562222c"><span class="section-number-3">4.2.</span> Surface Normals</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 A surface normal is the vector that is perpendicular to the surface of the point
@@ -960,8 +969,8 @@ We also normalize this vector so that each component is between -1 and 1.
 </p>
 </div>
 
-<div id="outline-container-orgfa780b5" class="outline-4">
-<h4 id="orgfa780b5"><span class="section-number-4">4.2.1.</span> Example: Visualizing The Normal</h4>
+<div id="outline-container-org4269906" class="outline-4">
+<h4 id="org4269906"><span class="section-number-4">4.2.1.</span> Example: Visualizing The Normal</h4>
 <div class="outline-text-4" id="text-4-2-1">
 <p>
 For now, we use a color map to visualize the normal. Since each vector is normalized,
@@ -974,7 +983,7 @@ Let us visualize this:
 <b>Source</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org144b264">  <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<pre class="src src-C++" id="org24704c2">  <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
   <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/ray.h"</span>
   <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/vec3.h"</span>
 
@@ -1054,7 +1063,7 @@ Let us visualize this:
 <b>Output:</b>
 </p>
 
-<div id="org5770162" class="figure">
+<div id="orgf8a6be9" class="figure">
 <p><img src="./images/color-map-sphere.png" alt="color-map-sphere.png" />
 </p>
 </div>
@@ -1062,8 +1071,8 @@ Let us visualize this:
 </div>
 </div>
 
-<div id="outline-container-org1a08eb5" class="outline-3">
-<h3 id="org1a08eb5"><span class="section-number-3">4.3.</span> Simplifying the intersection code.</h3>
+<div id="outline-container-org2410531" class="outline-3">
+<h3 id="org2410531"><span class="section-number-3">4.3.</span> Simplifying the intersection code.</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 There is an extra 2 in the front of b in our equation. Suppose we then used
@@ -1101,8 +1110,8 @@ Now we use these changes in our code:
 </div>
 </div>
 
-<div id="outline-container-orge17aba7" class="outline-3">
-<h3 id="orge17aba7"><span class="section-number-3">4.4.</span> Abstraction to hittable objects</h3>
+<div id="outline-container-orgc1d3b74" class="outline-3">
+<h3 id="orgc1d3b74"><span class="section-number-3">4.4.</span> Abstraction to hittable objects</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 So what about several spheres? Or shapes? Let's generalize this problem
@@ -1171,8 +1180,8 @@ bool <span style="color: #ba2f59; font-weight: bold;">sphere</span>::<span style
 </div>
 </div>
 
-<div id="outline-container-org4d87e77" class="outline-4">
-<h4 id="org4d87e77"><span class="section-number-4">4.4.1.</span> Front Faces vs Back Faces</h4>
+<div id="outline-container-org3957c1e" class="outline-4">
+<h4 id="org3957c1e"><span class="section-number-4">4.4.1.</span> Front Faces vs Back Faces</h4>
 <div class="outline-text-4" id="text-4-4-1">
 <p>
 In the code above, the normal always points outwards from the center of the sphere, even
@@ -1262,8 +1271,8 @@ The sphere implmentation can be found <a href="util/sphere.h">here</a>.
 </div>
 </div>
 
-<div id="outline-container-orgbbc1dac" class="outline-4">
-<h4 id="orgbbc1dac"><span class="section-number-4">4.4.2.</span> A List of Hittable Objects</h4>
+<div id="outline-container-org637d4b9" class="outline-4">
+<h4 id="org637d4b9"><span class="section-number-4">4.4.2.</span> A List of Hittable Objects</h4>
 <div class="outline-text-4" id="text-4-4-2">
 <p>
 With a generic object like hittable, we can make a class to store all the hittables! Now,
@@ -1312,8 +1321,8 @@ The file can be found <a href="util/hittable_list.h">here</a>.
 </div>
 </div>
 
-<div id="outline-container-org8782ee6" class="outline-4">
-<h4 id="org8782ee6"><span class="section-number-4">4.4.3.</span> Wrapping Up With a Revised Example</h4>
+<div id="outline-container-org85f9ec3" class="outline-4">
+<h4 id="org85f9ec3"><span class="section-number-4">4.4.3.</span> Wrapping Up With a Revised Example</h4>
 <div class="outline-text-4" id="text-4-4-3">
 <p>
 Returning to the previous example, we re-write the program, now with another sphere
@@ -1336,7 +1345,7 @@ very helpful./
 <b>Source:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="org2520b63"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
+<pre class="src src-C++" id="orgfea8877"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable.h"</span>
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable_list.h"</span>
@@ -1406,7 +1415,7 @@ sphere with radius 100, and it is green due to how our colormap was designed:
 </p>
 
 
-<div id="orga744d8f" class="figure">
+<div id="org0240480" class="figure">
 <p><img src="./images/color-map-spheres.png" alt="color-map-spheres.png" />
 </p>
 </div>
@@ -1416,8 +1425,8 @@ sphere with radius 100, and it is green due to how our colormap was designed:
 </div>
 
 
-<div id="outline-container-orgc8cb91d" class="outline-2">
-<h2 id="orgc8cb91d"><span class="section-number-2">5.</span> Antialiasing</h2>
+<div id="outline-container-org95deaf9" class="outline-2">
+<h2 id="org95deaf9"><span class="section-number-2">5.</span> Antialiasing</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Notice the jagged lines of the smooth surface of the sphere. This is aliasing.
@@ -1434,8 +1443,8 @@ To begin, we start with some more abstractions.
 </p>
 </div>
 
-<div id="outline-container-org611ee01" class="outline-3">
-<h3 id="org611ee01"><span class="section-number-3">5.1.</span> Random Number Generation</h3>
+<div id="outline-container-orgba65d17" class="outline-3">
+<h3 id="orgba65d17"><span class="section-number-3">5.1.</span> Random Number Generation</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 We need some helper functions to generate random doubles.
@@ -1474,8 +1483,8 @@ These will be added to our <a href="util/rtweekend.h">rtweekend.h</a> header fil
 </div>
 </div>
 
-<div id="outline-container-org33a138e" class="outline-3">
-<h3 id="org33a138e"><span class="section-number-3">5.2.</span> Abstracting the Camera</h3>
+<div id="outline-container-org882781d" class="outline-3">
+<h3 id="org882781d"><span class="section-number-3">5.2.</span> Abstracting the Camera</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 Given a pixel we have several samples and send rays through each of the samples. The colors are then
@@ -1575,7 +1584,7 @@ Now it's time to adapt this change to our main function.
 <b>Source:</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-C++" id="orgb4a0ca8"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
+<pre class="src src-C++" id="org3a68a30"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable.h"</span>
 <span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable_list.h"</span>
@@ -1667,7 +1676,553 @@ The result is a much smoother sphere, with no jagged lines.
 </tr>
 </tbody>
 </table>
+
+<p>
+The visual improvements from 100 to 1000 samples is minor, but takes a lot
+longer to render.
+</p>
 </div>
+</div>
+</div>
+
+
+<div id="outline-container-org08165d2" class="outline-2">
+<h2 id="org08165d2"><span class="section-number-2">6.</span> Diffuse Materials</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Now that we have objects and multiple rays per pixel, we can make some materials.
+To start, let's do diffuse (matte) materials.
+</p>
+</div>
+
+<div id="outline-container-org11cdfe1" class="outline-3">
+<h3 id="org11cdfe1"><span class="section-number-3">6.1.</span> Simple diffuse material</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+The material takes the rays, and scatters them into random directions.
+These materials do not emit light but they can modulate that with their own
+color (whatever that means)
+</p>
+
+<p>
+Diffuse material might also absorb the ray (that's why darker surfaces look
+dark).
+</p>
+
+<p>
+We will first use a hacky algorithm that randomizes direction, a "hacky lambertian"
+algorithm for ideal diffuse surfaces.
+</p>
+
+<p>
+<span class="underline">The Algorithm</span> <br />
+There are two unit radius spheres tangent to the hit point p of a surface.
+These two spheres have a center of \(\mathbf{P} - \mathbf{n}\) or \(\mathbf{P} + \mathbf{n}\).
+The sphere with a center of \(\mathbf{P} - \mathbf{n}\) is considered <i>inside</i> of the surface, and
+\(\mathbf{P} + \mathbf{n}\) is considered outside of the surface. We select the tangent that is on the
+same side as the ray origin. Pick a random point \(\mathbf{S}\) inside this unit sphere and send a
+ray from the hit point \(\mathbf{P}\) to the random point \(\mathbf{S}\).
+</p>
+
+<p>
+<i>Note</i>: How do we get a random point in a unit sphere? For now, we will find a random point
+in a unit cube and re-draw the point if it is not in the unit sphere.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #2aa1ae; background-color: #ecf3ec;">// put these inside our vec3 class</span>
+<span style="color: #3a81c3; font-weight: bold;">inline</span> <span style="color: #3a81c3; font-weight: bold;">static</span> <span style="color: #ba2f59; font-weight: bold;">vec3</span> <span style="color: #6c3163; font-weight: bold;">random</span><span style="color: #3a81c3; background-color: #fbf8ef;">(){</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #2aa1ae; font-weight: bold;">vec3</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+
+<span style="color: #3a81c3; font-weight: bold;">inline</span> <span style="color: #3a81c3; font-weight: bold;">static</span> <span style="color: #ba2f59; font-weight: bold;">vec3</span> <span style="color: #6c3163; font-weight: bold;">random</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">min</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">max</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #2aa1ae; font-weight: bold;">vec3</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>min<span style="color: #655370; background-color: #fbf8ef;">,</span> max<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>min<span style="color: #655370; background-color: #fbf8ef;">,</span> max<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>min<span style="color: #655370; background-color: #fbf8ef;">,</span> max<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+
+<span style="color: #2aa1ae; background-color: #ecf3ec;">// put these in the vec3 header</span>
+<span style="color: #ba2f59; font-weight: bold;">vec3</span> <span style="color: #6c3163; font-weight: bold;">random_in_unit_sphere</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #3a81c3; font-weight: bold;">while</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">true</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #ba2f59; font-weight: bold;">auto</span> <span style="color: #715ab1;">p</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #ba2f59; font-weight: bold;">vec3</span>::<span style="color: #2aa1ae; font-weight: bold;">random</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">-1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #2d9574; background-color: #fbf8ef;">(</span>p<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">length_squared</span><span style="color: #67b11d; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; font-weight: bold;">&gt;=</span> <span style="color: #4e3163;">1</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">continue</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> p<span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+
+</pre>
+</div>
+
+<p>
+Update the ray<sub>color</sub>() function, as well
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="color: #2aa1ae; background-color: #ecf3ec;">// give it a ray and an object and it'll tell you what to color it</span>
+<span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #6c3163; font-weight: bold;">ray_color</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">ray</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">r</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">hittable</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">world</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #ba2f59; font-weight: bold;">hit_record</span> <span style="color: #715ab1;">rec</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">hit</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> infinity<span style="color: #655370; background-color: #fbf8ef;">,</span> rec<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #ba2f59; font-weight: bold;">point3</span> <span style="color: #715ab1;">target</span> <span style="color: #3a81c3; font-weight: bold;">=</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">p</span> <span style="color: #3a81c3; font-weight: bold;">+</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">normal</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_in_unit_sphere</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// calls ray_color again to see where the light scatters to</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">ray</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span>rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">p</span><span style="color: #655370; background-color: #fbf8ef;">,</span> target <span style="color: #3a81c3; font-weight: bold;">-</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">p</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// otherwise, return sky gradient</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">blue_portion</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">unit_vector</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">direction</span><span style="color: #67b11d; background-color: #fbf8ef;">()</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">y</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">return</span> blue_portion <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.7</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">+</span>
+          <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span> <span style="color: #3a81c3; font-weight: bold;">-</span> blue_portion<span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+</pre>
+</div>
+
+<p>
+However, this only stops recursing when there are no more collisions. This will be detrimental to
+the performance of the program, so make sure there is a maximum recursion depth.
+</p>
+
+<p>
+<b>Source</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="orgcdc838c"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable_list.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/sphere.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/camera.h"</span>
+
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
+
+<span style="color: #2aa1ae; background-color: #ecf3ec;">// give it a ray and an object and it'll tell you what to color it</span>
+<span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #6c3163; font-weight: bold;">ray_color</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">ray</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">r</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">hittable</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">depth</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #ba2f59; font-weight: bold;">hit_record</span> <span style="color: #715ab1;">rec</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>depth <span style="color: #3a81c3; font-weight: bold;">&lt;=</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">hit</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> infinity<span style="color: #655370; background-color: #fbf8ef;">,</span> rec<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// if hit, return a color map</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// return 0.5 * (rec.norm + vec3(1, 1, 1));</span>
+
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// calculate point in sphere</span>
+    <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">point3</span> <span style="color: #715ab1;">target</span> <span style="color: #3a81c3; font-weight: bold;">=</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span> <span style="color: #3a81c3; font-weight: bold;">+</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">norm</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_in_unit_sphere</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">ray</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span>rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #655370; background-color: #fbf8ef;">,</span> target <span style="color: #3a81c3; font-weight: bold;">-</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> depth<span style="color: #3a81c3; font-weight: bold;">-</span><span style="color: #4e3163;">1</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// otherwise, return sky gradient</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">blue_portion</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">unit_vector</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">direction</span><span style="color: #67b11d; background-color: #fbf8ef;">()</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">y</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">return</span> blue_portion <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.7</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">+</span>
+          <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span> <span style="color: #3a81c3; font-weight: bold;">-</span> blue_portion<span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+
+<span style="color: #3a81c3;">int</span> <span style="color: #6c3163; font-weight: bold;">main</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// Image</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">aspect</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">16.0</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #4e3163;">9.0</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_width</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">600</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_height</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #2aa1ae; font-weight: bold;">static_cast</span><span style="color: #6c3163; font-weight: bold;">&lt;</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; font-weight: bold;">&gt;</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">/</span> aspect<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">samples_per_px</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">100</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">max_depth</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">50</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// world</span>
+   <span style="color: #ba2f59; font-weight: bold;">hittable_list</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.5</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-100.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">100</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// camera</span>
+   <span style="color: #ba2f59; font-weight: bold;">camera</span> <span style="color: #715ab1;">cam</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// render</span>
+
+   <span style="color: #ba2f59; font-weight: bold;">std</span>::cout <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"P3\n"</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_width <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">" "</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_height <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"\n255\n"</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">j</span><span style="color: #3a81c3; font-weight: bold;">=</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">;</span> j <span style="color: #3a81c3; font-weight: bold;">&gt;=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">--</span><span style="color: #715ab1;">j</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+     <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">i</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> i <span style="color: #3a81c3; font-weight: bold;">&lt;</span> img_width<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">i</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span> <span style="color: #2d9574; background-color: #fbf8ef;">{</span>
+       <span style="color: #2aa1ae; background-color: #ecf3ec;">// do stuff</span>
+       <span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #715ab1;">temp</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">s</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> s <span style="color: #3a81c3; font-weight: bold;">&lt;</span> samples_per_px<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">s</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span> <span style="color: #67b11d; background-color: #fbf8ef;">{</span>
+         <span style="color: #2aa1ae; background-color: #ecf3ec;">// only sample [0, 1) + pixel. If that pixel is half hit half not, then it is blurred.</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">u</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>i <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">v</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>j <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #715ab1;">temp</span> <span style="color: #3a81c3; font-weight: bold;">+=</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #b1951d; background-color: #fbf8ef;">(</span>cam<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">get_ray</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span>u<span style="color: #655370; background-color: #fbf8ef;">,</span> v<span style="color: #3a81c3; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> max_depth<span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #67b11d; background-color: #fbf8ef;">}</span>
+       <span style="color: #2aa1ae; font-weight: bold;">write_color_aa</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">std</span>::cout<span style="color: #655370; background-color: #fbf8ef;">,</span> temp<span style="color: #655370; background-color: #fbf8ef;">,</span> samples_per_px<span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+     <span style="color: #2d9574; background-color: #fbf8ef;">}</span>
+   <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+</pre>
+</div>
+
+<p>
+<b>Result</b> <br />
+Even with only a <code>max_depth</code> of 50, that took a very long time to process on
+my computer.
+</p>
+
+
+<div id="org4942cf6" class="figure">
+<p><img src="./images/spheres-diffuse.png" alt="spheres-diffuse.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaa00c76" class="outline-3">
+<h3 id="orgaa00c76"><span class="section-number-3">6.2.</span> Using Gamma Correction for Accurate Color Intensity</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+Note that there is a bit of shadowing under the sphere. These spheres should look
+light (irl a light gray, since the sphere absorbs 50% of the light).
+The reason for this is due to how humans perceive light, and I'll leave this
+article here for future reading: <a href="https://www.wikiwand.com/en/Gamma_correction">Gamma Correction</a>
+</p>
+
+<p>
+Basically, the brightness needs to be adjusted for human consumption.
+Image viewers assume that the image is already corrected, so we will have to perform
+a correction.
+</p>
+
+<p>
+We can first use a "gamma 2" correction, meaning \(\text{color}^\frac{1}{\gamma}\).
+We will use \(\gamma = 2\), which means the correction is a square root on the color.
+Let's see what this does:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #3a81c3;">void</span> <span style="color: #6c3163; font-weight: bold;">write_color_gamma</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">std</span>::<span style="color: #ba2f59; font-weight: bold;">ostream</span> <span style="color: #3a81c3; font-weight: bold;">&amp;</span><span style="color: #715ab1;">out</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #715ab1;">pixel_color</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">samples_per_pixel</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// get pixel color.</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">r</span> <span style="color: #3a81c3; font-weight: bold;">=</span> pixel_color<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">x</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">g</span> <span style="color: #3a81c3; font-weight: bold;">=</span> pixel_color<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">y</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">b</span> <span style="color: #3a81c3; font-weight: bold;">=</span> pixel_color<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">z</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// divide by samples per px, then apply gamma correction</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// by raising the value to 0.5 (aka a sqrt)</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">scale</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">1.0</span> <span style="color: #3a81c3; font-weight: bold;">/</span> samples_per_pixel<span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #715ab1;">r</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #2aa1ae; font-weight: bold;">sqrt</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>scale <span style="color: #3a81c3; font-weight: bold;">*</span> r<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #715ab1;">g</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #2aa1ae; font-weight: bold;">sqrt</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>scale <span style="color: #3a81c3; font-weight: bold;">*</span> g<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #715ab1;">b</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #2aa1ae; font-weight: bold;">sqrt</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>scale <span style="color: #3a81c3; font-weight: bold;">*</span> b<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// Write the translated [0,255] value of each color component.</span>
+  out <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2aa1ae; font-weight: bold;">static_cast</span><span style="color: #6c3163; font-weight: bold;">&lt;</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; font-weight: bold;">&gt;</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">256</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">clamp</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.999</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #4e3163;">' '</span>
+      <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2aa1ae; font-weight: bold;">static_cast</span><span style="color: #6c3163; font-weight: bold;">&lt;</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; font-weight: bold;">&gt;</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">256</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">clamp</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>g<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.999</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #4e3163;">' '</span>
+      <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2aa1ae; font-weight: bold;">static_cast</span><span style="color: #6c3163; font-weight: bold;">&lt;</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; font-weight: bold;">&gt;</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">256</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">clamp</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>b<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.999</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #4e3163;">'\n'</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+</pre>
+</div>
+
+
+<p>
+<b>Source</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="org4e4af72"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable_list.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/sphere.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/camera.h"</span>
+
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
+
+<span style="color: #2aa1ae; background-color: #ecf3ec;">// give it a ray and an object and it'll tell you what to color it</span>
+<span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #6c3163; font-weight: bold;">ray_color</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">ray</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">r</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">hittable</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">depth</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #ba2f59; font-weight: bold;">hit_record</span> <span style="color: #715ab1;">rec</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>depth <span style="color: #3a81c3; font-weight: bold;">&lt;=</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">hit</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> infinity<span style="color: #655370; background-color: #fbf8ef;">,</span> rec<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// if hit, return a color map</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// return 0.5 * (rec.norm + vec3(1, 1, 1));</span>
+
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// calculate point in sphere</span>
+    <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">point3</span> <span style="color: #715ab1;">target</span> <span style="color: #3a81c3; font-weight: bold;">=</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span> <span style="color: #3a81c3; font-weight: bold;">+</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">norm</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_in_unit_sphere</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">ray</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span>rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #655370; background-color: #fbf8ef;">,</span> target <span style="color: #3a81c3; font-weight: bold;">-</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> depth<span style="color: #3a81c3; font-weight: bold;">-</span><span style="color: #4e3163;">1</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// otherwise, return sky gradient</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">blue_portion</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">unit_vector</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">direction</span><span style="color: #67b11d; background-color: #fbf8ef;">()</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">y</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">return</span> blue_portion <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.7</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">+</span>
+          <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span> <span style="color: #3a81c3; font-weight: bold;">-</span> blue_portion<span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+
+<span style="color: #3a81c3;">int</span> <span style="color: #6c3163; font-weight: bold;">main</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// Image</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">aspect</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">16.0</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #4e3163;">9.0</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_width</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">600</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_height</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #2aa1ae; font-weight: bold;">static_cast</span><span style="color: #6c3163; font-weight: bold;">&lt;</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; font-weight: bold;">&gt;</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">/</span> aspect<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">samples_per_px</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">100</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">max_depth</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">50</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// world</span>
+   <span style="color: #ba2f59; font-weight: bold;">hittable_list</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.5</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-100.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">100</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// camera</span>
+   <span style="color: #ba2f59; font-weight: bold;">camera</span> <span style="color: #715ab1;">cam</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// render</span>
+
+   <span style="color: #ba2f59; font-weight: bold;">std</span>::cout <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"P3\n"</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_width <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">" "</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_height <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"\n255\n"</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">j</span><span style="color: #3a81c3; font-weight: bold;">=</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">;</span> j <span style="color: #3a81c3; font-weight: bold;">&gt;=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">--</span><span style="color: #715ab1;">j</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+     <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">i</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> i <span style="color: #3a81c3; font-weight: bold;">&lt;</span> img_width<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">i</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span> <span style="color: #2d9574; background-color: #fbf8ef;">{</span>
+       <span style="color: #2aa1ae; background-color: #ecf3ec;">// do stuff</span>
+       <span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #715ab1;">temp</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">s</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> s <span style="color: #3a81c3; font-weight: bold;">&lt;</span> samples_per_px<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">s</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span> <span style="color: #67b11d; background-color: #fbf8ef;">{</span>
+         <span style="color: #2aa1ae; background-color: #ecf3ec;">// only sample [0, 1) + pixel. If that pixel is half hit half not, then it is blurred.</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">u</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>i <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">v</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>j <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #715ab1;">temp</span> <span style="color: #3a81c3; font-weight: bold;">+=</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #b1951d; background-color: #fbf8ef;">(</span>cam<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">get_ray</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span>u<span style="color: #655370; background-color: #fbf8ef;">,</span> v<span style="color: #3a81c3; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> max_depth<span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #67b11d; background-color: #fbf8ef;">}</span>
+       <span style="color: #2aa1ae; font-weight: bold;">write_color_gamma</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">std</span>::cout<span style="color: #655370; background-color: #fbf8ef;">,</span> temp<span style="color: #655370; background-color: #fbf8ef;">,</span> samples_per_px<span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+     <span style="color: #2d9574; background-color: #fbf8ef;">}</span>
+   <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+</pre>
+</div>
+
+
+<div id="org987cf46" class="figure">
+<p><img src="./images/spheres-diffuse-gammac.png" alt="spheres-diffuse-gammac.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf4aa0c9" class="outline-3">
+<h3 id="orgf4aa0c9"><span class="section-number-3">6.3.</span> Shadow Acne</h3>
+<div class="outline-text-3" id="text-6-3">
+<p>
+We need to account for floating point error, so there is a slight fix we need to make in our
+main code. When we send a primary ray out into the world and it collides with a surface,
+because we are working with floating point numbers, there is some precision problems.
+One such case is if the resultant intersection is actually slightly below the surface of
+the object, and then the boi hits itself (because normal points it at the surface right above the point)
+This is called <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/ligth-and-shadows.html"><b>shadow acne</b></a>.
+To fix this, we need to ignore hits close but less than zero.
+</p>
+
+<p>
+<b>Source</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="orgfab5a6e"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable_list.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/sphere.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/camera.h"</span>
+
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
+
+<span style="color: #2aa1ae; background-color: #ecf3ec;">// give it a ray and an object and it'll tell you what to color it</span>
+<span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #6c3163; font-weight: bold;">ray_color</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">ray</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">r</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">hittable</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">depth</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #ba2f59; font-weight: bold;">hit_record</span> <span style="color: #715ab1;">rec</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>depth <span style="color: #3a81c3; font-weight: bold;">&lt;=</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">hit</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.001</span><span style="color: #655370; background-color: #fbf8ef;">,</span> infinity<span style="color: #655370; background-color: #fbf8ef;">,</span> rec<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// if hit, return a color map</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// return 0.5 * (rec.norm + vec3(1, 1, 1));</span>
+
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// calculate point in sphere</span>
+    <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">point3</span> <span style="color: #715ab1;">target</span> <span style="color: #3a81c3; font-weight: bold;">=</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span> <span style="color: #3a81c3; font-weight: bold;">+</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">norm</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_in_unit_sphere</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">ray</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span>rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #655370; background-color: #fbf8ef;">,</span> target <span style="color: #3a81c3; font-weight: bold;">-</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> depth<span style="color: #3a81c3; font-weight: bold;">-</span><span style="color: #4e3163;">1</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// otherwise, return sky gradient</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">blue_portion</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">unit_vector</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">direction</span><span style="color: #67b11d; background-color: #fbf8ef;">()</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">y</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">return</span> blue_portion <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.7</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">+</span>
+          <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span> <span style="color: #3a81c3; font-weight: bold;">-</span> blue_portion<span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+
+<span style="color: #3a81c3;">int</span> <span style="color: #6c3163; font-weight: bold;">main</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// Image</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">aspect</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">16.0</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #4e3163;">9.0</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_width</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">600</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_height</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #2aa1ae; font-weight: bold;">static_cast</span><span style="color: #6c3163; font-weight: bold;">&lt;</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; font-weight: bold;">&gt;</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">/</span> aspect<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">samples_per_px</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">100</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">max_depth</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">50</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// world</span>
+   <span style="color: #ba2f59; font-weight: bold;">hittable_list</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.5</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span> world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-100.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">100</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// camera</span>
+   <span style="color: #ba2f59; font-weight: bold;">camera</span> <span style="color: #715ab1;">cam</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// render</span>
+
+   <span style="color: #ba2f59; font-weight: bold;">std</span>::cout <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"P3\n"</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_width <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">" "</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_height <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"\n255\n"</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">j</span><span style="color: #3a81c3; font-weight: bold;">=</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">;</span> j <span style="color: #3a81c3; font-weight: bold;">&gt;=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">--</span><span style="color: #715ab1;">j</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+     <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">i</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> i <span style="color: #3a81c3; font-weight: bold;">&lt;</span> img_width<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">i</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span> <span style="color: #2d9574; background-color: #fbf8ef;">{</span>
+       <span style="color: #2aa1ae; background-color: #ecf3ec;">// do stuff</span>
+       <span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #715ab1;">temp</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">s</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> s <span style="color: #3a81c3; font-weight: bold;">&lt;</span> samples_per_px<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">s</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span> <span style="color: #67b11d; background-color: #fbf8ef;">{</span>
+         <span style="color: #2aa1ae; background-color: #ecf3ec;">// only sample [0, 1) + pixel. If that pixel is half hit half not, then it is blurred.</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">u</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>i <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">v</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>j <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #715ab1;">temp</span> <span style="color: #3a81c3; font-weight: bold;">+=</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #b1951d; background-color: #fbf8ef;">(</span>cam<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">get_ray</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span>u<span style="color: #655370; background-color: #fbf8ef;">,</span> v<span style="color: #3a81c3; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> max_depth<span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #67b11d; background-color: #fbf8ef;">}</span>
+       <span style="color: #2aa1ae; font-weight: bold;">write_color_gamma</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">std</span>::cout<span style="color: #655370; background-color: #fbf8ef;">,</span> temp<span style="color: #655370; background-color: #fbf8ef;">,</span> samples_per_px<span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+     <span style="color: #2d9574; background-color: #fbf8ef;">}</span>
+   <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+</pre>
+</div>
+
+<p>
+<b>Output</b>: 
+Note: Now it looks a lot brighter. Must have been the shadow acne making things bad then.
+</p>
+
+<div id="orgc11d82d" class="figure">
+<p><img src="./images/spheres-diffuse-gammac-noacne.png" alt="spheres-diffuse-gammac-noacne.png" />
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgc58ffad" class="outline-3">
+<h3 id="orgc58ffad"><span class="section-number-3">6.4.</span> True Lambertian Reflection</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+So, the reject method (generate a point in a 1x1x1 cube and reject anything that isn't on the sphere)
+gives a random point in a unit sphere
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #ba2f59; font-weight: bold;">vec3</span> <span style="color: #6c3163; font-weight: bold;">random_unit_vector</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #2aa1ae; font-weight: bold;">unit_vector</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">random_in_unit_sphere</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+</pre>
+</div>
+
+
+<p>
+<b>Source</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-C++" id="orge4f2582"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/rtweekend.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/color.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/hittable_list.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/sphere.h"</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">"util/camera.h"</span>
+
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
+
+<span style="color: #2aa1ae; background-color: #ecf3ec;">// give it a ray and an object and it'll tell you what to color it</span>
+<span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #6c3163; font-weight: bold;">ray_color</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">ray</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">r</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">hittable</span><span style="color: #3a81c3; font-weight: bold;">&amp;</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">depth</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #ba2f59; font-weight: bold;">hit_record</span> <span style="color: #715ab1;">rec</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>depth <span style="color: #3a81c3; font-weight: bold;">&lt;=</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span>world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">hit</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.001</span><span style="color: #655370; background-color: #fbf8ef;">,</span> infinity<span style="color: #655370; background-color: #fbf8ef;">,</span> rec<span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// if hit, return a color map</span>
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// return 0.5 * (rec.norm + vec3(1, 1, 1));</span>
+
+    <span style="color: #2aa1ae; background-color: #ecf3ec;">// calculate point in sphere</span>
+    <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #ba2f59; font-weight: bold;">point3</span> <span style="color: #715ab1;">target</span> <span style="color: #3a81c3; font-weight: bold;">=</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span> <span style="color: #3a81c3; font-weight: bold;">+</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">norm</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_unit_vector</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">ray</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span>rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #655370; background-color: #fbf8ef;">,</span> target <span style="color: #3a81c3; font-weight: bold;">-</span> rec<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">point</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> depth<span style="color: #3a81c3; font-weight: bold;">-</span><span style="color: #4e3163;">1</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// otherwise, return sky gradient</span>
+  <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">blue_portion</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0.5</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">unit_vector</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span>r<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">direction</span><span style="color: #67b11d; background-color: #fbf8ef;">()</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">y</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">return</span> blue_portion <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.7</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1.0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">+</span>
+          <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span> <span style="color: #3a81c3; font-weight: bold;">-</span> blue_portion<span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #2aa1ae; font-weight: bold;">color</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+
+<span style="color: #3a81c3;">int</span> <span style="color: #6c3163; font-weight: bold;">main</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// Image</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">aspect</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">16.0</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #4e3163;">9.0</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_width</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">600</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">img_height</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #2aa1ae; font-weight: bold;">static_cast</span><span style="color: #6c3163; font-weight: bold;">&lt;</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; font-weight: bold;">&gt;</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">/</span> aspect<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">samples_per_px</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">100</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">const</span> <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">max_depth</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">50</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// world</span>
+   <span style="color: #ba2f59; font-weight: bold;">hittable_list</span> <span style="color: #715ab1;">world</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+   world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0.5</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span> world<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">add</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">make_shared</span><span style="color: #2d9574; font-weight: bold;">&lt;</span><span style="color: #ba2f59; font-weight: bold;">sphere</span><span style="color: #2d9574; font-weight: bold;">&gt;</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #2aa1ae; font-weight: bold;">point3</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-100.5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">-1</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">100</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// camera</span>
+   <span style="color: #ba2f59; font-weight: bold;">camera</span> <span style="color: #715ab1;">cam</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #2aa1ae; background-color: #ecf3ec;">// render</span>
+
+   <span style="color: #ba2f59; font-weight: bold;">std</span>::cout <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"P3\n"</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_width <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">" "</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> img_height <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"\n255\n"</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+   <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">j</span><span style="color: #3a81c3; font-weight: bold;">=</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">;</span> j <span style="color: #3a81c3; font-weight: bold;">&gt;=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">--</span><span style="color: #715ab1;">j</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+     <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">i</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> i <span style="color: #3a81c3; font-weight: bold;">&lt;</span> img_width<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">i</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span> <span style="color: #2d9574; background-color: #fbf8ef;">{</span>
+       <span style="color: #2aa1ae; background-color: #ecf3ec;">// do stuff</span>
+       <span style="color: #ba2f59; font-weight: bold;">color</span> <span style="color: #715ab1;">temp</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">s</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> s <span style="color: #3a81c3; font-weight: bold;">&lt;</span> samples_per_px<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">s</span><span style="color: #67b11d; background-color: #fbf8ef;">)</span> <span style="color: #67b11d; background-color: #fbf8ef;">{</span>
+         <span style="color: #2aa1ae; background-color: #ecf3ec;">// only sample [0, 1) + pixel. If that pixel is half hit half not, then it is blurred.</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">u</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>i <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_width <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #3a81c3;">double</span> <span style="color: #715ab1;">v</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>j <span style="color: #3a81c3; font-weight: bold;">+</span> <span style="color: #2aa1ae; font-weight: bold;">random_double</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; font-weight: bold;">/</span> <span style="color: #b1951d; background-color: #fbf8ef;">(</span>img_height <span style="color: #3a81c3; font-weight: bold;">-</span> <span style="color: #4e3163;">1</span><span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+         <span style="color: #715ab1;">temp</span> <span style="color: #3a81c3; font-weight: bold;">+=</span> <span style="color: #2aa1ae; font-weight: bold;">ray_color</span><span style="color: #b1951d; background-color: #fbf8ef;">(</span>cam<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">get_ray</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span>u<span style="color: #655370; background-color: #fbf8ef;">,</span> v<span style="color: #3a81c3; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">,</span> world<span style="color: #655370; background-color: #fbf8ef;">,</span> max_depth<span style="color: #b1951d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+       <span style="color: #67b11d; background-color: #fbf8ef;">}</span>
+       <span style="color: #2aa1ae; font-weight: bold;">write_color_gamma</span><span style="color: #67b11d; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">std</span>::cout<span style="color: #655370; background-color: #fbf8ef;">,</span> temp<span style="color: #655370; background-color: #fbf8ef;">,</span> samples_per_px<span style="color: #67b11d; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+     <span style="color: #2d9574; background-color: #fbf8ef;">}</span>
+   <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
+</pre>
+</div>
+
+<p>
+<b>Output</b>
+There are two important differences between this one and the last one:
+</p>
+<ol class="org-ol">
+<li>The shadows are less pronounced after this change</li>
+<li>Both spheres are lighter in appearance after the change.</li>
+</ol>
+
+<div id="orgd9d36d7" class="figure">
+<p><img src="./images/spheres-diffuse-gammac-noacne-truelamb.png" alt="spheres-diffuse-gammac-noacne-truelamb.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb44c790" class="outline-3">
+<h3 id="orgb44c790"><span class="section-number-3">6.5.</span> Another Diffuse Formulation</h3>
+<div class="outline-text-3" id="text-6-5">
+<p>
+This one is called hemispherical scattering. It is very intuitive, where you have a uniform
+scatter direction for all anges away from the hit point.
+According to the book, many of the first raytracing papers used this diffuse method before
+adopting the Lambertian diffuse.
+I will include the function in vec3, but will not show the modified <code>ray_color()</code> function.
+</p>
+
+<p>
+From the book:
+</p>
+<pre class="example">
+vec3 random_in_hemisphere(const vec3&amp; normal) {
+    vec3 in_unit_sphere = random_in_unit_sphere();
+    if (dot(in_unit_sphere, normal) &gt; 0.0) // In the same hemisphere as the normal
+        return in_unit_sphere;
+    else
+        return -in_unit_sphere;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org23be90d" class="outline-2">
+<h2 id="org23be90d"><span class="section-number-2">7.</span> Metal</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+Let's try to make a metal material.</p>
 </div>
 </div>
 </div>
