@@ -1,6 +1,7 @@
 #ifndef HITTABLE_LIST_H
 #define HITTABLE_LIST_H
 
+#include "rtweekend.h"
 #include "hittable.h"
 
 #include <memory>
@@ -22,7 +23,7 @@ class hittable_list : public hittable {
     virtual bool hit(const ray& r, double t_min, double t_max, hit_record& rec) const override;
 
   public:
-    std::vector<std::shared_ptr<hittable>> objects;
+    std::vector<shared_ptr<hittable>> objects;
 };
 
 bool hittable_list::hit(const ray& r, double t_min, double t_max, hit_record& rec) const {
@@ -34,7 +35,7 @@ bool hittable_list::hit(const ray& r, double t_min, double t_max, hit_record& re
   for(const auto &obj : objects) {
     if (obj->hit(r, t_min, closest_hit, rec_temp)) {
       is_hit = true;
-      closest_hit = rec.t;
+      closest_hit = rec_temp.t;
       rec = rec_temp;
     }
   }

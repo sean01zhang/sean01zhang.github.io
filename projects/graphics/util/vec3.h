@@ -1,8 +1,8 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 class vec3;
 
@@ -15,9 +15,7 @@ public:
   double y() const { return e[1]; }
   double z() const { return e[2]; }
 
-  vec3 operator-() const {
-    return vec3(-e[0], -e[1], -e[2]);
-  }
+  vec3 operator-() const { return vec3(-e[0], -e[1], -e[2]); }
   double operator[](int i) const { return e[i]; }
   double &operator[](int i) { return e[i]; }
 
@@ -39,20 +37,26 @@ public:
   // scalar division
   vec3 &operator/=(const double t) { return *this *= 1 / t; }
 
-  double length() const {
-    return std::sqrt(length_squared());
-  }
+  double length() const { return std::sqrt(length_squared()); }
 
   double length_squared() const {
     return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
   }
 
-  inline static vec3 random(){
-      return vec3(random_double(), random_double(), random_double());
+  inline static vec3 random() {
+    return vec3(random_double(), random_double(), random_double());
   }
 
   inline static vec3 random(double min, double max) {
-    return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+    return vec3(random_double(min, max), random_double(min, max),
+                random_double(min, max));
+  }
+
+  inline bool near_zero() const {
+    const double s = 1e-8; // margin of closeness
+    // if the absolute value of each component is less than the margin of
+    // closeness
+    return (fabs(e[0]) < s) && (fabs(e[1]) < s) && (fabs(e[2]) < s);
   }
 
 public:
@@ -104,12 +108,30 @@ inline vec3 unit_vector(vec3 v) { return v / v.length(); }
 vec3 random_in_unit_sphere() {
   while (true) {
     auto p = vec3::random(-1, 1);
-    if (p.length_squared() >= 1) continue;
+    if (p.length_squared() >= 1)
+      continue;
     return p;
   }
 }
-vec3 random_unit_vector() {
-    return unit_vector(random_in_unit_sphere());
+
+vec3 random_unit_vector() { return unit_vector(random_in_unit_sphere()); }
+
+vec3 random_in_hemisphere(const vec3 &normal) {
+  vec3 in_unit_sphere = random_in_unit_sphere();
+  if (dot(in_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
+    return in_unit_sphere;
+  else
+    return -in_unit_sphere;
 }
 
+vec3 reflect(const vec3 &incident, const vec3 &norm) {
+  return incident - 2 * dot(incident, norm) * norm;
+}
+
+vec3 refract(const vec3 &uv, const vec3 &n, double eta_i_over_eta_t) {
+  auto cos_theta = fmin(dot(-uv, n), 1.0);
+  vec3 r_out_perp = eta_i_over_eta_t * (uv + cos_theta * n);
+  vec3 r_out_para = -sqrt(fabs(1.0 - r_out_perp.length_squared())) * n;
+  return r_out_perp + r_out_para;
+}
 #endif
