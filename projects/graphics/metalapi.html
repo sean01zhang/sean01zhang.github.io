@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-03 Mon 01:32 -->
+<!-- 2023-04-10 Mon 13:24 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Metal Graphics API</title>
@@ -204,20 +204,28 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2db1484">1. Introduction</a></li>
-<li><a href="#org1972d67">2. Project Structure</a>
+<li><a href="#org1a799f6">1. Introduction</a></li>
+<li><a href="#orgdc7b97b">2. Project Structure</a>
 <ul>
-<li><a href="#orgd1b7f1b">2.1. Source Files</a></li>
-<li><a href="#org37ec8c1">2.2. Building Project</a></li>
+<li><a href="#org466eae9">2.1. Source Files</a></li>
+<li><a href="#orgfc2dcb1">2.2. Building Project</a></li>
 </ul>
 </li>
-<li><a href="#org16e04f6">3. Initialization</a></li>
+<li><a href="#org9ceb601">3. Initialization</a></li>
+<li><a href="#org5ef63ae">4. Our shader code</a></li>
+<li><a href="#org6eb3466">5. Running the project</a>
+<ul>
+<li><a href="#org04037ed">5.1. Compiling Your Metal Library</a></li>
+<li><a href="#orgf105d1c">5.2. Running your code</a></li>
+</ul>
+</li>
+<li><a href="#orgbdb4ccf">6. Next Steps</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org2db1484" class="outline-2">
-<h2 id="org2db1484"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-org1a799f6" class="outline-2">
+<h2 id="org1a799f6"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 I wanted to use the GPU for some intesive tasks in C++. Here is a note to self on how to do it.
@@ -226,8 +234,8 @@ To make it clear, this is my first time working with CMake.
 </div>
 </div>
 
-<div id="outline-container-org1972d67" class="outline-2">
-<h2 id="org1972d67"><span class="section-number-2">2.</span> Project Structure</h2>
+<div id="outline-container-orgdc7b97b" class="outline-2">
+<h2 id="orgdc7b97b"><span class="section-number-2">2.</span> Project Structure</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 We will need the metal-cpp library from Apple first. Then, place that into a folder called
@@ -263,8 +271,8 @@ I hope this helps! Let me know if you have any other questions.
 </pre>
 </div>
 
-<div id="outline-container-orgd1b7f1b" class="outline-3">
-<h3 id="orgd1b7f1b"><span class="section-number-3">2.1.</span> Source Files</h3>
+<div id="outline-container-org466eae9" class="outline-3">
+<h3 id="org466eae9"><span class="section-number-3">2.1.</span> Source Files</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 We will put the code under a folder called <code>src/</code>. We name our starting point <code>main.cpp</code>, but you can
@@ -273,34 +281,46 @@ name it something else if you please. Just make sure you update the Cmake file.
 </div>
 </div>
 
-<div id="outline-container-org37ec8c1" class="outline-3">
-<h3 id="org37ec8c1"><span class="section-number-3">2.2.</span> Building Project</h3>
+<div id="outline-container-orgfc2dcb1" class="outline-3">
+<h3 id="orgfc2dcb1"><span class="section-number-3">2.2.</span> Building Project</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-We will need to modify our CMakeLists a bit, since we want our source code
-to be in the <code>src/</code> folder. Specifically, our add<sub>executable</sub> should have the
-path <code>./src/main.cpp</code>.
+First, we have to configure cmake. This is a bit different from the CMakeLists suggested from Bing above.
+I encountered problems with <code>find_library</code> finding the <code>CoreFoundation</code> library. I specified <code>NO_DEFAULT_PATH</code>, which resolved it finding a CoreFoundation library on my
+system rather than in the project, but then it couldn't find the one in my project even when I gave it hints.
+Instead, I decided to ditch that and manually input the frameworks as shown:
+</p>
+
+<p>
+<b>CMakeLists.txt</b>
 </p>
 <div class="org-src-container">
-<pre class="src src-makefile">cmake_minimum_required <span style="color: #3a81c3;">(</span>VERSION 3.20<span style="color: #3a81c3;">)</span>
-project <span style="color: #3a81c3;">(</span>compute_sumarrays<span style="color: #3a81c3;">)</span>
+<pre class="src src-c">cmake_minimum_required <span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">VERSION</span> <span style="color: #4e3163;">3.20</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span>
+<span style="color: #6c3163; font-weight: bold;">project</span> <span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">compute_sumarrays</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span>
 
-set<span style="color: #3a81c3;">(</span>CMAKE_CXX_STANDARD 17<span style="color: #3a81c3;">)</span>
-set<span style="color: #3a81c3;">(</span>CMAKE_CXX_FLAGS <span style="color: #2d9574;">"${</span><span style="color: #715ab1;">CMAKE_CXX_FLAGS</span><span style="color: #2d9574;">} -Wall -Wextra -Werror"</span><span style="color: #3a81c3;">)</span>
+set<span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">CMAKE_CXX_STANDARD</span> <span style="color: #4e3163;">17</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span>
+<span style="color: #6c3163;"># set</span><span style="color: #3a81c3;">(</span>CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror"<span style="color: #3a81c3;">)</span>
 
-find_library<span style="color: #3a81c3;">(</span>METAL_LIBRARY Metal REQUIRED<span style="color: #3a81c3;">)</span>
-find_library<span style="color: #3a81c3;">(</span>CORE_FOUNDATION_LIBRARY CoreFoundation REQUIRED<span style="color: #3a81c3;">)</span>
+include_directories<span style="color: #3a81c3; background-color: #fbf8ef;">(</span>$<span style="color: #6c3163; background-color: #fbf8ef;">{</span><span style="color: #4e3163;">CMAKE_SOURCE_DIR</span><span style="color: #6c3163; background-color: #fbf8ef;">}</span><span style="color: #3a81c3; font-weight: bold;">/</span>lib<span style="color: #3a81c3; font-weight: bold;">/</span>metal<span style="color: #3a81c3; font-weight: bold;">-</span>cpp<span style="color: #3a81c3; background-color: #fbf8ef;">)</span>
 
-add_executable<span style="color: #3a81c3;">(</span>compute_sumarrays
-  ./src/main.cpp
-<span style="color: #3a81c3;">)</span>
+<span style="color: #2aa1ae; font-weight: bold;">add_executable</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span>compute_sumarrays
+  <span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #3a81c3; font-weight: bold;">/</span><span style="color: #4e3163; font-style: italic;">src</span><span style="color: #3a81c3; font-weight: bold;">/</span>main<span style="color: #655370; background-color: #fbf8ef;">.</span><span style="color: #4e3163; font-style: italic;">cc</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">)</span>
 
-target_link_libraries<span style="color: #3a81c3;">(</span>compute_sumarrays
-  $<span style="color: #6c3163;">{</span><span style="color: #715ab1;">METAL_LIBRARY</span><span style="color: #6c3163;">}</span>
-  $<span style="color: #6c3163;">{</span><span style="color: #715ab1;">CORE_FOUNDATION_LIBRARY</span><span style="color: #6c3163;">}</span>
-<span style="color: #3a81c3;">)</span>
+target_link_libraries<span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">compute_sumarrays</span>
+  stdc<span style="color: #3a81c3; font-weight: bold;">++</span> 
+  <span style="color: #2d9574;">"-framework Metal"</span>
+  <span style="color: #2d9574;">"-framework Foundation"</span>
+  <span style="color: #2d9574;">"-framework QuartzCore"</span>
+  objc
+<span style="color: #3a81c3; background-color: #fbf8ef;">)</span>
 </pre>
 </div>
+
+<p>
+Place this file in the root of your directory. The reason why I commented out the flags
+is because one of the header files in the metal-cpp library is triggering a warning.
+</p>
 
 <p>
 Now that your <code>CMakeLists.txt</code> file is set up, here is what to do next:
@@ -327,28 +347,269 @@ create an executable which will have the same name as your project.
 </div>
 </div>
 
-<div id="outline-container-org16e04f6" class="outline-2">
-<h2 id="org16e04f6"><span class="section-number-2">3.</span> Initialization</h2>
+<div id="outline-container-org9ceb601" class="outline-2">
+<h2 id="org9ceb601"><span class="section-number-2">3.</span> Initialization</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Once all the structure is there, we move on to the main file of our project.
-For this tutorial, I will assume all of our code is inside that file.
+We need to set up a compute pipeline for metal. I referenced <a href="https://developer.apple.com/documentation/metal/performing_calculations_on_a_gpu?language=objc">this</a> to help me get started.
+There are a few changes that I made, the first one being that I need to import the metal library by providing the path
+to a compiled <code>.metallib</code> file (more on that later). Everything else is mostly the same.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C++" id="orgf84b45b"><span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
+<pre class="src src-C++" id="org4379e46"><span style="color: #6c3163;">#define</span> <span style="color: #dc752f; background-color: #fbf8ef;">NS_PRIVATE_IMPLEMENTATION</span>
+<span style="color: #6c3163;">#define</span> <span style="color: #dc752f; background-color: #fbf8ef;">CA_PRIVATE_IMPLEMENTATION</span>
+<span style="color: #6c3163;">#define</span> <span style="color: #dc752f; background-color: #fbf8ef;">MTL_PRIVATE_IMPLEMENTATION</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;Foundation/Foundation.hpp&gt;</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;Metal/Metal.hpp&gt;</span>
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;QuartzCore/QuartzCore.hpp&gt;</span>
+
+<span style="color: #6c3163;">#include</span> <span style="color: #2d9574;">&lt;iostream&gt;</span>
 
 <span style="color: #3a81c3;">int</span> <span style="color: #6c3163; font-weight: bold;">main</span><span style="color: #3a81c3; background-color: #fbf8ef;">()</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
-  <span style="color: #ba2f59; font-weight: bold;">std</span>::cout <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"hi world 2"</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #ba2f59; font-weight: bold;">std</span>::endl<span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// create device</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">Device</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">device</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #2aa1ae; font-weight: bold;">CreateSystemDefaultDevice</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #ba2f59; font-weight: bold;">NS</span>::<span style="color: #ba2f59; font-weight: bold;">Error</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">error</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// create command queue</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">CommandQueue</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">command_queue</span> <span style="color: #3a81c3; font-weight: bold;">=</span> device<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">newCommandQueue</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// create command buffer</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">CommandBuffer</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">command_buffer</span> <span style="color: #3a81c3; font-weight: bold;">=</span> command_queue<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">commandBuffer</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// create command encoder</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">ComputeCommandEncoder</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">command_encoder</span> <span style="color: #3a81c3; font-weight: bold;">=</span> command_buffer<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">computeCommandEncoder</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// ** Create pipeline state object</span>
+  <span style="color: #ba2f59; font-weight: bold;">NS</span>::<span style="color: #ba2f59; font-weight: bold;">String</span><span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">libPath</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #ba2f59; font-weight: bold;">NS</span>::<span style="color: #2aa1ae; font-weight: bold;">String</span><span style="color: #2aa1ae; font-weight: bold;">::string</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2d9574;">"./shader.metallib"</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">NS</span>::UTF8StringEncoding<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #ba2f59; font-weight: bold;">auto</span> <span style="color: #715ab1;">default_library</span> <span style="color: #3a81c3; font-weight: bold;">=</span> device<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">newLibrary</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>libPath<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3; font-weight: bold;">&amp;</span>error<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3; font-weight: bold;">!</span>default_library<span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #ba2f59; font-weight: bold;">std</span>::cerr <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"Failed to load default library."</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+    <span style="color: #ba2f59; font-weight: bold;">std</span>::<span style="color: #2aa1ae; font-weight: bold;">exit</span><span style="color: #2d9574; background-color: #fbf8ef;">(</span><span style="color: #4e3163;">-1</span><span style="color: #2d9574; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+
+  <span style="color: #ba2f59; font-weight: bold;">auto</span> <span style="color: #715ab1;">add_arrays_function_name</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #ba2f59; font-weight: bold;">NS</span>::<span style="color: #2aa1ae; font-weight: bold;">String</span><span style="color: #2aa1ae; font-weight: bold;">::string</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #2d9574;">"add_arrays"</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">NS</span>::ASCIIStringEncoding<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #ba2f59; font-weight: bold;">auto</span> <span style="color: #715ab1;">add_function</span> <span style="color: #3a81c3; font-weight: bold;">=</span> default_library<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">newFunction</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>add_arrays_function_name<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">if</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3; font-weight: bold;">!</span>add_function<span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #ba2f59; font-weight: bold;">std</span>::cerr <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"failed to find the adder function"</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+
+  <span style="color: #ba2f59; font-weight: bold;">auto</span> <span style="color: #715ab1;">pso</span> <span style="color: #3a81c3; font-weight: bold;">=</span> device<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">newComputePipelineState</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>add_function<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #3a81c3; font-weight: bold;">&amp;</span>error<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// free defualt library and add function</span>
+  add_arrays_function_name<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  default_library<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  add_function<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// pass pipeline state object created</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// into the command encoder</span>
+  command_encoder<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">setComputePipelineState</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>pso<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// ** Create data buffers</span>
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// TODO: Make data and determine its size</span>
+  <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">array1</span><span style="color: #6c3163; background-color: #fbf8ef;">[]</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span><span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">2</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">3</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">4</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">5</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">6</span><span style="color: #6c3163; background-color: #fbf8ef;">}</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3;">int</span> <span style="color: #715ab1;">array2</span><span style="color: #6c3163; background-color: #fbf8ef;">[]</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span><span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">}</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3;">size_t</span> <span style="color: #715ab1;">arraySize</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">6</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3;">size_t</span> <span style="color: #715ab1;">bufferSize</span> <span style="color: #3a81c3; font-weight: bold;">=</span> arraySize <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #3a81c3; font-weight: bold;">sizeof</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">Buffer</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">a</span> <span style="color: #3a81c3; font-weight: bold;">=</span> device<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">newBuffer</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>bufferSize<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">MTL</span>::ResourceStorageModeShared<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">Buffer</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">b</span> <span style="color: #3a81c3; font-weight: bold;">=</span> device<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">newBuffer</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>bufferSize<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">MTL</span>::ResourceStorageModeShared<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">Buffer</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">out</span> <span style="color: #3a81c3; font-weight: bold;">=</span> device<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">newBuffer</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>bufferSize<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">MTL</span>::ResourceStorageModeShared<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// copy data into buffers</span>
+  <span style="color: #2aa1ae; font-weight: bold;">memcpy</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>a<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">contents</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">,</span> array1<span style="color: #655370; background-color: #fbf8ef;">,</span> bufferSize<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #2aa1ae; font-weight: bold;">memcpy</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>b<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">contents</span><span style="color: #2d9574; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">,</span> array2<span style="color: #655370; background-color: #fbf8ef;">,</span> bufferSize<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// pass argument data into the command encoder</span>
+  command_encoder<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">setBuffer</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>a<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  command_encoder<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">setBuffer</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>b<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  command_encoder<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">setBuffer</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>out<span style="color: #655370; background-color: #fbf8ef;">,</span><span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">2</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// set thread count and organization, then run the damn thing</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">Size</span> <span style="color: #715ab1;">gridSize</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #2aa1ae; font-weight: bold;">Size</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>arraySize<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #ba2f59; font-weight: bold;">NS</span>::<span style="color: #ba2f59; font-weight: bold;">UInteger</span> <span style="color: #715ab1;">threadsPerThreadgroup</span> <span style="color: #3a81c3; font-weight: bold;">=</span> pso<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">maxTotalThreadsPerThreadgroup</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #ba2f59; font-weight: bold;">MTL</span>::<span style="color: #ba2f59; font-weight: bold;">Size</span> <span style="color: #715ab1;">threadgroupSize</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>threadsPerThreadgroup<span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #4e3163;">1</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  command_encoder<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">dispatchThreads</span><span style="color: #6c3163; background-color: #fbf8ef;">(</span>gridSize<span style="color: #655370; background-color: #fbf8ef;">,</span> threadgroupSize<span style="color: #6c3163; background-color: #fbf8ef;">)</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  command_encoder<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">endEncoding</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  command_buffer<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">commit</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// wait for the GPU work is done</span>
+  command_buffer<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">waitUntilCompleted</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #2aa1ae; background-color: #ecf3ec;">// read results from buffer</span>
+  <span style="color: #3a81c3;">int</span> <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">result</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">int</span> <span style="color: #3a81c3; font-weight: bold;">*</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span>out<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">contents</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+
+  <span style="color: #ba2f59; font-weight: bold;">std</span>::cout <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #2d9574;">"results:"</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #ba2f59; font-weight: bold;">std</span>::endl<span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #3a81c3; font-weight: bold;">for</span> <span style="color: #6c3163; background-color: #fbf8ef;">(</span><span style="color: #3a81c3;">size_t</span> <span style="color: #715ab1;">i</span> <span style="color: #3a81c3; font-weight: bold;">=</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span> i <span style="color: #3a81c3; font-weight: bold;">&lt;</span> arraySize<span style="color: #655370; background-color: #fbf8ef;">;</span> <span style="color: #3a81c3; font-weight: bold;">++</span><span style="color: #715ab1;">i</span><span style="color: #6c3163; background-color: #fbf8ef;">)</span> <span style="color: #6c3163; background-color: #fbf8ef;">{</span>
+    <span style="color: #ba2f59; font-weight: bold;">std</span>::cout <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> result<span style="color: #2d9574; background-color: #fbf8ef;">[</span>i<span style="color: #2d9574; background-color: #fbf8ef;">]</span> <span style="color: #3a81c3; font-weight: bold;">&lt;&lt;</span> <span style="color: #ba2f59; font-weight: bold;">std</span>::endl<span style="color: #655370; background-color: #fbf8ef;">;</span>
+  <span style="color: #6c3163; background-color: #fbf8ef;">}</span>
+
+  a<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  b<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  out<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  pso<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  command_queue<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+  device<span style="color: #3a81c3; font-weight: bold;">-&gt;</span><span style="color: #2aa1ae; font-weight: bold; font-style: italic;">release</span><span style="color: #6c3163; background-color: #fbf8ef;">()</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
 
   <span style="color: #3a81c3; font-weight: bold;">return</span> <span style="color: #4e3163;">0</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
 <span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
 </pre>
 </div>
+</div>
+</div>
 
-<pre class="example">
-hi world
+
+<div id="outline-container-org5ef63ae" class="outline-2">
+<h2 id="org5ef63ae"><span class="section-number-2">4.</span> Our shader code</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Note: Apple has documentation on <a href="https://developer.apple.com/documentation/metal/performing_calculations_on_a_gpu?language=objc">metal</a>. You can even read the shading language reference <a href="https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf">here</a>.
+Metal has a lot of similarities to C++14. Here is the add arrays function that we will create:
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #ba2f59; font-weight: bold;">kernel</span> void <span style="color: #6c3163; font-weight: bold;">add_arrays</span><span style="color: #3a81c3; background-color: #fbf8ef;">(</span><span style="color: #ba2f59; font-weight: bold;">device</span> <span style="color: #3a81c3; font-weight: bold;">const</span> int <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">a</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">device</span> <span style="color: #3a81c3; font-weight: bold;">const</span> int <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">b</span><span style="color: #655370; background-color: #fbf8ef;">,</span>
+                       <span style="color: #ba2f59; font-weight: bold;">device</span> int <span style="color: #3a81c3; font-weight: bold;">*</span> <span style="color: #715ab1;">result</span><span style="color: #655370; background-color: #fbf8ef;">,</span> <span style="color: #ba2f59; font-weight: bold;">uint</span> <span style="color: #715ab1;">index</span> <span style="color: #6c3163; background-color: #fbf8ef;">[</span><span style="color: #2d9574; background-color: #fbf8ef;">[</span>thread_position_in_grid<span style="color: #2d9574; background-color: #fbf8ef;">]</span><span style="color: #6c3163; background-color: #fbf8ef;">]</span><span style="color: #3a81c3; background-color: #fbf8ef;">)</span> <span style="color: #3a81c3; background-color: #fbf8ef;">{</span>
+  <span style="color: #715ab1;">result</span><span style="color: #6c3163; background-color: #fbf8ef;">[</span>index<span style="color: #6c3163; background-color: #fbf8ef;">]</span> <span style="color: #3a81c3; font-weight: bold;">=</span> a<span style="color: #6c3163; background-color: #fbf8ef;">[</span>index<span style="color: #6c3163; background-color: #fbf8ef;">]</span> <span style="color: #3a81c3; font-weight: bold;">+</span> b<span style="color: #6c3163; background-color: #fbf8ef;">[</span>index<span style="color: #6c3163; background-color: #fbf8ef;">]</span><span style="color: #655370; background-color: #fbf8ef;">;</span>
+<span style="color: #3a81c3; background-color: #fbf8ef;">}</span>
 </pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6eb3466" class="outline-2">
+<h2 id="org6eb3466"><span class="section-number-2">5.</span> Running the project</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+I want to be able to decouple myself from XCode as far as possible. Hence why I used CMake.
+Here is how my project is structured at the moment:
+</p>
+<pre class="example">
+.
+├── CMakeLists.txt
+├── build
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles
+│   │   └── ...
+│   ├── Makefile
+│   ├── buildshader.sh
+│   ├── cmake_install.cmake
+│   ├── compute_sumarrays
+│   └── shader.metallib
+├── lib
+│   └── metal-cpp
+│       └── ...
+├── metalapi.html
+├── metalapi.org
+└── src
+    ├── main.cc
+    ├── shader.metal
+    └── shader.metallib
+
+</pre>
+</div>
+
+<div id="outline-container-org04037ed" class="outline-3">
+<h3 id="org04037ed"><span class="section-number-3">5.1.</span> Compiling Your Metal Library</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+Since we are not using XCode, we cannot use <code>device-&gt;getDefaultLibrary()</code> to magically compile and import our metal shaders.
+Hence, as hinted in the source code, we will have to compile our shaders into a metal library to import.
+</p>
+
+<p>
+You will need XCode Command Line Tools. See documentation <a href="https://developer.apple.com/documentation/metal/shader_libraries/compiling_shader_code_into_a_library_with_metal_s_command-line_tools?language=objc">here</a> for full instructions on how to compile shader code.
+</p>
+
+<p>
+Here is a TLDR: <br />
+</p>
+<ol class="org-ol">
+<li>Go to the directory with your <code>shader.metal</code> file.</li>
+<li><p>
+Run the following:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #2aa1ae; font-weight: bold;">xcrun</span> <span style="color: #4e3163;">-sdk</span> macosx metal <span style="color: #4e3163;">-c</span> shader.metal <span style="color: #4e3163;">-o</span> shader.air
+<span style="color: #2aa1ae; font-weight: bold;">xcrun</span> <span style="color: #4e3163;">-sdk</span> macosx metallib shader.air <span style="color: #4e3163;">-o</span> shader.metallib
+</pre>
+</div></li>
+<li>copy the shader.metallib file to your <code>build</code> directory.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgf105d1c" class="outline-3">
+<h3 id="orgf105d1c"><span class="section-number-3">5.2.</span> Running your code</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Next, you will need to run <code>make</code> in your build directory. It will produce an executable.
+Then, run your program.
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #2aa1ae; font-weight: bold;">./compute_sumarrays</span>
+</pre>
+</div>
+
+<p>
+<b>Output</b>
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">results:</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Note: Every single time you change your source code, you will need to run <code>make</code> again.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbdb4ccf" class="outline-2">
+<h2 id="orgbdb4ccf"><span class="section-number-2">6.</span> Next Steps</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+It took me a very long time to get my project to compile, but its all worth it because I can
+do all of this without using an XCode project.
+</p>
+
+<p>
+Now that I can add two arrays using metal, let's try rewriting my ray tracer using metal.
+</p>
 </div>
 </div>
 </div>
