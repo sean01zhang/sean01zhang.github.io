@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-05-01 Mon 10:55 -->
+<!-- 2023-05-02 Tue 11:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Metal Graphics API</title>
+<title>Metal</title>
 <meta name="author" content="Sean Zhang" />
 <meta name="generator" content="Org Mode" />
 <style>
@@ -193,41 +193,62 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Metal Graphics API
+<h1 class="title">Metal
 <br />
-<span class="subtitle">Using Metal for Compute</span>
+<span class="subtitle">Using Metal API for Compute</span>
 </h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1c860e0">1. Introduction</a></li>
-<li><a href="#org3d0bc55">2. Project Structure</a>
+<li><a href="#org4ddce22">1. Introduction</a></li>
+<li><a href="#orgb545431">2. Project Structure</a>
 <ul>
-<li><a href="#org56fd92e">2.1. Source Files</a></li>
-<li><a href="#org3d98024">2.2. Building Project</a></li>
+<li><a href="#org6414404">2.1. Source Files</a></li>
+<li><a href="#org5bc8a65">2.2. Building Project</a></li>
 </ul>
 </li>
-<li><a href="#org6a5f8fc">3. Initialization</a></li>
-<li><a href="#org27e34b5">4. Our shader code</a></li>
-<li><a href="#org9707439">5. Running the project</a>
+<li><a href="#org409527e">3. Initialization</a></li>
+<li><a href="#org0022cbf">4. Our shader code</a></li>
+<li><a href="#org08df108">5. Running the project</a>
 <ul>
-<li><a href="#org65c3f7e">5.1. Compiling Your Metal Library</a></li>
-<li><a href="#org6c64a30">5.2. Running your code</a></li>
+<li><a href="#org423934f">5.1. Compiling Your Metal Library</a></li>
+<li><a href="#orga7e342a">5.2. Running your code</a></li>
 </ul>
 </li>
-<li><a href="#org8a0e44b">6. Next Steps</a></li>
-<li><a href="#org760055e">7. Addendum</a>
+<li><a href="#org0bc296a">6. Next Steps</a></li>
+<li><a href="#orgfb411b7">7. Addendum</a>
 <ul>
-<li><a href="#org7b07ae9">7.1. Simd</a></li>
-<li><a href="#org47ec472">7.2. Compiling multiple metal files</a></li>
-<li><a href="#org2354b4d">7.3. Randomness</a></li>
-<li><a href="#org7a16221">7.4. Writing to a 2D Output Buffer</a>
+<li><a href="#org1d5dfb4">7.1. Simd</a></li>
+<li><a href="#orgb194499">7.2. Compiling multiple metal files</a></li>
+<li><a href="#org232b6db">7.3. Randomness</a></li>
+<li><a href="#orga71149c">7.4. Writing to a 2D Output Buffer</a>
 <ul>
-<li><a href="#org14ba78b">7.4.1. Textures</a></li>
+<li><a href="#orga5e0bf8">7.4.1. Textures</a></li>
 </ul>
 </li>
 </ul>
@@ -236,8 +257,8 @@
 </div>
 </div>
 
-<div id="outline-container-org1c860e0" class="outline-2">
-<h2 id="org1c860e0"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-org4ddce22" class="outline-2">
+<h2 id="org4ddce22"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -253,14 +274,15 @@
 </table>
 
 <p>
-I wanted to use the GPU for some intesive tasks in C++. Here is a note to self on how to do it.
+I wanted to use the GPU for some intesive tasks in C++. However, I have a macbook so
+I guess we can try it using metal. Here is a note to self on how to do it.
 To make it clear, this is my first time working with CMake.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3d0bc55" class="outline-2">
-<h2 id="org3d0bc55"><span class="section-number-2">2.</span> Project Structure</h2>
+<div id="outline-container-orgb545431" class="outline-2">
+<h2 id="orgb545431"><span class="section-number-2">2.</span> Project Structure</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 We will need the metal-cpp library from Apple first. Then, place that into a folder called
@@ -296,8 +318,8 @@ I hope this helps! Let me know if you have any other questions.
 </pre>
 </div>
 
-<div id="outline-container-org56fd92e" class="outline-3">
-<h3 id="org56fd92e"><span class="section-number-3">2.1.</span> Source Files</h3>
+<div id="outline-container-org6414404" class="outline-3">
+<h3 id="org6414404"><span class="section-number-3">2.1.</span> Source Files</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 We will put the code under a folder called <code>src/</code>. We name our starting point <code>main.cpp</code>, but you can
@@ -306,8 +328,8 @@ name it something else if you please. Just make sure you update the Cmake file.
 </div>
 </div>
 
-<div id="outline-container-org3d98024" class="outline-3">
-<h3 id="org3d98024"><span class="section-number-3">2.2.</span> Building Project</h3>
+<div id="outline-container-org5bc8a65" class="outline-3">
+<h3 id="org5bc8a65"><span class="section-number-3">2.2.</span> Building Project</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 First, we have to configure cmake. This is a bit different from the CMakeLists suggested from Bing above.
@@ -372,8 +394,8 @@ create an executable which will have the same name as your project.
 </div>
 </div>
 
-<div id="outline-container-org6a5f8fc" class="outline-2">
-<h2 id="org6a5f8fc"><span class="section-number-2">3.</span> Initialization</h2>
+<div id="outline-container-org409527e" class="outline-2">
+<h2 id="org409527e"><span class="section-number-2">3.</span> Initialization</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Once all the structure is there, we move on to the main file of our project.
@@ -383,7 +405,7 @@ to a compiled <code>.metallib</code> file (more on that later). Everything else 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C++" id="orgf339aa2"><span style="color: #a0132f;">#define</span> <span style="color: #702f00;">NS_PRIVATE_IMPLEMENTATION</span>
+<pre class="src src-C++" id="orgd5b54d3"><span style="color: #a0132f;">#define</span> <span style="color: #702f00;">NS_PRIVATE_IMPLEMENTATION</span>
 <span style="color: #a0132f;">#define</span> <span style="color: #702f00;">CA_PRIVATE_IMPLEMENTATION</span>
 <span style="color: #a0132f;">#define</span> <span style="color: #702f00;">MTL_PRIVATE_IMPLEMENTATION</span>
 <span style="color: #a0132f;">#include</span> <span style="color: #2544bb;">&lt;Foundation/Foundation.hpp&gt;</span>
@@ -486,8 +508,8 @@ to a compiled <code>.metallib</code> file (more on that later). Everything else 
 </div>
 
 
-<div id="outline-container-org27e34b5" class="outline-2">
-<h2 id="org27e34b5"><span class="section-number-2">4.</span> Our shader code</h2>
+<div id="outline-container-org0022cbf" class="outline-2">
+<h2 id="org0022cbf"><span class="section-number-2">4.</span> Our shader code</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Note: Apple has documentation on <a href="https://developer.apple.com/documentation/metal/performing_calculations_on_a_gpu?language=objc">metal</a>. You can even read the shading language reference <a href="https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf">here</a>.
@@ -503,8 +525,8 @@ Metal has a lot of similarities to C++14. Here is the add arrays function that w
 </div>
 </div>
 
-<div id="outline-container-org9707439" class="outline-2">
-<h2 id="org9707439"><span class="section-number-2">5.</span> Running the project</h2>
+<div id="outline-container-org08df108" class="outline-2">
+<h2 id="org08df108"><span class="section-number-2">5.</span> Running the project</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 I want to be able to decouple myself from XCode as far as possible. Hence why I used CMake.
@@ -535,8 +557,8 @@ Here is how my project is structured at the moment:
 </pre>
 </div>
 
-<div id="outline-container-org65c3f7e" class="outline-3">
-<h3 id="org65c3f7e"><span class="section-number-3">5.1.</span> Compiling Your Metal Library</h3>
+<div id="outline-container-org423934f" class="outline-3">
+<h3 id="org423934f"><span class="section-number-3">5.1.</span> Compiling Your Metal Library</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 Since we are not using XCode, we cannot use <code>device-&gt;getDefaultLibrary()</code> to magically compile and import our metal shaders.
@@ -565,8 +587,8 @@ Run the following:
 </div>
 </div>
 
-<div id="outline-container-org6c64a30" class="outline-3">
-<h3 id="org6c64a30"><span class="section-number-3">5.2.</span> Running your code</h3>
+<div id="outline-container-orga7e342a" class="outline-3">
+<h3 id="orga7e342a"><span class="section-number-3">5.2.</span> Running your code</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 Next, you will need to run <code>make</code> in your build directory. It will produce an executable.
@@ -624,8 +646,8 @@ Note: Every single time you change your source code, you will need to run <code>
 </div>
 </div>
 
-<div id="outline-container-org8a0e44b" class="outline-2">
-<h2 id="org8a0e44b"><span class="section-number-2">6.</span> Next Steps</h2>
+<div id="outline-container-org0bc296a" class="outline-2">
+<h2 id="org0bc296a"><span class="section-number-2">6.</span> Next Steps</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 It took me a very long time to get my project to compile, but its all worth it because I can
@@ -638,8 +660,8 @@ Now that I can add two arrays using metal, let's try rewriting my ray tracer usi
 </div>
 </div>
 
-<div id="outline-container-org760055e" class="outline-2">
-<h2 id="org760055e"><span class="section-number-2">7.</span> Addendum</h2>
+<div id="outline-container-orgfb411b7" class="outline-2">
+<h2 id="orgfb411b7"><span class="section-number-2">7.</span> Addendum</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 After encountering several problems, I have realised that turning my ray tracer into metal
@@ -648,8 +670,8 @@ so that my week of pain does not have to occur again:
 </p>
 </div>
 
-<div id="outline-container-org7b07ae9" class="outline-3">
-<h3 id="org7b07ae9"><span class="section-number-3">7.1.</span> Simd</h3>
+<div id="outline-container-org1d5dfb4" class="outline-3">
+<h3 id="org1d5dfb4"><span class="section-number-3">7.1.</span> Simd</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 simd allows me to define vector types (like float3) that can be understood by the GPU as
@@ -660,8 +682,8 @@ the constructor is defined in the header I dont see why not)
 </div>
 </div>
 
-<div id="outline-container-org47ec472" class="outline-3">
-<h3 id="org47ec472"><span class="section-number-3">7.2.</span> Compiling multiple metal files</h3>
+<div id="outline-container-orgb194499" class="outline-3">
+<h3 id="orgb194499"><span class="section-number-3">7.2.</span> Compiling multiple metal files</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 To create a single file metal lib file at the end, you will need to compile all your
@@ -680,8 +702,8 @@ that archive file.
 </div>
 </div>
 
-<div id="outline-container-org2354b4d" class="outline-3">
-<h3 id="org2354b4d"><span class="section-number-3">7.3.</span> Randomness</h3>
+<div id="outline-container-org232b6db" class="outline-3">
+<h3 id="org232b6db"><span class="section-number-3">7.3.</span> Randomness</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 Turns out, there is no random generator included in metal. So, if I need to generate a random
@@ -696,8 +718,8 @@ tested if this is necessary though
 </div>
 </div>
 
-<div id="outline-container-org7a16221" class="outline-3">
-<h3 id="org7a16221"><span class="section-number-3">7.4.</span> Writing to a 2D Output Buffer</h3>
+<div id="outline-container-orga71149c" class="outline-3">
+<h3 id="orga71149c"><span class="section-number-3">7.4.</span> Writing to a 2D Output Buffer</h3>
 <div class="outline-text-3" id="text-7-4">
 <p>
 All the buffers I've worked with are 1D. How do I take my 2D array of float3's
@@ -705,15 +727,15 @@ and write to them in metal?
 </p>
 </div>
 
-<div id="outline-container-org14ba78b" class="outline-4">
-<h4 id="org14ba78b"><span class="section-number-4">7.4.1.</span> Textures</h4>
+<div id="outline-container-orga5e0bf8" class="outline-4">
+<h4 id="orga5e0bf8"><span class="section-number-4">7.4.1.</span> Textures</h4>
 <div class="outline-text-4" id="text-7-4-1">
 <p>
 So you need a texture. To initialize a texture:
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="org7f8cfd7"></a>Building a Texture Descriptor<br />
+<li><a id="org598b974"></a>Building a Texture Descriptor<br />
 <div class="outline-text-5" id="text-7-4-1-1">
 <p>
 In a descriptor, you will need to set the
@@ -742,7 +764,9 @@ TLDR:
 <li>width and height are self-explanatory</li>
 <li>you can also set depth, for layers I guess?</li>
 <li>pixel format determines how many channels (R, RG, RGBA) and how many bits per channel (8, 16), as well
-as the data type of each component.</li>
+as the data type of each component. UNorm means that floats in the range [0, 1] are stored as
+an unsigned integer from 0 to UINT<sub>MAX</sub>. <br />
+In the case of RGBA8Unorm, each component is 8 bits, ranging from 0 to \(255\).</li>
 <li>texture type describes the way the data is arranged, (1D, 2D, etc&#x2026;)</li>
 <li>Storage Mode determines where and who has the resources. MTLStorageModeShared stores
 the resource in system memory and can be accessed by both CPU and GPU.
@@ -752,7 +776,7 @@ Managed requires you to manually synchronize the changes.</li>
 </div>
 </li>
 
-<li><a id="orge1d8847"></a>Creating a texture<br />
+<li><a id="orga8c8984"></a>Creating a texture<br />
 <div class="outline-text-5" id="text-7-4-1-2">
 <p>
 You call <code>device-&gt;newTexture(desc)</code> and save it as a texture pointer:
@@ -769,7 +793,7 @@ You can free the description after creating the new texture.
 </div>
 </li>
 
-<li><a id="orgfc34f74"></a>Passing the texture as an argument<br />
+<li><a id="orgcd85e9b"></a>Passing the texture as an argument<br />
 <div class="outline-text-5" id="text-7-4-1-3">
 <p>
 To pass a buffer into the function, you would do the following:
@@ -800,8 +824,22 @@ in the <b>texture</b> argument table.
 </div>
 </li>
 
-<li><a id="orge977dac"></a>Your Shader<br />
+<li><a id="orgdd03d09"></a>Finishing up Pipeline setup<br />
 <div class="outline-text-5" id="text-7-4-1-4">
+<p>
+You need to decide how you want to dispatch the threads.
+</p>
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #005a5f;">MTL</span>::<span style="color: #005a5f;">Size</span> <span style="color: #00538b;">gridSize</span> <span style="color: #5317ac;">=</span> <span style="color: #005a5f;">MTL</span>::<span style="color: #0000c0;">Size</span><span style="color: #000000; background-color: #ffffff;">(</span>textureWidth<span style="color: #000000; background-color: #ffffff;">,</span> textureHeight<span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #0000c0;">1</span><span style="color: #000000; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
+<span style="color: #005a5f;">NS</span>::<span style="color: #005a5f;">UInteger</span> <span style="color: #00538b;">maxThreads</span> <span style="color: #5317ac;">=</span> pso<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">maxTotalThreadsPerThreadgroup</span><span style="color: #000000; background-color: #ffffff;">()</span><span style="color: #000000; background-color: #ffffff;">;</span>
+<span style="color: #005a5f;">MTL</span>::<span style="color: #005a5f;">Size</span> <span style="color: #00538b;">threadgroupSize</span> <span style="color: #5317ac;">=</span> <span style="color: #005a5f;">MTL</span>::<span style="color: #0000c0;">Size</span><span style="color: #000000; background-color: #ffffff;">(</span>maxThreads<span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #0000c0;">1</span><span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #0000c0;">1</span><span style="color: #000000; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org87cecb5"></a>Your Shader<br />
+<div class="outline-text-5" id="text-7-4-1-5">
 <p>
 Let's do an example of a shader that takes a matrix and an array and performs some
 calculation on it.
@@ -810,8 +848,8 @@ calculation on it.
 <pre class="src src-C++"><span style="color: #a0132f;">#include</span> <span style="color: #2544bb;">&lt;metal_stdlib&gt;</span>
 <span style="color: #5317ac;">using</span> <span style="color: #5317ac;">namespace</span> metal<span style="color: #000000; background-color: #ffffff;">;</span>
 
-<span style="color: #005a5f;">kernel</span> void <span style="color: #721045;">shader</span><span style="color: #000000; background-color: #ffffff;">(</span><span style="color: #005a5f;">texture2d</span><span style="color: #5317ac;">&lt;</span><span style="color: #005a5f;">half</span><span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #005a5f;">access</span>:write<span style="color: #5317ac;">&gt;</span> <span style="color: #00538b;">tex</span> <span style="color: #a8007f;">[</span><span style="color: #005f88;">[</span>texture<span style="color: #904200; background-color: #ffffff;">(</span><span style="color: #0000c0;">0</span><span style="color: #904200; background-color: #ffffff;">)</span><span style="color: #005f88;">]</span><span style="color: #a8007f;">]</span><span style="color: #000000; background-color: #ffffff;">,</span>
-                   <span style="color: #005a5f;">device</span> <span style="color: #5317ac;">const</span> float <span style="color: #5317ac;">*</span> <span style="color: #00538b;">a</span><span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #005a5f;">uint2</span> <span style="color: #00538b;">index</span> <span style="color: #a8007f;">[</span><span style="color: #005f88;">[</span>thread_position_in_grid<span style="color: #005f88;">]</span><span style="color: #a8007f;">]</span><span style="color: #000000; background-color: #ffffff;">)</span> <span style="color: #000000; background-color: #ffffff;">{</span>
+<span style="color: #005a5f;">kernel</span> void <span style="color: #721045;">shader</span><span style="color: #000000; background-color: #ffffff;">(</span><span style="color: #005a5f;">texture2d</span><span style="color: #5317ac;">&lt;</span><span style="color: #8f0075;">float</span><span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #005a5f;">access</span>:write<span style="color: #5317ac;">&gt;</span> <span style="color: #00538b;">tex</span> <span style="color: #a8007f;">[</span><span style="color: #005f88;">[</span>texture<span style="color: #904200; background-color: #ffffff;">(</span><span style="color: #0000c0;">0</span><span style="color: #904200; background-color: #ffffff;">)</span><span style="color: #005f88;">]</span><span style="color: #a8007f;">]</span><span style="color: #000000; background-color: #ffffff;">,</span>
+                   <span style="color: #005a5f;">uint2</span> <span style="color: #00538b;">index</span> <span style="color: #a8007f;">[</span><span style="color: #005f88;">[</span>thread_position_in_grid<span style="color: #005f88;">]</span><span style="color: #a8007f;">]</span><span style="color: #000000; background-color: #ffffff;">)</span> <span style="color: #000000; background-color: #ffffff;">{</span>
   <span style="color: #005a5f;">mt19937</span> <span style="color: #00538b;">mt</span><span style="color: #000000; background-color: #ffffff;">;</span>
   mt<span style="color: #000000; background-color: #ffffff;">.</span><span style="color: #0000c0; font-style: italic;">srand</span><span style="color: #a8007f; background-color: #ffffff;">(</span>index<span style="color: #a8007f; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
   tex<span style="color: #000000; background-color: #ffffff;">.</span><span style="color: #0000c0; font-style: italic;">write</span><span style="color: #a8007f; background-color: #ffffff;">(</span><span style="color: #0000c0;">float3</span><span style="color: #005f88; background-color: #ffffff;">(</span>mt<span style="color: #000000; background-color: #ffffff;">.</span><span style="color: #0000c0; font-style: italic;">rand</span><span style="color: #904200; background-color: #ffffff;">()</span><span style="color: #000000; background-color: #ffffff;">,</span> mt<span style="color: #000000; background-color: #ffffff;">.</span><span style="color: #0000c0; font-style: italic;">rand</span><span style="color: #904200; background-color: #ffffff;">()</span><span style="color: #000000; background-color: #ffffff;">,</span> mt<span style="color: #000000; background-color: #ffffff;">.</span><span style="color: #0000c0; font-style: italic;">rand</span><span style="color: #904200; background-color: #ffffff;">()</span><span style="color: #005f88; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">,</span> index<span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #0000c0;">0</span><span style="color: #a8007f; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
@@ -821,7 +859,45 @@ calculation on it.
 </div>
 </li>
 
-<li><a id="org2b62b0a"></a><span class="todo TODO">TODO</span> Reading the result<br /></li>
+<li><a id="org1fafcdc"></a>Reading the result<br />
+<div class="outline-text-5" id="text-7-4-1-6">
+<p>
+Next, the result needs to be read. This can be done using the <code>getBytes()</code> function.
+We will need to pass in four parameters:
+</p>
+<ul class="org-ul">
+<li>A pointer to write to: Make sure you have allocated space for the data to be written to!</li>
+<li>Number of bytes per row: In this case, it's 4 8-bit components (RGBA) per pixel multiplied by the
+width of the texture</li>
+<li>Destination region is just the region of pixels in the texture</li>
+<li>Mipmap level is zero in our case.</li>
+</ul>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+<pre class="src src-C++"><span style="color: #8f0075;">int</span> <span style="color: #00538b;">bytesPerRow</span> <span style="color: #5317ac;">=</span> out<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">width</span><span style="color: #000000; background-color: #ffffff;">()</span> <span style="color: #5317ac;">*</span> <span style="color: #5317ac;">sizeof</span><span style="color: #000000; background-color: #ffffff;">(</span><span style="color: #005a5f;">simd</span>::<span style="color: #005a5f;">uchar4</span><span style="color: #000000; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
+<span style="color: #8f0075;">int</span> <span style="color: #00538b;">bytesPerImage</span> <span style="color: #5317ac;">=</span> out<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">height</span><span style="color: #000000; background-color: #ffffff;">()</span> <span style="color: #5317ac;">*</span> bytesPerRow<span style="color: #000000; background-color: #ffffff;">;</span>
+
+<span style="color: #005a5f;">MTL</span>::<span style="color: #005a5f;">Region</span> <span style="color: #00538b;">destinationRegion</span> <span style="color: #5317ac;">=</span> <span style="color: #005a5f;">MTL</span>::<span style="color: #0000c0;">Region</span><span style="color: #0000c0;">::Make2D</span><span style="color: #000000; background-color: #ffffff;">(</span><span style="color: #0000c0;">0</span><span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #0000c0;">0</span><span style="color: #000000; background-color: #ffffff;">,</span> out<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">width</span><span style="color: #a8007f; background-color: #ffffff;">()</span><span style="color: #000000; background-color: #ffffff;">,</span> out<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">height</span><span style="color: #a8007f; background-color: #ffffff;">()</span><span style="color: #000000; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
+<span style="color: #005a5f;">simd</span>::<span style="color: #005a5f;">uchar4</span> <span style="color: #5317ac;">*</span> <span style="color: #00538b;">pixelBytes</span> <span style="color: #5317ac;">=</span> <span style="color: #000000; background-color: #ffffff;">(</span><span style="color: #005a5f;">simd</span>::<span style="color: #005a5f;">uchar4</span> <span style="color: #5317ac;">*</span><span style="color: #000000; background-color: #ffffff;">)</span> <span style="color: #0000c0;">malloc</span><span style="color: #000000; background-color: #ffffff;">(</span>bytesPerImage<span style="color: #000000; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
+out<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">getBytes</span><span style="color: #000000; background-color: #ffffff;">(</span>pixelBytes<span style="color: #000000; background-color: #ffffff;">,</span> bytesPerRow<span style="color: #000000; background-color: #ffffff;">,</span> destinationRegion<span style="color: #000000; background-color: #ffffff;">,</span> <span style="color: #0000c0;">0</span><span style="color: #000000; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
+
+<span style="color: #8f0075;">int</span> <span style="color: #00538b;">length</span> <span style="color: #5317ac;">=</span> out<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">width</span><span style="color: #000000; background-color: #ffffff;">()</span> <span style="color: #5317ac;">*</span> out<span style="color: #5317ac;">-&gt;</span><span style="color: #0000c0; font-style: italic;">height</span><span style="color: #000000; background-color: #ffffff;">()</span><span style="color: #000000; background-color: #ffffff;">;</span>
+<span style="color: #005a5f;">std</span>::cout <span style="color: #5317ac;">&lt;&lt;</span> <span style="color: #2544bb;">"results:"</span> <span style="color: #5317ac;">&lt;&lt;</span> <span style="color: #005a5f;">std</span>::endl<span style="color: #000000; background-color: #ffffff;">;</span>
+<span style="color: #5317ac;">for</span> <span style="color: #000000; background-color: #ffffff;">(</span><span style="color: #8f0075;">size_t</span> <span style="color: #00538b;">i</span> <span style="color: #5317ac;">=</span> <span style="color: #0000c0;">0</span><span style="color: #000000; background-color: #ffffff;">;</span> i <span style="color: #5317ac;">&lt;</span> length<span style="color: #000000; background-color: #ffffff;">;</span> <span style="color: #5317ac;">++</span><span style="color: #00538b;">i</span><span style="color: #000000; background-color: #ffffff;">)</span> <span style="color: #000000; background-color: #ffffff;">{</span>
+  <span style="color: #5317ac;">for</span> <span style="color: #a8007f; background-color: #ffffff;">(</span><span style="color: #8f0075;">size_t</span> <span style="color: #00538b;">j</span> <span style="color: #5317ac;">=</span> <span style="color: #0000c0;">0</span><span style="color: #000000; background-color: #ffffff;">;</span> j <span style="color: #5317ac;">&lt;</span> <span style="color: #0000c0;">4</span><span style="color: #000000; background-color: #ffffff;">;</span> <span style="color: #5317ac;">++</span><span style="color: #00538b;">j</span><span style="color: #a8007f; background-color: #ffffff;">)</span> <span style="color: #a8007f; background-color: #ffffff;">{</span>
+    <span style="color: #005a5f;">std</span>::cout <span style="color: #5317ac;">&lt;&lt;</span> <span style="color: #005f88; background-color: #ffffff;">(</span><span style="color: #8f0075;">float</span><span style="color: #005f88; background-color: #ffffff;">)</span>pixelBytes<span style="color: #005f88; background-color: #ffffff;">[</span>i<span style="color: #005f88; background-color: #ffffff;">][</span>j<span style="color: #005f88; background-color: #ffffff;">]</span><span style="color: #5317ac;">/</span> <span style="color: #0000c0;">UCHAR_MAX</span>  <span style="color: #5317ac;">&lt;&lt;</span> <span style="color: #2544bb;">" "</span><span style="color: #000000; background-color: #ffffff;">;</span>
+  <span style="color: #a8007f; background-color: #ffffff;">}</span>
+  <span style="color: #005a5f;">std</span>::cout <span style="color: #5317ac;">&lt;&lt;</span> <span style="color: #005a5f;">std</span>::endl<span style="color: #000000; background-color: #ffffff;">;</span>
+<span style="color: #000000; background-color: #ffffff;">}</span>
+
+<span style="color: #0000c0;">free</span><span style="color: #000000; background-color: #ffffff;">(</span>pixelBytes<span style="color: #000000; background-color: #ffffff;">)</span><span style="color: #000000; background-color: #ffffff;">;</span>
+</pre>
+</div>
+</div>
+</li>
 </ol>
 </div>
 </div>
