@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-05-02 Tue 11:44 -->
+<!-- 2023-05-02 Tue 11:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Metal</title>
@@ -225,30 +225,30 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4ddce22">1. Introduction</a></li>
-<li><a href="#orgb545431">2. Project Structure</a>
+<li><a href="#orgaa79dca">1. Introduction</a></li>
+<li><a href="#orge3ef1ca">2. Project Structure</a>
 <ul>
-<li><a href="#org6414404">2.1. Source Files</a></li>
-<li><a href="#org5bc8a65">2.2. Building Project</a></li>
+<li><a href="#orgab58dc7">2.1. Source Files</a></li>
+<li><a href="#org366c4e9">2.2. Building Project</a></li>
 </ul>
 </li>
-<li><a href="#org409527e">3. Initialization</a></li>
-<li><a href="#org0022cbf">4. Our shader code</a></li>
-<li><a href="#org08df108">5. Running the project</a>
+<li><a href="#orga88cf9c">3. Initialization</a></li>
+<li><a href="#org3121bb6">4. Our shader code</a></li>
+<li><a href="#orgb151284">5. Running the project</a>
 <ul>
-<li><a href="#org423934f">5.1. Compiling Your Metal Library</a></li>
-<li><a href="#orga7e342a">5.2. Running your code</a></li>
+<li><a href="#org70d078f">5.1. Compiling Your Metal Library</a></li>
+<li><a href="#orge88fd4c">5.2. Running your code</a></li>
 </ul>
 </li>
-<li><a href="#org0bc296a">6. Next Steps</a></li>
-<li><a href="#orgfb411b7">7. Addendum</a>
+<li><a href="#orge376026">6. Next Steps</a></li>
+<li><a href="#org24385f1">7. Addendum</a>
 <ul>
-<li><a href="#org1d5dfb4">7.1. Simd</a></li>
-<li><a href="#orgb194499">7.2. Compiling multiple metal files</a></li>
-<li><a href="#org232b6db">7.3. Randomness</a></li>
-<li><a href="#orga71149c">7.4. Writing to a 2D Output Buffer</a>
+<li><a href="#org15eab6d">7.1. Simd</a></li>
+<li><a href="#orgc051171">7.2. Compiling multiple metal files</a></li>
+<li><a href="#orgb30545b">7.3. Randomness</a></li>
+<li><a href="#org6604b85">7.4. Writing to a 2D Output Buffer</a>
 <ul>
-<li><a href="#orga5e0bf8">7.4.1. Textures</a></li>
+<li><a href="#orga9cbd24">7.4.1. Textures</a></li>
 </ul>
 </li>
 </ul>
@@ -257,22 +257,9 @@
 </div>
 </div>
 
-<div id="outline-container-org4ddce22" class="outline-2">
-<h2 id="org4ddce22"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-orgaa79dca" class="outline-2">
+<h2 id="orgaa79dca"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="org-left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left">This is a work-in-progress</td>
-</tr>
-</tbody>
-</table>
-
 <p>
 I wanted to use the GPU for some intesive tasks in C++. However, I have a macbook so
 I guess we can try it using metal. Here is a note to self on how to do it.
@@ -281,8 +268,8 @@ To make it clear, this is my first time working with CMake.
 </div>
 </div>
 
-<div id="outline-container-orgb545431" class="outline-2">
-<h2 id="orgb545431"><span class="section-number-2">2.</span> Project Structure</h2>
+<div id="outline-container-orge3ef1ca" class="outline-2">
+<h2 id="orge3ef1ca"><span class="section-number-2">2.</span> Project Structure</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 We will need the metal-cpp library from Apple first. Then, place that into a folder called
@@ -318,8 +305,8 @@ I hope this helps! Let me know if you have any other questions.
 </pre>
 </div>
 
-<div id="outline-container-org6414404" class="outline-3">
-<h3 id="org6414404"><span class="section-number-3">2.1.</span> Source Files</h3>
+<div id="outline-container-orgab58dc7" class="outline-3">
+<h3 id="orgab58dc7"><span class="section-number-3">2.1.</span> Source Files</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 We will put the code under a folder called <code>src/</code>. We name our starting point <code>main.cpp</code>, but you can
@@ -328,8 +315,8 @@ name it something else if you please. Just make sure you update the Cmake file.
 </div>
 </div>
 
-<div id="outline-container-org5bc8a65" class="outline-3">
-<h3 id="org5bc8a65"><span class="section-number-3">2.2.</span> Building Project</h3>
+<div id="outline-container-org366c4e9" class="outline-3">
+<h3 id="org366c4e9"><span class="section-number-3">2.2.</span> Building Project</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 First, we have to configure cmake. This is a bit different from the CMakeLists suggested from Bing above.
@@ -394,8 +381,8 @@ create an executable which will have the same name as your project.
 </div>
 </div>
 
-<div id="outline-container-org409527e" class="outline-2">
-<h2 id="org409527e"><span class="section-number-2">3.</span> Initialization</h2>
+<div id="outline-container-orga88cf9c" class="outline-2">
+<h2 id="orga88cf9c"><span class="section-number-2">3.</span> Initialization</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Once all the structure is there, we move on to the main file of our project.
@@ -405,7 +392,7 @@ to a compiled <code>.metallib</code> file (more on that later). Everything else 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C++" id="orgd5b54d3"><span style="color: #a0132f;">#define</span> <span style="color: #702f00;">NS_PRIVATE_IMPLEMENTATION</span>
+<pre class="src src-C++" id="org182b9d5"><span style="color: #a0132f;">#define</span> <span style="color: #702f00;">NS_PRIVATE_IMPLEMENTATION</span>
 <span style="color: #a0132f;">#define</span> <span style="color: #702f00;">CA_PRIVATE_IMPLEMENTATION</span>
 <span style="color: #a0132f;">#define</span> <span style="color: #702f00;">MTL_PRIVATE_IMPLEMENTATION</span>
 <span style="color: #a0132f;">#include</span> <span style="color: #2544bb;">&lt;Foundation/Foundation.hpp&gt;</span>
@@ -508,8 +495,8 @@ to a compiled <code>.metallib</code> file (more on that later). Everything else 
 </div>
 
 
-<div id="outline-container-org0022cbf" class="outline-2">
-<h2 id="org0022cbf"><span class="section-number-2">4.</span> Our shader code</h2>
+<div id="outline-container-org3121bb6" class="outline-2">
+<h2 id="org3121bb6"><span class="section-number-2">4.</span> Our shader code</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Note: Apple has documentation on <a href="https://developer.apple.com/documentation/metal/performing_calculations_on_a_gpu?language=objc">metal</a>. You can even read the shading language reference <a href="https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf">here</a>.
@@ -525,8 +512,8 @@ Metal has a lot of similarities to C++14. Here is the add arrays function that w
 </div>
 </div>
 
-<div id="outline-container-org08df108" class="outline-2">
-<h2 id="org08df108"><span class="section-number-2">5.</span> Running the project</h2>
+<div id="outline-container-orgb151284" class="outline-2">
+<h2 id="orgb151284"><span class="section-number-2">5.</span> Running the project</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 I want to be able to decouple myself from XCode as far as possible. Hence why I used CMake.
@@ -557,8 +544,8 @@ Here is how my project is structured at the moment:
 </pre>
 </div>
 
-<div id="outline-container-org423934f" class="outline-3">
-<h3 id="org423934f"><span class="section-number-3">5.1.</span> Compiling Your Metal Library</h3>
+<div id="outline-container-org70d078f" class="outline-3">
+<h3 id="org70d078f"><span class="section-number-3">5.1.</span> Compiling Your Metal Library</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 Since we are not using XCode, we cannot use <code>device-&gt;getDefaultLibrary()</code> to magically compile and import our metal shaders.
@@ -587,8 +574,8 @@ Run the following:
 </div>
 </div>
 
-<div id="outline-container-orga7e342a" class="outline-3">
-<h3 id="orga7e342a"><span class="section-number-3">5.2.</span> Running your code</h3>
+<div id="outline-container-orge88fd4c" class="outline-3">
+<h3 id="orge88fd4c"><span class="section-number-3">5.2.</span> Running your code</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 Next, you will need to run <code>make</code> in your build directory. It will produce an executable.
@@ -646,8 +633,8 @@ Note: Every single time you change your source code, you will need to run <code>
 </div>
 </div>
 
-<div id="outline-container-org0bc296a" class="outline-2">
-<h2 id="org0bc296a"><span class="section-number-2">6.</span> Next Steps</h2>
+<div id="outline-container-orge376026" class="outline-2">
+<h2 id="orge376026"><span class="section-number-2">6.</span> Next Steps</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 It took me a very long time to get my project to compile, but its all worth it because I can
@@ -660,8 +647,8 @@ Now that I can add two arrays using metal, let's try rewriting my ray tracer usi
 </div>
 </div>
 
-<div id="outline-container-orgfb411b7" class="outline-2">
-<h2 id="orgfb411b7"><span class="section-number-2">7.</span> Addendum</h2>
+<div id="outline-container-org24385f1" class="outline-2">
+<h2 id="org24385f1"><span class="section-number-2">7.</span> Addendum</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 After encountering several problems, I have realised that turning my ray tracer into metal
@@ -670,8 +657,8 @@ so that my week of pain does not have to occur again:
 </p>
 </div>
 
-<div id="outline-container-org1d5dfb4" class="outline-3">
-<h3 id="org1d5dfb4"><span class="section-number-3">7.1.</span> Simd</h3>
+<div id="outline-container-org15eab6d" class="outline-3">
+<h3 id="org15eab6d"><span class="section-number-3">7.1.</span> Simd</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 simd allows me to define vector types (like float3) that can be understood by the GPU as
@@ -682,8 +669,8 @@ the constructor is defined in the header I dont see why not)
 </div>
 </div>
 
-<div id="outline-container-orgb194499" class="outline-3">
-<h3 id="orgb194499"><span class="section-number-3">7.2.</span> Compiling multiple metal files</h3>
+<div id="outline-container-orgc051171" class="outline-3">
+<h3 id="orgc051171"><span class="section-number-3">7.2.</span> Compiling multiple metal files</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 To create a single file metal lib file at the end, you will need to compile all your
@@ -702,8 +689,8 @@ that archive file.
 </div>
 </div>
 
-<div id="outline-container-org232b6db" class="outline-3">
-<h3 id="org232b6db"><span class="section-number-3">7.3.</span> Randomness</h3>
+<div id="outline-container-orgb30545b" class="outline-3">
+<h3 id="orgb30545b"><span class="section-number-3">7.3.</span> Randomness</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 Turns out, there is no random generator included in metal. So, if I need to generate a random
@@ -718,8 +705,8 @@ tested if this is necessary though
 </div>
 </div>
 
-<div id="outline-container-orga71149c" class="outline-3">
-<h3 id="orga71149c"><span class="section-number-3">7.4.</span> Writing to a 2D Output Buffer</h3>
+<div id="outline-container-org6604b85" class="outline-3">
+<h3 id="org6604b85"><span class="section-number-3">7.4.</span> Writing to a 2D Output Buffer</h3>
 <div class="outline-text-3" id="text-7-4">
 <p>
 All the buffers I've worked with are 1D. How do I take my 2D array of float3's
@@ -727,15 +714,15 @@ and write to them in metal?
 </p>
 </div>
 
-<div id="outline-container-orga5e0bf8" class="outline-4">
-<h4 id="orga5e0bf8"><span class="section-number-4">7.4.1.</span> Textures</h4>
+<div id="outline-container-orga9cbd24" class="outline-4">
+<h4 id="orga9cbd24"><span class="section-number-4">7.4.1.</span> Textures</h4>
 <div class="outline-text-4" id="text-7-4-1">
 <p>
 So you need a texture. To initialize a texture:
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="org598b974"></a>Building a Texture Descriptor<br />
+<li><a id="org934282a"></a>Building a Texture Descriptor<br />
 <div class="outline-text-5" id="text-7-4-1-1">
 <p>
 In a descriptor, you will need to set the
@@ -776,7 +763,7 @@ Managed requires you to manually synchronize the changes.</li>
 </div>
 </li>
 
-<li><a id="orga8c8984"></a>Creating a texture<br />
+<li><a id="orge2c99ee"></a>Creating a texture<br />
 <div class="outline-text-5" id="text-7-4-1-2">
 <p>
 You call <code>device-&gt;newTexture(desc)</code> and save it as a texture pointer:
@@ -793,7 +780,7 @@ You can free the description after creating the new texture.
 </div>
 </li>
 
-<li><a id="orgcd85e9b"></a>Passing the texture as an argument<br />
+<li><a id="orgf50815c"></a>Passing the texture as an argument<br />
 <div class="outline-text-5" id="text-7-4-1-3">
 <p>
 To pass a buffer into the function, you would do the following:
@@ -824,7 +811,7 @@ in the <b>texture</b> argument table.
 </div>
 </li>
 
-<li><a id="orgdd03d09"></a>Finishing up Pipeline setup<br />
+<li><a id="org6b0c7b7"></a>Finishing up Pipeline setup<br />
 <div class="outline-text-5" id="text-7-4-1-4">
 <p>
 You need to decide how you want to dispatch the threads.
@@ -838,7 +825,7 @@ You need to decide how you want to dispatch the threads.
 </div>
 </li>
 
-<li><a id="org87cecb5"></a>Your Shader<br />
+<li><a id="org0bbd5f1"></a>Your Shader<br />
 <div class="outline-text-5" id="text-7-4-1-5">
 <p>
 Let's do an example of a shader that takes a matrix and an array and performs some
@@ -859,7 +846,7 @@ calculation on it.
 </div>
 </li>
 
-<li><a id="org1fafcdc"></a>Reading the result<br />
+<li><a id="org121c4d9"></a>Reading the result<br />
 <div class="outline-text-5" id="text-7-4-1-6">
 <p>
 Next, the result needs to be read. This can be done using the <code>getBytes()</code> function.
