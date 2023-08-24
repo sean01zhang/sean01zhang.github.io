@@ -1,1 +1,3 @@
-# sean01zhang.github.io
+# My personal website
+
+Next.js static generated.
