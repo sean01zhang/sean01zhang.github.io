@@ -9,29 +9,39 @@
             .mainbg {
                 background-image: linear-gradient(to top, #fbc2eb30 0%, #a6c1ee30 100%);
             }
+            .seanHeader {
+                text-shadow: 1px 1px 5px rgba(44, 92, 130, 0.616);
+                pointer-events: none;
+            }
         </style>
         <title>Sean Zhang</title>
     </head>
     <body class="mainbg">
-        <div class="flex min-w-screen min-h-screen justify-center items-center px-0 md:px-2 pb-[20vh]">
-            <div class="w-full md:w-[768px] p-[30px] rounded-[40px] bg-white shadow">
-                <!-- <canvas height="100" class="w-full rounded-[10px] shadow-lg mb-4"></canvas> -->
-                <h1 class="text-xl mb-2"><b>Sean Zhang</b></h1>
-                <!-- <hr class="mb-2"> -->
-                <p class="mb-2">
-                    Hey, I'm a CS student at the University of Waterloo.
-                </p>
-                <h2 class="underline">Links</h2>
-                <ul class="list-disc list-inside mb-2">
-                    <li><a href="./resume.pdf" class="hover:underline decoration-sky-500 decoration-2">Resume</a></li>
-                    <li><a href="https://github.com/sean01zhang" class="hover:underline decoration-red-500 decoration-2">GitHub</a></li>
-                </ul>
-                <h2 class="underline">News</h2>
-                <span>
-                    I have decided to rewrite my website, as the previous version
-                    was complicated to update. This simple page will serve as a placeholder.
-                </span>
+        <div class="flex min-w-screen min-h-screen justify-center items-center px-2 pb-[20vh]">
+            <div class="w-full md:w-[768px] rounded-[40px]">
+                <div class="relative transition-all">
+                    <canvas id="fluid" height="100" class="w-full rounded-[20px] shadow-lg mb-4"></canvas>
+                    <h1 class="seanHeader text-[1.85rem] mb-2 font-semibold text-white absolute bottom-1 left-5">Sean Zhang</h1>
+                </div>
+                <div class="px-2">
+                    <p class="mb-2">
+                        Hey, I'm a CS student at the University of Waterloo. 
+                    </p>
+                    <!-- <hr class="mb-2"> -->
+                    <h2 class="underline">Links</h2>
+                    <ul class="list-disc list-inside mb-2">
+                        <li><a href="./resume.pdf" class="hover:underline decoration-sky-500 decoration-2">Resume</a></li>
+                        <li><a href="https://github.com/sean01zhang" class="hover:underline decoration-red-500 decoration-2">GitHub</a></li>
+                    </ul>
+                    <h2 class="underline">News</h2>
+                    <ul class="space-y-1 py-1">
+                        <li>
+                            [01/04/24] Added a numerically-stable fluid simulator based on navier-stokes equations to my banner/header.
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
+        <script src="./fluid.js"></script>
     </body>
 </html>
