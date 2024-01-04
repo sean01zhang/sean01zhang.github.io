@@ -6,8 +6,11 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="canonical" href="https://www.seanzhang.ca" />
         <style>
-            .mainbg {
+            html {
                 background-image: linear-gradient(to top, #fbc2eb30 0%, #a6c1ee30 100%);
+            }
+            html, body {
+                min-height: 100%;
             }
             .seanHeader {
                 text-shadow: 1px 1px 5px rgba(44, 92, 130, 0.616);
@@ -16,8 +19,8 @@
         </style>
         <title>Sean Zhang</title>
     </head>
-    <body class="mainbg">
-        <div class="flex min-w-screen min-h-screen justify-center md:items-center py-8 md:ps-0 px-2 pb-[20vh]">
+    <body>
+        <div class="flex min-w-screen md:min-h-screen justify-center md:items-center py-8 md:ps-0 px-2 pb-[20vh] border-0">
             <div class="w-full md:w-[768px] rounded-[40px]">
                 <div class="relative transition-all">
                     <canvas id="fluid" height="100" class="w-full rounded-[20px] shadow-lg mb-4"></canvas>
