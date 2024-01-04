@@ -222,6 +222,7 @@ let g_prevY = 0;
 let g_prevT = performance.now();
 
 let handleMouseMove = (evt) => {
+    evt.preventDefault();
     const rect = evt.target.getBoundingClientRect();
     const scaleX = g_canvas.width / rect.width;
     const scaleY = g_canvas.height / rect.height;
@@ -252,6 +253,7 @@ let handleMouseMove = (evt) => {
 }
 
 let handleMouseMoveMobile = (evt) => {
+    evt.preventDefault();
     const rect = evt.target.getBoundingClientRect();
     const scaleX = g_canvas.width / rect.width;
     const scaleY = g_canvas.height / rect.height;
@@ -282,6 +284,7 @@ let handleMouseMoveMobile = (evt) => {
 }
  
 g_canvas.addEventListener("mouseenter", (evt) => {
+    evt.preventDefault();
     // get initial coordinates
     const rect = evt.target.getBoundingClientRect();
     const scaleX = g_canvas.width / rect.width;
@@ -294,10 +297,12 @@ g_canvas.addEventListener("mouseenter", (evt) => {
 })
 
 g_canvas.addEventListener("mouseleave", () => {
+    evt.preventDefault();
     g_canvas.removeEventListener("mousemove", handleMouseMove);
 })
 
 g_canvas.addEventListener("touchstart", (evt) => {
+    evt.preventDefault();
     // get initial coordinates
     const rect = evt.target.getBoundingClientRect();
     const scaleX = g_canvas.width / rect.width;
@@ -312,5 +317,6 @@ g_canvas.addEventListener("touchstart", (evt) => {
 })
 
 g_canvas.addEventListener("touchend", () => {
+    evt.preventDefault();
     g_canvas.removeEventListener("touchmove", handleMouseMoveMobile);
 })
