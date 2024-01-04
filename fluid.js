@@ -186,13 +186,14 @@ function animate(curTime) {
 
 
     g_ctx.clearRect(0, 0, g_nWidth, g_nHeight)
-    const visc = 0.01
-    const diff = 0.0000
-    vel_step(g_nWidth, g_nHeight, fluid.m_u, fluid.m_v, fluid.m_uPrev, fluid.m_vPrev, visc, 0.024)
-    dens_step(g_nWidth, g_nHeight, fluid.m_dens, fluid.m_densPrev, fluid.m_u, fluid.m_v, diff, 0.024)
+    const visc = 0.00002
+    const diff = 0.12
+    // console.log(dt/10);
+    vel_step(g_nWidth, g_nHeight, fluid.m_u, fluid.m_v, fluid.m_uPrev, fluid.m_vPrev, visc, dt/100)
+    dens_step(g_nWidth, g_nHeight, fluid.m_dens, fluid.m_densPrev, fluid.m_u, fluid.m_v, diff, dt/100)
     // we need to advect the fluid according to velocity fields
     let temp = new Array(g_nGridSize).fill(0)
-    advect(g_nWidth, g_nHeight, 0, temp, fluid.m_pixels, fluid.m_u, fluid.m_v, dt)
+    advect(g_nWidth, g_nHeight, 0, temp, fluid.m_pixels, fluid.m_u, fluid.m_v, dt/100)
     fluid.m_pixels = temp;
 
     // draw densities
@@ -215,45 +216,101 @@ function animate(curTime) {
 }
 
 requestAnimationFrame(animate)
+
+let g_prevX = 0;
+let g_prevY = 0;
+let g_prevT = performance.now();
+
+let handleMouseMove = (evt) => {
+    const rect = evt.target.getBoundingClientRect();
+    const scaleX = g_canvas.width / rect.width;
+    const scaleY = g_canvas.height / rect.height;
+    const x = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
+    const y = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
+    const T = performance.now()
+    const elapsed = T - g_prevT
+
+    if (elapsed < 0.000001) {
+        //TODO: figure out why elapsed is sometimes 0
+        return;
+    }
+
+    // set horizontal vel
+    const v_x = (x - g_prevX) / elapsed
+    if (v_x) {
+        fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 20;
+    }
+    // set vert vel
+    const v_y = (y - g_prevY) / elapsed
+    if (v_y) {
+        fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 20;
+    }
+
+    g_prevT = T;
+    g_prevX = x;
+    g_prevY = y;
+}
+
+let handleMouseMoveMobile = (evt) => {
+    const rect = evt.target.getBoundingClientRect();
+    const scaleX = g_canvas.width / rect.width;
+    const scaleY = g_canvas.height / rect.height;
+    const x = Math.max(Math.floor((evt.touches[0].clientX - rect.left) * scaleX), 0) + 1;
+    const y = Math.max(Math.floor((evt.touches[0].clientY - rect.top) * scaleY), 0) + 1;
+    const T = performance.now()
+    const elapsed = T - g_prevT
+
+    if (elapsed < 0.000001) {
+        //TODO: figure out why elapsed is sometimes 0
+        return;
+    }
+
+    // set horizontal vel
+    const v_x = (x - g_prevX) / elapsed
+    if (v_x) {
+        fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 20;
+    }
+    // set vert vel
+    const v_y = (y - g_prevY) / elapsed
+    if (v_y) {
+        fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 20;
+    }
+
+    g_prevT = T;
+    g_prevX = x;
+    g_prevY = y;
+}
  
-g_canvas.addEventListener("mousedown", (evt) => {
+g_canvas.addEventListener("mouseenter", (evt) => {
     // get initial coordinates
     const rect = evt.target.getBoundingClientRect();
     const scaleX = g_canvas.width / rect.width;
     const scaleY = g_canvas.height / rect.height;
-    let prevX = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
-    let prevY = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
-    let prevT = performance.now();
-
+    g_prevX = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
+    g_prevY = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
+    g_prevT = performance.now();
     // add mouse move listener
-    let handleMouseMove = (evt) => {
-        const x = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
-        const y = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
-        const T = performance.now()
-        const elapsed = T - prevT
-
-        if (elapsed < 0.000001) {
-            //TOOD: figure out who elapsed is sometimes 0
-            return;
-        }
-
-        // set horizontal vel
-        const v_x = (x - prevX) / elapsed
-        if (v_x) {
-            fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 7;
-        }
-        // set vert vel
-        const v_y = (y - prevY) / elapsed
-        if (v_y) {
-            fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 7;
-        }
-
-        prevT = T;
-    }
-
     g_canvas.addEventListener("mousemove", handleMouseMove);
-    g_canvas.addEventListener("mouseup", () => {
-        g_canvas.removeEventListener("mousemove", handleMouseMove);
-        g_canvas.removeEventListener("mouseup", this);
-    })
+})
+
+g_canvas.addEventListener("mouseleave", () => {
+    g_canvas.removeEventListener("mousemove", handleMouseMove);
+})
+
+g_canvas.addEventListener("touchstart", (evt) => {
+    // get initial coordinates
+    const rect = evt.target.getBoundingClientRect();
+    const scaleX = g_canvas.width / rect.width;
+    const scaleY = g_canvas.height / rect.height;
+    console.log(rect, scaleX, scaleY, evt.clientX, evt.clientY, evt)
+    g_prevX = Math.max(Math.floor((evt.touches[0].clientX - rect.left) * scaleX), 0) + 1;
+    g_prevY = Math.max(Math.floor((evt.touches[0].clientY - rect.top) * scaleY), 0) + 1;
+    g_prevT = performance.now();
+    console.log(g_prevX, g_prevY, g_prevT)
+    // add mouse move listener
+    g_canvas.addEventListener("touchmove", handleMouseMoveMobile);
+})
+
+g_canvas.addEventListener("touchend", () => {
+    g_canvas.removeEventListener("touchmove", handleMouseMoveMobile);
 })
