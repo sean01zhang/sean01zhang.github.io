@@ -29,14 +29,14 @@
 
         .seanHeader {
             text-shadow: 1px 1px 4px rgba(31, 67, 96, 0.616);
-            pointer-events: none;
+            /* pointer-events: none; */
         }
 
         canvas {
             touch-action: none;
         }
     </style>
-    <title>Sean Zhang</title>
+    <title>Projects | Sean Zhang</title>
 </head>
 
 <body>
@@ -46,8 +46,8 @@
                 <div class="relative hover:scale-[103%] transition-all z-10">
                     <canvas id="fluid" height="100" class="w-full rounded-[20px] shadow-lg"></canvas>
                     <div class="absolute bottom-3 left-5 text-white seanHeader">
-                        <h1 class="seanHeader text-[2rem] font-bold">Sean Zhang</h1>
-                        <p class="seanHeader font-mono">4th year CS at UWaterloo</p>
+                        <p class="seanHeader font-mono"><a href="/" class="hover:underline decoration-red-500 decoration-2">Home</a> /</p>
+                        <h1 class="seanHeader text-[2rem] font-bold">Projects</h1>
                     </div>
                 </div>
                 <div class="px-2 dark:text-white font-mono font-bold relative z-0">
@@ -68,51 +68,33 @@
                 </div>
             </div>
             <div class="px-2 md:px-5 text-[1.1rem] space-y-3 dark:text-white">
+                <p>
+                    I will have an RSS feed soon.
+                </p>
                 <div>
-                    <h2 class="font-semibold mb-1 text-[1.5rem]">W24 Courses I'm Taking</h2>
-                    <ul class="space-y-1 list-inside column-2 divide-y dark:divide-[#404040]">
-                        <li>
-                            CS444: <em>Compiler Construction</em>
-                        </li>
-                        <li>
-                            CS452: <em>Real Time Programming</em>
-                        </li>
-                        <li>
-                            CS456: <em>Computer Networks</em>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="font-semibold mb-1 text-[1.5rem]">Interests</h2>
+                    <h2 class="font-semibold mb-1 text-[1.5rem]">Computer Graphics</h2>
                     <ul class="space-y-1 list-inside column-2 divide-y mb-2 dark:divide-[#404040]">
                         <li>
-                            <span class="font-mono">J████</span><sup>1</sup>
+                            Numerically Stable 2D Fluid Simulation
                         </li>
                         <li>
-                            Computer Graphics
+                            Ray Tracing with Resevoir Resampling and Spatiotemporal Reuse (ReSTIR)
                         </li>
-                        <li>
-                            Learning Japanese
-                        </li>
+                        <li>Ray Tracing in One Weekend</li>
                     </ul>
-                    <span class="text-xs font-mono">[1] J████ is Sean's partner</span>
                 </div>
                 <div>
-                    <h2 class="font-semibold mb-1 text-[1.5rem]">News</h2>
-                    <ul class="space-y-1 list-inside divide-y dark:divide-[#404040]">
-                        <li>[01-04-2024] Added a numerically-stable fluid simulator based on navier-stokes equations to
-                            my banner/header (Hint: Drag your finger/ move your cursor around the colorful banner).
+                    <h2 class="font-semibold mb-2 text-[1.5rem]">Computer Science Club</h2>
+                    <ul class="space-y-1 list-inside column-2 divide-y mb-2 dark:divide-[#404040]">
+                        <li>
+                            S23 Office Manager's Notes
                         </li>
-                        <li>[11-12-2023] I decided to rewrite my website. Moving forward,
-                            I hope to either do custom pages or autogenerate pages from org-mode.
-                        </li>
-                        <li>[09-01-2023] I am joining Vivid Seats as a Software Engineer for my co-op term.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <script src="./fluid.js"></script>
+    <script src="../fluid.js"></script>
 </body>
 
 </html>

@@ -31,6 +31,8 @@ const seek = (iWidth, iHeight) => iWidth + (g_nWidth + 2) * iHeight
 for (let i = 0; i <= g_nHeight+1; ++i) {
     for (let j = 0; j <= g_nWidth+1; ++j) {
         fluid.m_pixels[seek(j, i)] = (i / g_nHeight)
+        fluid.m_uPrev[seek(j, i)] = 2 * Math.random() - 1;
+        fluid.m_vPrev[seek(j, i)] = 2 * Math.random() - 1;
     }
 }
 
@@ -168,7 +170,6 @@ function set_bnd(M, N, b, x) {
 }
 
 const g_ctx = g_canvas.getContext("2d")
-console.log(g_canvas.width, g_canvas.height)
 
 let stop = false
 let iFrameCount = 0
@@ -222,7 +223,7 @@ function animate(curTime) {
     }
     iFrameCount += 1
     lastTime = curTime
-    if (!stop) {
+    if (!stop && iFrameCount< 1000) {
         requestAnimationFrame(animate)
     } else {
         // console.log("STOPPED", curTime - startTime)
@@ -310,7 +311,7 @@ g_canvas.addEventListener("mouseenter", (evt) => {
     g_canvas.addEventListener("mousemove", handleMouseMove);
 })
 
-g_canvas.addEventListener("mouseleave", () => {
+g_canvas.addEventListener("mouseleave", (evt) => {
     evt.preventDefault();
     g_canvas.removeEventListener("mousemove", handleMouseMove);
 })
@@ -330,7 +331,7 @@ g_canvas.addEventListener("touchstart", (evt) => {
     g_canvas.addEventListener("touchmove", handleMouseMoveMobile);
 })
 
-g_canvas.addEventListener("touchend", () => {
+g_canvas.addEventListener("touchend", (evt) => {
     evt.preventDefault();
     g_canvas.removeEventListener("touchmove", handleMouseMoveMobile);
 })
