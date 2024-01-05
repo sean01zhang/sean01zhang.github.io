@@ -174,6 +174,16 @@ let stop = false
 let iFrameCount = 0
 let fps = 30
 let startTime, lastTime;
+let g_colorOffset= Math.random();
+let g_isDark = false;
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    // dark mode
+    g_isDark = true;
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    g_isDark = event.matches;
+});
 
 function animate(curTime) {
     if (!startTime) {
@@ -202,7 +212,11 @@ function animate(curTime) {
         for (let j = 1; j < g_nWidth + 1; ++j) {
             // get color
             let pixel = fluid.m_pixels[seek(j, i)]
-            g_ctx.fillStyle = `hsl(${pixel * 0.4 + 0.55}turn, 74%, 60%)`
+
+            let saturation = g_isDark ? 74 : 74;
+            let lightness = g_isDark ? 25 : 60;
+
+            g_ctx.fillStyle = `hsl(${pixel * 0.5 + g_colorOffset}turn, ${saturation}%, ${lightness}%)`
             g_ctx.fillRect(j - 1, i - 1, 1, 1)
         }
     }

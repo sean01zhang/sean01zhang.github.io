@@ -1,53 +1,115 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="canonical" href="https://www.seanzhang.ca" />
-        <style>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="canonical" href="https://www.seanzhang.ca" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
+    <style>
+        html {
+            background-image: linear-gradient(to top, #fbc2eb30 0%, #a6c1ee30 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
             html {
-                background-image: linear-gradient(to top, #fbc2eb30 0%, #a6c1ee30 100%);
+                background-image: none;
+                background-color: black;
             }
-            html, body {
-                min-height: 100%;
-            }
-            .seanHeader {
-                text-shadow: 1px 1px 5px rgba(44, 92, 130, 0.616);
-                pointer-events: none;
-            }
-            canvas {
-                touch-action: none;
-            }
-        </style>
-        <title>Sean Zhang</title>
-    </head>
-    <body>
-        <div class="flex min-w-screen md:min-h-screen justify-center md:items-center py-8 md:ps-0 px-2 pb-[20vh] border-0">
-            <div class="w-full md:w-[768px] rounded-[40px]">
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        .seanHeader {
+            text-shadow: 1px 1px 4px rgba(31, 67, 96, 0.616);
+            pointer-events: none;
+        }
+
+        canvas {
+            touch-action: none;
+        }
+    </style>
+    <title>Sean Zhang</title>
+</head>
+
+<body>
+    <div class="flex min-w-screen sm:min-h-screen justify-center sm:items-center md:pt-10 pt-2 px-2 border-0">
+        <div class="w-full md:w-[768px] rounded-[40px] space-y-4">
+            <div>
                 <div class="relative transition-all">
-                    <canvas id="fluid" height="100" class="w-full rounded-[20px] shadow-lg mb-4"></canvas>
-                    <h1 class="seanHeader text-[1.85rem] mb-2 font-semibold text-white absolute bottom-1 left-5">Sean Zhang</h1>
+                    <canvas id="fluid" height="100" class="w-full rounded-[20px] shadow-lg"></canvas>
+                    <h1 class="seanHeader text-[2rem] font-bold text-white absolute bottom-3 left-5">Sean Zhang</h1>
                 </div>
-                <div class="px-2">
-                    <p class="mb-2">
-                        Hey, I'm a CS student at the University of Waterloo. 
-                    </p>
-                    <!-- <hr class="mb-2"> -->
-                    <h2 class="underline">Links</h2>
-                    <ul class="list-disc list-inside mb-2">
-                        <li><a href="./resume.pdf" class="hover:underline decoration-sky-500 decoration-2">Resume</a></li>
-                        <li><a href="https://github.com/sean01zhang" class="hover:underline decoration-red-500 decoration-2">GitHub</a></li>
-                    </ul>
-                    <h2 class="underline">News</h2>
-                    <ul class="space-y-1 py-1">
-                        <li>
-                            [01/04/24] Added a numerically-stable fluid simulator based on navier-stokes equations to my banner/header.
+                <div class="flex-row flex-wrap gap-2 font-medium px-5 translate-y-[-10px] hidden md:flex dark:text-white">
+                    <!-- <div
+                        class="bg-white p-5 grow rounded-[10px] dark:bg-gray-900 hover:shadow hover:scale-[101%] transition-all hover:underline decoration-red-500 decoration-2">
+                        <h2><a href="./projects">Projects</a></h2>
+                    </div> -->
+                    <div
+                        class="bg-white p-5 grow rounded-[10px] dark:bg-gray-900 hover:shadow hover:scale-[101%] transition-all hover:underline decoration-sky-500 decoration-2">
+                        <h2><a href="./resume.pdf" class="">Resume</a></h2>
+                    </div>
+                    <div
+                        class="bg-white p-5 grow rounded-[10px] dark:bg-gray-900 hover:shadow hover:scale-[101%] transition-all hover:underline decoration-purple-500 decoration-2">
+                        <h2><a href="https://github.com/sean01zhang" class="">GitHub</a></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="px-2 md:px-5 text-[1.1rem] space-y-3 dark:text-white">
+                <div>
+                    <p class="">Hey, I'm a 4th year CS student at UWaterloo.</p>
+                </div>
+                <!-- <hr> -->
+                <div class="md:hidden">
+                    <h2 class="font-semibold mb-2">Links</h2>
+                    <div class="flex flex-row flex-wrap gap-2 font-medium">
+                        <!-- <div
+                            class="bg-white p-5 grow rounded-[10px] dark:bg-gray-900 hover:shadow hover:scale-[101%] transition-all hover:underline decoration-red-500 decoration-2">
+                            <h2><a href="./projects">Projects</a></h2>
+                        </div> -->
+                        <div
+                            class="bg-white p-5 grow rounded-[10px] dark:bg-gray-900 hover:shadow hover:scale-[101%] transition-all hover:underline decoration-sky-500 decoration-2">
+                            <h2><a href="./resume.pdf" class="">Resume</a></h2>
+                        </div>
+                        <div
+                            class="bg-white p-5 grow rounded-[10px] dark:bg-gray-900 hover:shadow hover:scale-[101%] transition-all hover:underline decoration-purple-500 decoration-2">
+                            <h2><a href="https://github.com/sean01zhang" class="">GitHub</a></h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- <hr> -->
+                <div>
+                    <h2 class="font-semibold mb-2">News</h2>
+                    <ul class="space-y-1 list-inside">
+                        <li>[01-06-2024] My 4A school term begins.</li>
+                        <hr>
+                        <li>[01-04-2024] Added a numerically-stable fluid simulator based on navier-stokes equations to
+                            my banner/header (Hint: Drag your finger/ move your cursor around the colorful banner).
                         </li>
+                        <hr>
+                        <li>[11-12-2023] I decided to rewrite my website. Moving forward,
+                            I hope to either do custom pages or autogenerate pages from org-mode.
+                        </li>
+                        <hr>
+                        <li>[09-01-2023] I am joining Vivid Seats as a Software Engineer for my co-op term.</li>
+                        <hr>
+                        <li>[08-31-2023] Added resume.</li>
+                        <hr>
+                        <li>[08-24-2023] Migrated notes.</li>
+                        <hr>
+                        <li>[08-23-2023] Added Projects. Need to migrate notes.</li>
+                        <hr>
+                        <li>[08-22-2023] Website Created. Stay tuned for more fun!</li>
                     </ul>
                 </div>
             </div>
         </div>
-        <script src="./fluid.js"></script>
-    </body>
+    </div>
+    <script src="./fluid.js"></script>
+</body>
+
 </html>
