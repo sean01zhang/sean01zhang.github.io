@@ -58,20 +58,20 @@
                 <div class="px-2 dark:text-white font-mono font-bold relative z-0">
                     <div class="bg-white dark:bg-[#242424] dark:border-[1px] dark:border-[#404040] dark:divide-[#404040] translate-y-[-12px] rounded-b-[10px] divide-x flex flex-row flex-wrap pt-3 shadow">
                         <div
-                            class="hover:underline decoration-red-500 decoration-2 px-3 py-2">
-                            <h2><a href="/projects">Projects</a></h2>
+                            class="hover:underline decoration-red-500 decoration-2">
+                            <a href="/projects" class="block px-3 py-2">Projects</a>
                         </div>
                         <div
-                            class="hover:underline decoration-indigo-500 decoration-2 px-3 py-2">
-                            <h2><a href="/blog" class="">Blog</a></h2>
+                            class="hover:underline decoration-indigo-500 decoration-2">
+                            <a href="/blog" class="block px-3 py-2">Blog</a>
                         </div>
                         <div
-                            class="hover:underline decoration-sky-500 decoration-2 px-3 py-2">
-                            <h2><a href="/resume.pdf" class="">Resume</a></h2>
+                            class="hover:underline decoration-sky-500 decoration-2">
+                            <a href="/resume.pdf" class="block px-3 py-2">Resume</a>
                         </div>
                         <div
-                            class="hover:underline decoration-purple-500 decoration-2 px-3 py-2">
-                            <h2><a href="https://github.com/sean01zhang" class="">GitHub</a></h2>
+                            class="hover:underline decoration-purple-500 decoration-2">
+                            <a href="https://github.com/sean01zhang" class="block px-3 py-2">GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -79,24 +79,58 @@
             <div class="px-2 md:px-5 text-[1.1rem] space-y-3 dark:text-white">
                 <div>
                     <h2 class="font-semibold mb-1 text-[1.5rem]">Computer Graphics</h2>
-                    <ul class="space-y-1 list-inside column-2 divide-y mb-2 dark:divide-[#404040]">
+                    <ul class="space-y-2 list-inside column-2 divide-y mb-2 dark:divide-[#404040]">
                         <li>
-                            Numerically Stable 2D Fluid Simulation
+                            <div class="py-1">
+                                <h3 class="font-bold">
+                                    Numerically Stable 2D Fluid Simulation
+                                </h3>
+                                <span>
+                                    Extended to advect colors and handle user input.
+                                </span>
+                                <ul class="list-disc list-inside">
+                                    <li>
+                                        <a
+                                            class="underline decoration-2 decoration-blue-500"
+                href="https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf"
+                                            >Reference</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li>
-                            Ray Tracing with Resevoir Resampling and Spatiotemporal Reuse (ReSTIR)
+                            <div class="py-1">
+                                <h3 class="font-bold">
+                                    Ray Tracing with Resevoir Resampling and Spatiotemporal Reuse (ReSTIR)
+                                </h3>
+                                My final Computer Graphics Project, a ReSTIR implementation in Rust.
+                                Blinn-phong shading with area lighting.
+                                <ul class="list-disc list-inside">
+                                    <li>
+                                        <a class="underline decoration-2 decoration-blue-500"
+                                           href="https://research.nvidia.com/publication/2020-07_spatiotemporal-reservoir-resampling-real-time-ray-tracing-dynamic-direct">Reference</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
-                        <li>Ray Tracing in One Weekend</li>
+                        <li>
+                            <div class="py-1">
+                                <h3 class="font-bold">
+                                    Ray Tracing in One Weekend
+                                </h3>
+                                Brute-force path tracer. Made a few optimizations to it afterwards.
+                                <ul class="list-disc list-inside">
+                                    <li>
+                                        <a class="underline decoration-2 decoration-blue-500">Blog</a>
+                                    </li>
+                                    <li>
+                                        <a class="underline decoration-2 decoration-blue-500">Github (Improved Version)</a>
+                                        </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
-                <!-- <div> -->
-                <!--     <h2 class="font-semibold mb-2 text-[1.5rem]">Computer Science Club</h2> -->
-                <!--     <ul class="space-y-1 list-inside column-2 divide-y mb-2 dark:divide-[#404040]"> -->
-                <!--         <li> -->
-                <!--             S23 Office Manager's Notes -->
-                <!--         </li> -->
-                <!--     </ul> -->
-                <!-- </div> -->
             </div>
         </div>
     </div>

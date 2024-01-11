@@ -1,0 +1,25 @@
+#+title: Platform
+#+OPTIONS: toc:nil num:3 H:4 ^:nil pri:t html-postamble:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org.css"/>
+
+Hey, I'm Sean. For those who don't know me, I was CSC Office Manager for S23.
+
+Some accomplishments I'm proud of:
+1. The CSC Fridge being the best fridge in MC.
+2. Hosting the CSC Awards.
+3. Appointing 5 new office staff!
+
+As president, there are four goals I want us to accomplish:
+1. First, run small no-budget member-driven events. Examples include keyboard meetups, vim-golf, or csc awards.
+2. Second, I want to get small gifts that can be given to visiting alum. For example, a pin or some small item.
+3. Third, we should *try* to unify subcommittee meetings. For example, we can start with
+   all-hands, then break off into groups for the remaining time every one to two weeks.
+   My overarching goal in doing this is to make club time more predictable for all of us.
+4. Finally, I will try and keep CSC membership fees low.
+
+The ideas proposed are not magic, but I hope my intentions are clear. If you like:
+1. CSC running small events like keyboard meetups or vim-golf
+2. Connecting with our Alum through small gifts
+3. Unifying club meetings/worktime
+4. Accessible membership fees
+please vote for me.

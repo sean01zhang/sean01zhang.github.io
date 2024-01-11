@@ -1,6 +1,6 @@
 #+TITLE: Org Style Demo
 #+OPTIONS: toc:nil num:3 H:4 ^:nil pri:t
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org.css"/>
 
 #+BEGIN_abstract
 A custom org css stylesheet to bring it to visual parity with the rest of my

@@ -1,6 +1,6 @@
 #+title: Firefox Vertical Tabs
 #+OPTIONS: toc:nil num:3 H:4 ^:nil pri:t
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org.css"/>
 
 Here is a quick guide to setting up vertical tabs and removing the horizontal tab bar
 in Firefox.
