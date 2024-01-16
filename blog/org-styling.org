@@ -5,12 +5,19 @@
 #+BEGIN_abstract
 A custom org css stylesheet to bring it to visual parity with the rest of my
 website. The org template is borrowed from [[https://gongzhitaao.org/orgcss/]].
+
 #+END_abstract
 
 # now prints out the previously disabled (toc:nil) table of contents.
 #+TOC: headlines 2
 
-Here are a few things I commonly use in org-mode.
+* Usage & Copyright
+If you want to use this stylesheet, feel free to add this line to your .org file:
+#+begin_src org
++HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://seanzhang.ca/org.css"/>
+#+end_src
+
+If you discover any bugs, feel free to let me know either directly or through [[https://github.com/sean01zhang/sean01zhang.github.io/issues][Github]].
 
 * TODO Todos are Nice
 ** DONE Nesting
