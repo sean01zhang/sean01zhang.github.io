@@ -79,42 +79,75 @@
             <div class="px-2 md:px-5 text-[1.1rem] space-y-3 dark:text-white">
                 <div>
                     <h2 class="font-semibold mb-1 text-[1.5rem]">Computer Graphics</h2>
-                    <ul class="space-y-2 list-inside column-2 divide-y mb-2 dark:divide-[#404040]">
+                    <ul class="space-y-2 list-inside column-2 mb-2 divide-y dark:divide-[#404040]">
                         <li>
                             <div class="py-1">
+                                <div class="block">
+                                    <div class="rounded-full bg-pink-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">JavaScript</div>
+                                </div>
                                 <h3 class="font-bold">
                                     Numerically Stable 2D Fluid Simulation
                                 </h3>
                                 <span>
-                                    Extended to advect colors and handle user input.
+                                    2D fluid simulation based on the Navier-stokes differential equations.
+                                    This is also my first attempt at using <a class="underline decoration-2 decoration-blue-500" href="https://en.wikipedia.org/wiki/Hungarian_notation">Hungarian Notation</a> for variable naming.
+                                    I extended the paper that my numerical method is based on to advect a color texture and handle user input.
                                 </span>
-                                <ul class="list-disc list-inside">
+                                <ul class="list-disc list-inside pb-0 mb-0">
                                     <li>
                                         <a
                                             class="underline decoration-2 decoration-blue-500"
                 href="https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf"
                                             >Reference</a>
                                     </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="py-1">
-                                <h3 class="font-bold">
-                                    Ray Tracing with Resevoir Resampling and Spatiotemporal Reuse (ReSTIR)
-                                </h3>
-                                My final Computer Graphics Project, a ReSTIR implementation in Rust.
-                                Blinn-phong shading with area lighting.
-                                <ul class="list-disc list-inside">
                                     <li>
-                                        <a class="underline decoration-2 decoration-blue-500"
-                                           href="https://research.nvidia.com/publication/2020-07_spatiotemporal-reservoir-resampling-real-time-ray-tracing-dynamic-direct">Reference</a>
+                                        <a
+                                            class="underline decoration-2 decoration-blue-500"
+                                            href="https://www.github.com/sean01zhang/sean01zhang.github.io"
+                                            >GitHub (it is a part of my website)</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                         <li>
                             <div class="py-1">
+                                <div class="block">
+                                    <div class="rounded-full bg-purple-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">Rust</div>
+                                </div>
+                                <h3 class="font-bold">
+                                    Ray Tracing with Resevoir Resampling and Spatiotemporal Reuse (ReSTIR)
+                                </h3>
+                                My final Computer Graphics Project, a <a class="underline decoration-2 decoration-blue-500"
+                                           href="https://research.nvidia.com/publication/2020-07_spatiotemporal-reservoir-resampling-real-time-ray-tracing-dynamic-direct">ReSTIR</a>
+ implementation in Rust.<br>
+
+                                <ul class="list-disc list-inside">
+                                    <li>
+                                        Streamed Resampled IS using Weighted Resevoir Sampling
+                                    </li>
+                                    <li>
+                                        <em>Unbiased</em> Spatial and Temporal Resevoir Reuse
+                                    </li>
+                                    <li>
+                                        Blinn-phong shading and mesh lighting for glossy or emissive materials.
+                                    </li>
+                                    <li>
+                                        Supports Waveform Object (<code>.obj</code>) and Material (<code>.mtl</code>) loading.
+                                    </li>
+                                    <li>
+                                        Implemented a BVH with splits determined by the surface area heuristic.
+                                    </li>
+                                    <li>
+                                        Used <a class="underline decoration-2 decoration-blue-500" href="https://github.com/emilk/egui">egui</a> for UI controls.
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="py-1">
+                                <div class="block">
+                                    <div class="rounded-full bg-teal-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">C++</div>
+                                </div>
                                 <h3 class="font-bold">
                                     Ray Tracing in One Weekend
                                 </h3>
@@ -124,7 +157,7 @@
                                         <a class="underline decoration-2 decoration-blue-500" href="/blog/in-one-weekend">Blog</a>
                                     </li>
                                     <li>
-                                        <a class="underline decoration-2 decoration-blue-500" href="https://github.com/sean01zhang/rt-one-weekend-no-oop">Github (Improved Version)</a>
+                                        <a class="underline decoration-2 decoration-blue-500" href="https://github.com/sean01zhang/rt-one-weekend-no-oop">GitHub (Improved Version)</a>
                                         </li>
                                 </ul>
                             </div>
