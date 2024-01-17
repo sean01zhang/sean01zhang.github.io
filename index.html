@@ -92,7 +92,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h2 class="font-semibold mb-1 text-[1.5rem]">Interests</h2>
+                    <h2 class="font-semibold mb-1 text-[1.5rem]" onclick="silverfish()">Interests</h2>
                     <ul class="space-y-1 list-inside column-2 divide-y mb-2 dark:divide-[#404040]">
                         <li>
                             <span class="font-mono">J████</span><sup>1</sup>
@@ -123,6 +123,15 @@
         </div>
     </div>
     <script src="./fluid.js"></script>
-</body>
+    <script>
+        let clickTitleCount = 0;
 
+        function silverfish() {
+          if (clickTitleCount++ >= 10) {
+            clickTitleCount = 0;
+            alert("Silverfish counter: 24")
+          }
+        }
+    </script>
+</body>
 </html>
