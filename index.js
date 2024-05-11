@@ -24,48 +24,15 @@ const fluid = {
     m_pixels: new Array(g_nGridSize).fill(0)
 }
 
-// fluid.m_dens = fluid.m_dens.map(x => Math.random())
-
-// fluid.m_densPrev = fluid.m_densPrev.map(x => Math.random())
-console.log(fluid.m_dens)
-
 // helper functions for fluids
 const seek = (iWidth, iHeight) => iWidth + (g_nWidth + 2) * iHeight
 
-console.log(g_nWidth, g_nHeight)
-// set half of prev to one density, the other to another
-for (let i = 1; i <= g_nHeight; ++i) {
-    for (let j = 1; j <= g_nWidth; ++j) {
-        if (j >= 2.5 *g_nWidth / 6 && j <= 3.5 *g_nWidth / 6 && i >= 2 * g_nHeight/ 6 && i <= 4 * g_nHeight/ 6) {
-            // fluid.m_densPrev[seek(j, i)] = 0
-            // fluid.m_dens[seek(j, i)] = 0
-            // fluid.m_u[seek(j,i)] = 0
-            // fluid.m_uPrev[seek(j,i)] = 0
-        } else {
-
-            // console.log(j, g_nWidth / 2)
-            // fluid.m_densPrev[seek(j, i)] = 1
-            // fluid.m_dens[seek(j, i)] = 1
-            // fluid.m_u[seek(j,i)] = 1
-            // fluid.m_uPrev[seek(j,i)] = 1
-        }
-    }
-}
-for (let i = 1; i <= g_nHeight; ++i) {
-    for (let j = 1; j <= g_nWidth; ++j) {
-        if (j < g_nWidth / 2) {
-            // fluid.m_u[seek(j,i)] = 1
-            // fluid.m_uPrev[seek(j,i)] = 1
-        } else {
-            // fluid.m_u[seek(j,i)] = -1
-            // fluid.m_uPrev[seek(j,i)] = -1
-        }
-    }
-}
-
+// initial pixel state
 for (let i = 0; i <= g_nHeight+1; ++i) {
     for (let j = 0; j <= g_nWidth+1; ++j) {
         fluid.m_pixels[seek(j, i)] = (i / g_nHeight)
+        fluid.m_uPrev[seek(j, i)] = 2 * Math.random() - 1;
+        fluid.m_vPrev[seek(j, i)] = 2 * Math.random() - 1;
     }
 }
 
@@ -89,6 +56,7 @@ function diffuse(M, N, b, x, x0,diff, dt) {
         set_bnd(M, N, b, x)
     }
 }
+
 // density advection to some velocity field
 function advect(M, N, b, d, d0, u, v, dt) {
     // console.log(u, v, M, N, d.length, u.length, v.length)
@@ -97,11 +65,8 @@ function advect(M, N, b, d, d0, u, v, dt) {
     for (let i = 1; i <= N; ++i) {
         for (let j = 1; j <= M; ++j) {
             let x = Math.min(Math.max(j - dt0_w * u[seek(j, i)], 0.5), M + 0.5)
-
-            // console.log(x, j)
-
             let y = Math.min(Math.max(i - dt0_h * v[seek(j, i)], 0.5), N + 0.5)
-            // console.log(x, y, j, i, u[seek(j, i)])
+
             let j0 = Math.floor(x)
             let j1 = j0 + 1
             let i0 = Math.floor(y)
@@ -205,12 +170,204 @@ function set_bnd(M, N, b, x) {
 }
 
 const g_ctx = g_canvas.getContext("2d")
-console.log(g_canvas.width, g_canvas.height)
 
-let stop = true
+let stop = false
 let iFrameCount = 0
 let fps = 30
 let startTime, lastTime;
+let g_colorOffset= Math.random();
+let g_isDark = false;
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    // dark mode
+    g_isDark = true;
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    g_isDark = event.matches;
+});
+
+function createFluidCanvas(canvasId, visc=0.00001, diff=0.12, fps=30, colorOffset=0.03) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext("2d");
+    const nWidth = canvas.width;
+    const nHeight = canvas.height;
+    const nGridSize = (nWidth + 2) * (nHeight + 2);
+    let iFrameCount = 0;
+
+    const fluid = {
+        m_u: new Array(nGridSize).fill(0),
+        m_v: new Array(nGridSize).fill(0),
+        m_uPrev: new Array(nGridSize).fill(0),
+        m_vPrev: new Array(nGridSize).fill(0),
+        m_dens: new Array(nGridSize).fill(1),
+        m_densPrev: new Array(nGridSize).fill(1),
+        reset: function() {
+            this.m_u.fill(0);
+            this.m_v.fill(0);
+            this.m_uPrev.fill(0);
+            this.m_vPrev.fill(0);
+            this.m_dens.fill(1);
+            this.m_densPrev.fill(1);
+        },
+        m_pixels: new Array(nGridSize).fill(0)
+    }
+
+    // initial pixel state
+    for (let i = 0; i <= nHeight+1; ++i) {
+        for (let j = 0; j <= nWidth+1; ++j) {
+            fluid.m_pixels[seek(j, i)] = (i / nHeight)
+            fluid.m_uPrev[seek(j, i)] = 2 * Math.random() - 1;
+            fluid.m_vPrev[seek(j, i)] = 2 * Math.random() - 1;
+        }
+    }
+
+    function animate(curTime) {
+        if (!startTime) {
+            startTime = curTime;
+            lastTime = curTime;
+        }
+
+        const dt = curTime - lastTime
+        if(dt < 1000/fps && !stop) return requestAnimationFrame(animate);
+
+        ctx.clearRect(0, 0, nWidth, nHeight);
+
+        vel_step(nWidth, nHeight, fluid.m_u, fluid.m_v, fluid.m_uPrev, fluid.m_vPrev, visc, dt/100)
+        dens_step(nWidth, nHeight, fluid.m_dens, fluid.m_densPrev, fluid.m_u, fluid.m_v, diff, dt/100)
+
+        // we need to advect the fluid according to velocity fields
+        let temp = new Array(nGridSize).fill(0);
+        advect(nWidth, nHeight, 0, temp, fluid.m_pixels, fluid.m_u, fluid.m_v, dt/100)
+        fluid.m_pixels = temp;
+
+        // draw densities
+        for(let i = 1; i < nHeight + 1; ++i) {
+            for (let j = 1; j < nWidth + 1; ++j) {
+                // get color
+                let pixel = fluid.m_pixels[seek(j, i)]
+
+                let saturation = g_isDark ? 74 : 74;
+                let lightness = g_isDark ? 25 : 60;
+
+                ctx.fillStyle = `hsl(${pixel * 0.5 + colorOffset}turn, ${saturation}%, ${lightness}%)`
+                ctx.fillRect(j - 1, i - 1, 1, 1)
+            }
+        }
+        iFrameCount += 1
+        lastTime = curTime
+        if (iFrameCount< 2000) {
+            requestAnimationFrame(animate)
+        } else {
+            // console.log("STOPPED", curTime - startTime)
+        }
+    }
+
+    let prevX = 0;
+    let prevY = 0;
+    let prevT = performance.now();
+
+    let handleMouseMove = (evt) => {
+        evt.preventDefault();
+        const rect = evt.target.getBoundingClientRect();
+        const scaleX = g_canvas.width / rect.width;
+        const scaleY = g_canvas.height / rect.height;
+        const x = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
+        const y = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
+        const T = performance.now()
+        const elapsed = T - g_prevT
+
+        if (elapsed < 0.000001) {
+            //TODO: figure out why elapsed is sometimes 0
+            return;
+        }
+
+        // set horizontal vel
+        const v_x = (x - prevX) / elapsed
+        if (v_x) {
+            fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 20;
+        }
+        // set vert vel
+        const v_y = (y - prevY) / elapsed
+        if (v_y) {
+            fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 20;
+        }
+
+        prevT = T;
+        prevX = x;
+        prevY = y;
+    }
+
+    let handleMouseMoveMobile = (evt) => {
+        evt.preventDefault();
+        const rect = evt.target.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const x = Math.max(Math.floor((evt.touches[0].clientX - rect.left) * scaleX), 0) + 1;
+        const y = Math.max(Math.floor((evt.touches[0].clientY - rect.top) * scaleY), 0) + 1;
+        const T = performance.now()
+        const elapsed = T - prevT
+
+        if (elapsed < 0.000001) {
+            //TODO: figure out why elapsed is sometimes 0
+            return;
+        }
+
+        // set horizontal vel
+        const v_x = (x - prevX) / elapsed
+        if (v_x) {
+            fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 20;
+        }
+        // set vert vel
+        const v_y = (y - prevY) / elapsed
+        if (v_y) {
+            fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 20;
+        }
+
+        prevT = T;
+        prevX = x;
+        prevY = y;
+    }
+
+    g_canvas.addEventListener("mouseenter", (evt) => {
+        evt.preventDefault();
+        // get initial coordinates
+        const rect = evt.target.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        prevX = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
+        prevY = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
+        prevT = performance.now();
+        // add mouse move listener
+        canvas.addEventListener("mousemove", handleMouseMove);
+    })
+
+    canvas.addEventListener("mouseleave", (evt) => {
+        evt.preventDefault();
+        canvas.removeEventListener("mousemove", handleMouseMove);
+    })
+
+    canvas.addEventListener("touchstart", (evt) => {
+        evt.preventDefault();
+        // get initial coordinates
+        const rect = evt.target.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        prevX = Math.max(Math.floor((evt.touches[0].clientX - rect.left) * scaleX), 0) + 1;
+        prevY = Math.max(Math.floor((evt.touches[0].clientY - rect.top) * scaleY), 0) + 1;
+        prevT = performance.now();
+
+        // add mouse move listener
+        canvas.addEventListener("touchmove", handleMouseMoveMobile);
+    })
+
+    canvas.addEventListener("touchend", (evt) => {
+        evt.preventDefault();
+        canvas.removeEventListener("touchmove", handleMouseMoveMobile);
+    })
+
+    return animate;
+}
 
 function animate(curTime) {
     if (!startTime) {
@@ -223,184 +380,141 @@ function animate(curTime) {
 
 
     g_ctx.clearRect(0, 0, g_nWidth, g_nHeight)
-    const visc = 0.01
-    const diff = 0.0000
-    vel_step(g_nWidth, g_nHeight, fluid.m_u, fluid.m_v, fluid.m_uPrev, fluid.m_vPrev, visc, 0.024)
-    dens_step(g_nWidth, g_nHeight, fluid.m_dens, fluid.m_densPrev, fluid.m_u, fluid.m_v, diff, 0.024)
+    const visc = 0.00002
+    const diff = 0.12
+    // console.log(dt/10);
+    vel_step(g_nWidth, g_nHeight, fluid.m_u, fluid.m_v, fluid.m_uPrev, fluid.m_vPrev, visc, dt/100)
+    dens_step(g_nWidth, g_nHeight, fluid.m_dens, fluid.m_densPrev, fluid.m_u, fluid.m_v, diff, dt/100)
     // we need to advect the fluid according to velocity fields
     let temp = new Array(g_nGridSize).fill(0)
-    advect(g_nWidth, g_nHeight, 0, temp, fluid.m_pixels, fluid.m_u, fluid.m_v, dt)
+    advect(g_nWidth, g_nHeight, 0, temp, fluid.m_pixels, fluid.m_u, fluid.m_v, dt/100)
     fluid.m_pixels = temp;
-
-
-    // console.log(dt)
-    // console.log(fluid.m_dens)
-    // diffuse(g_nWidth, g_nHeight, 0, fluid.m_dens, fluid.m_densPrev, 2, dt)
-    // fluid.m_densPrev = fluid.m_dens.map(x => x)
-
-
-    // console.log(fluid.m_dens)
 
     // draw densities
     // fluid.m_dens = fluid.m_dens.map(x => Math.random())
     for(let i = 1; i < g_nHeight + 1; ++i) {
         for (let j = 1; j < g_nWidth + 1; ++j) {
             // get color
-            let dens = fluid.m_dens[seek(j, i)]
-            let vel = fluid.m_u[seek(j, i)]
             let pixel = fluid.m_pixels[seek(j, i)]
-            // g_ctx.fillStyle = `hsl(${dens / 13}turn, 100%, 50%)`
-            g_ctx.fillStyle = `hsl(${pixel * 0.4 + 0.65}turn, 80%, 65%)`
-            // const outof255 = Math.floor(Math.sqrt((vel + 1) / 2) * 255)
-            // const outof255 = Math.floor(dens * 255)
-            // g_ctx.fillStyle = `rgb(${outof255}, ${outof255}, ${outof255})`
+
+            let saturation = g_isDark ? 74 : 74;
+            let lightness = g_isDark ? 25 : 60;
+
+            g_ctx.fillStyle = `hsl(${pixel * 0.5 + g_colorOffset}turn, ${saturation}%, ${lightness}%)`
             g_ctx.fillRect(j - 1, i - 1, 1, 1)
         }
     }
     iFrameCount += 1
     lastTime = curTime
-    if (!stop && iFrameCount< 2000) {
-        // console.log(iFrameCount)
+    if (!stop && iFrameCount< 1000) {
         requestAnimationFrame(animate)
     } else {
-        console.log("STOPPED", curTime - startTime)
-    }
-}
-
-function drawNoStep() {
-    g_ctx.clearRect(0, 0, g_nWidth, g_nHeight)
-    // draw densities
-    // fluid.m_dens = fluid.m_dens.map(x => Math.random())
-    for(let i = 1; i < g_nHeight + 1; ++i) {
-        for (let j = 1; j < g_nWidth + 1; ++j) {
-            // get color
-            let dens = fluid.m_dens[seek(j, i)]
-            let vel = fluid.m_uPrev[seek(j, i)]
-            g_ctx.fillStyle = `hsl(${dens / 13}turn, 100%, 50%)`
-            // const outof255 = Math.floor(Math.sqrt(vel) * 255)
-            // const outof255 = Math.floor(dens * 255)
-            // g_ctx.fillStyle = `rgb(${outof255}, ${outof255}, ${outof255})`
-            g_ctx.fillRect(j - 1, i - 1, 1, 1)
-        }
+        // console.log("STOPPED", curTime - startTime)
     }
 }
 
 requestAnimationFrame(animate)
-// create a timer loop
 
+let g_prevX = 0;
+let g_prevY = 0;
+let g_prevT = performance.now();
+
+let handleMouseMove = (evt) => {
+    evt.preventDefault();
+    const rect = evt.target.getBoundingClientRect();
+    const scaleX = g_canvas.width / rect.width;
+    const scaleY = g_canvas.height / rect.height;
+    const x = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
+    const y = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
+    const T = performance.now()
+    const elapsed = T - g_prevT
+
+    if (elapsed < 0.000001) {
+        //TODO: figure out why elapsed is sometimes 0
+        return;
+    }
+
+    // set horizontal vel
+    const v_x = (x - g_prevX) / elapsed
+    if (v_x) {
+        fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 20;
+    }
+    // set vert vel
+    const v_y = (y - g_prevY) / elapsed
+    if (v_y) {
+        fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 20;
+    }
+
+    g_prevT = T;
+    g_prevX = x;
+    g_prevY = y;
+}
+
+let handleMouseMoveMobile = (evt) => {
+    evt.preventDefault();
+    const rect = evt.target.getBoundingClientRect();
+    const scaleX = g_canvas.width / rect.width;
+    const scaleY = g_canvas.height / rect.height;
+    const x = Math.max(Math.floor((evt.touches[0].clientX - rect.left) * scaleX), 0) + 1;
+    const y = Math.max(Math.floor((evt.touches[0].clientY - rect.top) * scaleY), 0) + 1;
+    const T = performance.now()
+    const elapsed = T - g_prevT
+
+    if (elapsed < 0.000001) {
+        //TODO: figure out why elapsed is sometimes 0
+        return;
+    }
+
+    // set horizontal vel
+    const v_x = (x - g_prevX) / elapsed
+    if (v_x) {
+        fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 20;
+    }
+    // set vert vel
+    const v_y = (y - g_prevY) / elapsed
+    if (v_y) {
+        fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 20;
+    }
+
+    g_prevT = T;
+    g_prevX = x;
+    g_prevY = y;
+}
  
-function clickedbutton(e) {
-    console.log("hi", e)
-    if (stop) {
-        e.target.textContent = "Stop"
-    } else {
-        e.target.textContent = "Start"
-    }
-    stop = !stop;
-    if (!stop) {
-        console.log("ANIMATING")
-        iFrameCount = 0
-        // fluid.m_densPrev = fluid.m_densPrev.map(x => Math.random())
-        // fluid.m_dens = fluid.m_densPrev.map(x => Math.random())
-        requestAnimationFrame(animate)
-    }
-}
-
-function resetDensity() {
-    for (let i = 0; i <= g_nHeight+1; ++i) {
-        for (let j = 0; j <= g_nWidth+1; ++j) {
-            if (j >= 2.5 *g_nWidth / 6 && j <= 3.5 *g_nWidth / 6 && i >= 2 * g_nHeight/ 6 && i <= 4 * g_nHeight/ 6) {
-                fluid.m_densPrev[seek(j,i)] = 0
-            } else {
-                fluid.m_densPrev[seek(j,i)] = 1
-            }
-        }
-    }
-}
-
-function resetVelocity() {
-    for (let i = 0; i <= g_nHeight+1; ++i) {
-        for (let j = 0; j <= g_nWidth+1; ++j) {
-            if (j >= 2.5 *g_nWidth / 6 && j <= 3.5 *g_nWidth / 6 && i >= 2 * g_nHeight/ 6 && i <= 4 * g_nHeight/ 6) {
-                fluid.m_uPrev[seek(j,i)] = 1
-                fluid.m_u[seek(j,i)] = 1
-            } else {
-                fluid.m_uPrev[seek(j,i)] = 0
-                fluid.m_u[seek(j,i)] = 0
-            }
-        }
-    }
-    console.log("Velocity reset!")
-}
-
-function resetAll() {
-    fluid.reset()
-
-    // resetDensity()
-    resetVelocity()
-
-    iFrameCount = 0;
-
-    requestAnimationFrame(animate)
-}
-
-g_canvas.addEventListener("mousedown", (evt) => {
+g_canvas.addEventListener("mouseenter", (evt) => {
+    evt.preventDefault();
     // get initial coordinates
     const rect = evt.target.getBoundingClientRect();
     const scaleX = g_canvas.width / rect.width;
     const scaleY = g_canvas.height / rect.height;
-    let prevX = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
-    let prevY = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
-    let prevT = performance.now();
-
+    g_prevX = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
+    g_prevY = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
+    g_prevT = performance.now();
     // add mouse move listener
-    let handleMouseMove = (evt) => {
-        const x = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
-        const y = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
-        const T = performance.now()
-        const elapsed = T - prevT
-
-        if (elapsed < 0.000001) {
-            //TOOD: figure out who elapsed is sometimes 0
-            return;
-        }
-
-        // set horizontal vel
-        const v_x = (x - prevX) / elapsed
-        if (v_x) {
-            fluid.m_uPrev[seek(x, y)] = Math.max(Math.min(v_x, 2.50), -2.5) * 7;
-        }
-        // set vert vel
-        const v_y = (y - prevY) / elapsed
-        if (v_y) {
-            fluid.m_vPrev[seek(x, y)] = Math.max(Math.min(v_y, 2.5), -2.5) * 7;
-        }
-
-        prevT = T;
-    }
-
-    console.log("Mouse Down");
-
     g_canvas.addEventListener("mousemove", handleMouseMove);
-    g_canvas.addEventListener("mouseup", () => {
-        g_canvas.removeEventListener("mousemove", handleMouseMove);
-        g_canvas.removeEventListener("mouseup", this);
-        console.log("Mouse Up");
-    })
 })
 
+g_canvas.addEventListener("mouseleave", (evt) => {
+    evt.preventDefault();
+    g_canvas.removeEventListener("mousemove", handleMouseMove);
+})
 
-// g_canvas.addEventListener("mousemove", (evt) => {
-//     // console.log(evt);
-//     const rect = evt.target.getBoundingClientRect();
-//     const scaleX = g_canvas.width / rect.width;
-//     const scaleY = g_canvas.height / rect.height;
-//     const x = Math.max(Math.floor((evt.clientX - rect.left) * scaleX), 0) + 1;
-//     const y = Math.max(Math.floor((evt.clientY - rect.top) * scaleY), 0) + 1;
-//     // console.log(x, y)
-//     fluid.m_densPrev[seek(x, y)] += 100.001
-//     // evt.offsetX;
-//     // evt.offsetY;
-//     requestAnimationFrame(animate)
-//     // drawNoStep();
-// })
+g_canvas.addEventListener("touchstart", (evt) => {
+    evt.preventDefault();
+    // get initial coordinates
+    const rect = evt.target.getBoundingClientRect();
+    const scaleX = g_canvas.width / rect.width;
+    const scaleY = g_canvas.height / rect.height;
+    console.log(rect, scaleX, scaleY, evt.clientX, evt.clientY, evt)
+    g_prevX = Math.max(Math.floor((evt.touches[0].clientX - rect.left) * scaleX), 0) + 1;
+    g_prevY = Math.max(Math.floor((evt.touches[0].clientY - rect.top) * scaleY), 0) + 1;
+    g_prevT = performance.now();
+    console.log(g_prevX, g_prevY, g_prevT)
+    // add mouse move listener
+    g_canvas.addEventListener("touchmove", handleMouseMoveMobile);
+})
+
+g_canvas.addEventListener("touchend", (evt) => {
+    evt.preventDefault();
+    g_canvas.removeEventListener("touchmove", handleMouseMoveMobile);
+})
