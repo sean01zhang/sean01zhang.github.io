@@ -51,26 +51,24 @@
                 <div class="relative hover:scale-[103%] transition-all z-10">
                     <canvas id="fluid" height="100" class="w-full rounded-[20px] shadow-lg"></canvas>
                     <div class="absolute bottom-3 left-5 text-white seanHeader">
-                        <p class="seanHeader font-mono"><a href="/" class="hover:underline decoration-red-500 decoration-2">Home</a> /</p>
+                        <p class="seanHeader font-mono"><a href="/"
+                                class="hover:underline decoration-red-500 decoration-2">Home</a> /</p>
                         <h1 class="seanHeader text-[2rem] font-bold">Projects</h1>
                     </div>
                 </div>
                 <div class="px-2 dark:text-white font-mono font-bold relative z-0">
-                    <div class="bg-white dark:bg-[#242424] dark:border-[1px] dark:border-[#404040] dark:divide-[#404040] translate-y-[-12px] rounded-b-[10px] divide-x flex flex-row flex-wrap pt-3 shadow">
-                        <div
-                            class="hover:underline decoration-red-500 decoration-2">
+                    <div
+                        class="bg-white dark:bg-[#242424] dark:border-[1px] dark:border-[#404040] dark:divide-[#404040] translate-y-[-12px] rounded-b-[10px] divide-x flex flex-row flex-wrap pt-3 shadow">
+                        <div class="hover:underline decoration-red-500 decoration-2">
                             <a href="/projects" class="block px-3 py-2">Projects</a>
                         </div>
-                        <div
-                            class="hover:underline decoration-indigo-500 decoration-2">
+                        <div class="hover:underline decoration-indigo-500 decoration-2">
                             <a href="/blog" class="block px-3 py-2">Blog</a>
                         </div>
-                        <div
-                            class="hover:underline decoration-sky-500 decoration-2">
-                            <a href="/resume.pdf" class="block px-3 py-2">Resume</a>
+                        <div class="hover:underline decoration-sky-500 decoration-2">
+                            <a href="/resume" class="block px-3 py-2">Resume</a>
                         </div>
-                        <div
-                            class="hover:underline decoration-purple-500 decoration-2">
+                        <div class="hover:underline decoration-purple-500 decoration-2">
                             <a href="https://github.com/sean01zhang" class="block px-3 py-2">GitHub</a>
                         </div>
                     </div>
@@ -83,28 +81,31 @@
                         <li>
                             <div class="py-1">
                                 <div class="block">
-                                    <div class="rounded-full bg-pink-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">JavaScript</div>
+                                    <div
+                                        class="rounded-full bg-pink-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">
+                                        JavaScript</div>
                                 </div>
                                 <h3 class="font-bold">
                                     Numerically Stable 2D Fluid Simulation
                                 </h3>
                                 <span>
                                     2D fluid simulation based on the Navier-stokes differential equations.
-                                    This is also my first attempt at using <a class="underline decoration-2 decoration-blue-500" href="https://en.wikipedia.org/wiki/Hungarian_notation">Hungarian Notation</a> for variable naming.
-                                    I extended the paper that my numerical method is based on to advect a color texture and handle user input.
+                                    This is also my first attempt at using <a
+                                        class="underline decoration-2 decoration-blue-500"
+                                        href="https://en.wikipedia.org/wiki/Hungarian_notation">Hungarian Notation</a>
+                                    for variable naming.
+                                    I extended the paper that my numerical method is based on to advect a color texture
+                                    and handle user input.
                                 </span>
                                 <ul class="list-disc list-inside pb-0 mb-0">
                                     <li>
-                                        <a
-                                            class="underline decoration-2 decoration-blue-500"
-                href="https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf"
-                                            >Reference</a>
+                                        <a class="underline decoration-2 decoration-blue-500"
+                                            href="https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf">Reference</a>
                                     </li>
                                     <li>
-                                        <a
-                                            class="underline decoration-2 decoration-blue-500"
-                                            href="https://www.github.com/sean01zhang/sean01zhang.github.io"
-                                            >GitHub (it is a part of my website)</a>
+                                        <a class="underline decoration-2 decoration-blue-500"
+                                            href="https://www.github.com/sean01zhang/sean01zhang.github.io">GitHub (it
+                                            is a part of my website)</a>
                                     </li>
                                 </ul>
                             </div>
@@ -112,14 +113,17 @@
                         <li>
                             <div class="py-1">
                                 <div class="block">
-                                    <div class="rounded-full bg-purple-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">Rust</div>
+                                    <div
+                                        class="rounded-full bg-purple-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">
+                                        Rust</div>
                                 </div>
                                 <h3 class="font-bold">
                                     Ray Tracing with Resevoir Resampling and Spatiotemporal Reuse (ReSTIR)
                                 </h3>
-                                My final Computer Graphics Project, a <a class="underline decoration-2 decoration-blue-500"
-                                           href="https://research.nvidia.com/publication/2020-07_spatiotemporal-reservoir-resampling-real-time-ray-tracing-dynamic-direct">ReSTIR</a>
- implementation in Rust.<br>
+                                My final Computer Graphics Project, a <a
+                                    class="underline decoration-2 decoration-blue-500"
+                                    href="https://research.nvidia.com/publication/2020-07_spatiotemporal-reservoir-resampling-real-time-ray-tracing-dynamic-direct">ReSTIR</a>
+                                implementation in Rust.<br>
 
                                 <ul class="list-disc list-inside">
                                     <li>
@@ -132,13 +136,15 @@
                                         Blinn-phong shading and mesh lighting for glossy or emissive materials.
                                     </li>
                                     <li>
-                                        Supports Waveform Object (<code>.obj</code>) and Material (<code>.mtl</code>) loading.
+                                        Supports Waveform Object (<code>.obj</code>) and Material (<code>.mtl</code>)
+                                        loading.
                                     </li>
                                     <li>
                                         Implemented a BVH with splits determined by the surface area heuristic.
                                     </li>
                                     <li>
-                                        Used <a class="underline decoration-2 decoration-blue-500" href="https://github.com/emilk/egui">egui</a> for UI controls.
+                                        Used <a class="underline decoration-2 decoration-blue-500"
+                                            href="https://github.com/emilk/egui">egui</a> for UI controls.
                                     </li>
                                 </ul>
                             </div>
@@ -146,7 +152,9 @@
                         <li>
                             <div class="py-1">
                                 <div class="block">
-                                    <div class="rounded-full bg-teal-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">C++</div>
+                                    <div
+                                        class="rounded-full bg-teal-400 text-white px-3 font-bold font-mono py-0 inline-block text-sm">
+                                        C++</div>
                                 </div>
                                 <h3 class="font-bold">
                                     Ray Tracing in One Weekend
@@ -154,11 +162,14 @@
                                 Brute-force path tracer. Made a few optimizations to it afterwards.
                                 <ul class="list-disc list-inside">
                                     <li>
-                                        <a class="underline decoration-2 decoration-blue-500" href="/blog/in-one-weekend">Blog</a>
+                                        <a class="underline decoration-2 decoration-blue-500"
+                                            href="/blog/in-one-weekend">Blog</a>
                                     </li>
                                     <li>
-                                        <a class="underline decoration-2 decoration-blue-500" href="https://github.com/sean01zhang/rt-one-weekend-no-oop">GitHub (Improved Version)</a>
-                                        </li>
+                                        <a class="underline decoration-2 decoration-blue-500"
+                                            href="https://github.com/sean01zhang/rt-one-weekend-no-oop">GitHub (Improved
+                                            Version)</a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

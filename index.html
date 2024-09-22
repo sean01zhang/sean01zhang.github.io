@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" type="text/css" href="build.css" />
     <link rel="canonical" href="https://www.seanzhang.ca" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins" />
     <style>
         html {
             background-image: linear-gradient(to top, #fbc2eb30 0%, #a6c1ee30 100%);
@@ -56,21 +56,18 @@
                     </div>
                 </div>
                 <div class="px-2 dark:text-white font-mono font-bold relative z-0">
-                    <div class="bg-white dark:bg-[#242424] dark:border-[1px] dark:border-[#404040] dark:divide-[#404040] translate-y-[-12px] rounded-b-[10px] divide-x flex flex-row flex-wrap pt-3 shadow">
-                        <div
-                            class="hover:underline decoration-red-500 decoration-2">
+                    <div
+                        class="bg-white dark:bg-[#242424] dark:border-[1px] dark:border-[#404040] dark:divide-[#404040] translate-y-[-12px] rounded-b-[10px] divide-x flex flex-row flex-wrap pt-3 shadow">
+                        <div class="hover:underline decoration-red-500 decoration-2">
                             <a href="/projects" class="block px-3 py-2">Projects</a>
                         </div>
-                        <div
-                            class="hover:underline decoration-indigo-500 decoration-2">
+                        <div class="hover:underline decoration-indigo-500 decoration-2">
                             <a href="/blog" class="block px-3 py-2">Blog</a>
                         </div>
-                        <div
-                            class="hover:underline decoration-sky-500 decoration-2">
-                            <a href="/resume.pdf" class="block px-3 py-2">Resume</a>
+                        <div class="hover:underline decoration-sky-500 decoration-2">
+                            <a href="/resume" class="block px-3 py-2">Resume</a>
                         </div>
-                        <div
-                            class="hover:underline decoration-purple-500 decoration-2">
+                        <div class="hover:underline decoration-purple-500 decoration-2">
                             <a href="https://github.com/sean01zhang" class="block px-3 py-2">GitHub</a>
                         </div>
                     </div>
@@ -81,7 +78,8 @@
                     <h2 class="font-semibold mb-1 text-[1.5rem]">News</h2>
                     <ul class="space-y-1 list-inside divide-y dark:divide-[#404040]">
                         <li>[05-06-2024] I updated my dotfiles for better tmux ergonomics.</li>
-                        <li>[05-06-2024] I will be joining Verily as a Software Engineer for my co-op term. I have updated my resume to reflect this.</li>
+                        <li>[05-06-2024] I will be joining Verily as a Software Engineer for my co-op term. I have
+                            updated my resume to reflect this.</li>
                         <li>[01-08-2024] Added a theme for the org-generated HTML files.</li>
                         <li>[01-04-2024] Added a numerically-stable fluid simulator based on navier-stokes equations to
                             my banner/header (Hint: Drag your finger/ move your cursor around the colorful banner).
@@ -100,11 +98,12 @@
         let clickTitleCount = 0;
 
         function silverfish() {
-          if (clickTitleCount++ >= 10) {
-            clickTitleCount = 0;
-            alert("Silverfish counter: 25")
-          }
+            if (clickTitleCount++ >= 10) {
+                clickTitleCount = 0;
+                alert("Silverfish counter: 25")
+            }
         }
     </script>
 </body>
+
 </html>
